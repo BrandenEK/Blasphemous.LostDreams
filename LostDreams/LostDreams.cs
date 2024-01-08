@@ -1,4 +1,5 @@
-﻿using ModdingAPI;
+﻿using LostDreams.ChargeTimeDecrease;
+using ModdingAPI;
 
 namespace LostDreams
 {
@@ -9,6 +10,8 @@ namespace LostDreams
         protected override void Initialize()
         {
             Log($"{PluginInfo.PLUGIN_NAME} has been initialized");
+
+            RegisterItem(new ChargeTimeBead().AddEffect<ChargeTimeEffect>()); // RB501
         }
     }
 }
