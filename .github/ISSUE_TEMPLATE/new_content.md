@@ -7,11 +7,11 @@ assignees: ''
 
 ---
 
-**Tasks remaining:**
+**TODO list**
 - [ ] Code
 - [ ] Text
 - [ ] Icon
 - [ ] Location
 
-**More information:**
+**More information**
 Describe what the content does, and suggestions for what it may look like and where it could be found in-game
