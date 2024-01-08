@@ -1,4 +1,5 @@
-﻿using ModdingAPI;
+﻿using LostDreams.GuiltFragmentBonus;
+using ModdingAPI;
 
 namespace LostDreams
 {
@@ -9,6 +10,8 @@ namespace LostDreams
         protected override void Initialize()
         {
             Log($"{PluginInfo.PLUGIN_NAME} has been initialized");
+
+            RegisterItem(new GuiltFragmentBead().AddEffect<GuiltFragmentEffect>()); // RB502
         }
     }
 }
