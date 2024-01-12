@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace LostDreams.GuiltFragmentBonus;
 
-class GuiltFragmentBead : ModRosaryBead
+class GuiltFragmentItem : ModQuestItem
 {
-    protected override string Id => "RB502";
+    protected override string Id => "QI501";
 
     protected override string Name => Main.LostDreams.Localize("gfname");
 
@@ -17,21 +17,17 @@ class GuiltFragmentBead : ModRosaryBead
 
     protected override bool PreserveInNGPlus => true;
 
-    protected override bool AddToPercentCompletion => true;
-
-    protected override bool AddInventorySlot => true;
-
     protected override void LoadImages(out Sprite picture)
     {
         picture = Main.LostDreams.FileUtil.loadDataImages("guilt-fragment.png", new Vector2Int(30, 30), Vector2Int.zero, 32, 0, true, out Sprite[] images) ? images[0] : null;
     }
 }
 
-class GuiltFragmentEffect : ModItemEffectOnEquip
+class GuiltFragmentEffect : ModItemEffectOnAcquire
 {
-    public static bool Active { get; private set; }
+    protected override bool ActivateOnce => false;
 
-    protected override void ApplyEffect() => Active = true;
+    protected override void ApplyEffect() => Main.LostDreams.Activate("guilt-fragment");
 
-    protected override void RemoveEffect() => Active = false;
+    protected override void RemoveEffect() => Main.LostDreams.Deactivate("guilt-fragment");
 }
