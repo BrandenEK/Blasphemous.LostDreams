@@ -1,11 +1,12 @@
-﻿using Framework.Managers;
-using Gameplay.UI.Widgets;
+﻿using Gameplay.UI.Widgets;
 using HarmonyLib;
-using ModdingAPI;
 using Tools.Playmaker2.Action;
 
 namespace LostDreams;
 
+/// <summary>
+/// After completing the game, give one of the ending reward items
+/// </summary>
 [HarmonyPatch(typeof(CutscenePlay), nameof(CutscenePlay.OnEnter))]
 class Item_Cutscene_Patch
 {
@@ -13,28 +14,27 @@ class Item_Cutscene_Patch
     {
         string item = __instance.cutscene?.name switch
         {
-            "CTS10-EndingA" => "QI501",
+            //"CTS10-EndingA" => "QI501",
             "CTS09-EndingB" => "QI502",
-            "CTS301-EndingC" => "QI503",
+            //"CTS301-EndingC" => "QI503",
             _ => null
         };
 
-        if (item == null || Core.InventoryManager.IsQuestItemOwned(item))
+        if (item == null)
             return;
 
-        Main.LostDreams.QueueItem(item);
-        Core.InventoryManager.AddQuestItem(item);
+        Main.LostDreams.AcquisitionHandler.GiveItem(item, true, true);
     }
 }
 
+/// <summary>
+/// Display one of the ending reward items after the credits have finished
+/// </summary>
 [HarmonyPatch(typeof(CreditsWidget), "EndOfCredits")]
 class Item_Credits_Patch
 {
     public static void Postfix()
     {
-        string queued = Main.LostDreams.PopQueuedItem();
-
-        if (queued != string.Empty)
-            Main.LostDreams.DisplayItem(queued);
+        Main.LostDreams.AcquisitionHandler.DisplayQueuedItem();
     }
 }
