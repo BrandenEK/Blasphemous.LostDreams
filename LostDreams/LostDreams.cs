@@ -3,18 +3,17 @@ using Framework.Managers;
 using Gameplay.UI;
 using LostDreams.GuiltFragmentBonus;
 using ModdingAPI;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace LostDreams
 {
     public class LostDreams : Mod
     {
-        private readonly List<string> _activeEffects = new();
+        public LostDreams() : base(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION) { }
 
         private string _queuedItem = string.Empty;
 
-        public LostDreams() : base(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION) { }
+        internal EffectHandler EffectHandler { get; } = new();
 
         protected override void Initialize()
         {
@@ -27,32 +26,9 @@ namespace LostDreams
         {
             if (newLevel == "MainMenu")
             {
-                Log("Clearing all item effects");
-                _activeEffects.Clear();
+                EffectHandler.Reset();
                 _queuedItem = string.Empty;
             }
-        }
-
-        protected override void Update()
-        {
-            if (Time.frameCount % 60 == 0)
-                LogWarning("Active: " + IsActive("guilt-fragment"));
-        }
-
-        public void Activate(string effect)
-        {
-            if (!_activeEffects.Contains(effect))
-                _activeEffects.Add(effect);
-        }
-
-        public void Deactivate(string effect)
-        {
-            _activeEffects.Remove(effect);
-        }
-
-        public bool IsActive(string effect)
-        {
-            return _activeEffects.Contains(effect);
         }
 
         public void QueueItem(string item)

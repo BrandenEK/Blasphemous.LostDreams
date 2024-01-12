@@ -27,7 +27,7 @@ class GuiltFragmentEffect : ModItemEffectOnAcquire
 {
     protected override bool ActivateOnce => false;
 
-    protected override void ApplyEffect() => Main.LostDreams.Activate("guilt-fragment");
+    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate("guilt-fragment");
 
-    protected override void RemoveEffect() => Main.LostDreams.Deactivate("guilt-fragment");
+    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate("guilt-fragment");
 }

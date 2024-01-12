@@ -19,7 +19,7 @@ class Item_Cutscene_Patch
             _ => null
         };
 
-        if (item == null)
+        if (item == null || Core.InventoryManager.IsQuestItemOwned(item))
             return;
 
         Main.LostDreams.QueueItem(item);
