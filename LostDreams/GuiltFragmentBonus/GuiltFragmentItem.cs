@@ -5,7 +5,7 @@ namespace LostDreams.GuiltFragmentBonus;
 
 class GuiltFragmentItem : ModQuestItem
 {
-    protected override string Id => "QI501";
+    protected override string Id => "QI502";
 
     protected override string Name => Main.LostDreams.Localize("gfname");
 

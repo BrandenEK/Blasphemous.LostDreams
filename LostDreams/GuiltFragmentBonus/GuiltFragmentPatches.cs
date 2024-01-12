@@ -11,7 +11,7 @@ class GuiltDrop_GiveBonus_Patch
     {
         if (Main.LostDreams.IsActive("guilt-fragment"))
         {
-            Main.LostDreams.Log("QI501: Increasing guilt drop bonus");
+            Main.LostDreams.Log("QI502: Increasing guilt drop bonus");
             Core.Logic.Penitent.Stats.Life.SetToCurrentMax();
             Core.Logic.Penitent.Stats.Fervour.SetToCurrentMax();
         }
