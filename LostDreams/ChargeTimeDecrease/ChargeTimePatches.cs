@@ -1,4 +1,5 @@
-﻿using Gameplay.GameControllers.AnimationBehaviours.Player.Attack;
+﻿using Framework.Managers;
+using Gameplay.GameControllers.AnimationBehaviours.Player.Attack;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using UnityEngine;
@@ -39,5 +40,18 @@ class ChargedAnimation_Exit_Patch
         {
             animator.speed = 1;
         }
+    }
+}
+
+/// <summary>
+/// When petting the dog, set a flag for the level editor
+/// </summary>
+[HarmonyPatch(typeof(InputManager), nameof(InputManager.SetBlocker))]
+class Input_DogBlock_Patch
+{
+    public static void Postfix(string name)
+    {
+        if (name == "dog_block")
+            Core.Events.SetFlag("PET_DOG", true);
     }
 }
