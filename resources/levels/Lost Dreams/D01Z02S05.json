@@ -1,0 +1,12 @@
+{
+	"AddedObjects":
+	[
+		{
+			"Type": "CollectibleItem",
+			"Id": "RB501",
+			"XPos": -413,
+			"YPos": 9,
+			"Condition": "flag:PET_DOG"
+		}
+	]
+}
