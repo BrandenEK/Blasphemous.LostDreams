@@ -1,0 +1,12 @@
+{
+	"AddedObjects":
+	[
+		{
+			"Type": "CollectibleItem",
+			"Id": "RB503",
+			"XPos": 423,
+			"YPos": 42,
+			"Condition": "flag:SOCORRO_STATE_KILLED"
+		}
+	]
+}
