@@ -1,4 +1,5 @@
-﻿using Gameplay.UI.Widgets;
+﻿using Framework.Managers;
+using Gameplay.UI.Widgets;
 using HarmonyLib;
 using Tools.Playmaker2.Action;
 
@@ -36,5 +37,18 @@ class Item_Credits_Patch
     public static void Postfix()
     {
         Main.LostDreams.AcquisitionHandler.DisplayQueuedItem();
+    }
+}
+
+/// <summary>
+/// When petting the dog, set a flag for the level editor
+/// </summary>
+[HarmonyPatch(typeof(InputManager), nameof(InputManager.SetBlocker))]
+class Item_Dog_Patch
+{
+    public static void Postfix(string name)
+    {
+        if (name == "dog_block")
+            Core.Events.SetFlag("PET_DOG", true);
     }
 }
