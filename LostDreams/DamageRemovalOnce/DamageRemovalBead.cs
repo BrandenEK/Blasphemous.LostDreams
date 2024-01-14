@@ -29,15 +29,13 @@ class DamageRemovalBead : ModRosaryBead
 
 class DamageRemovalEffect : ModItemEffectOnEquip
 {
-    public static bool Active { get; private set; }
-
     public static bool WillRemoveDamage { get; private set; }
 
     public static bool HealingFlag { get; set; }
 
-    protected override void ApplyEffect() => Active = true;
+    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate("damage-removal");
 
-    protected override void RemoveEffect() => Active = false;
+    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate("damage-removal");
 
     public static void RegainDamageRemoval()
     {

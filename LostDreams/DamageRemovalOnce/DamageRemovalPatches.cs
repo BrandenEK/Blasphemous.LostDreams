@@ -34,11 +34,11 @@ class PrieDieu_Use_Patch
 }
 
 [HarmonyPatch(typeof(PenitentDamageArea), "TakeDamage")]
-public class DamageArea_Patch
+public class Penitent_Damage_Patch
 {
     public static void Prefix(ref Hit hit)
     {
-        if (DamageRemovalEffect.Active && DamageRemovalEffect.WillRemoveDamage)
+        if (Main.LostDreams.EffectHandler.IsActive("damage-removal") && DamageRemovalEffect.WillRemoveDamage)
         {
             Main.LostDreams.Log("RB503: Removing all damage");
             hit.DamageAmount = 0;

@@ -29,9 +29,7 @@ class ChargeTimeBead : ModRosaryBead
 
 class ChargeTimeEffect : ModItemEffectOnEquip
 {
-    public static bool Active { get; private set; }
+    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate("charge-time");
 
-    protected override void ApplyEffect() => Active = true;
-
-    protected override void RemoveEffect() => Active = false;
+    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate("charge-time");
 }
