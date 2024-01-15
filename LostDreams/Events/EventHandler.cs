@@ -1,4 +1,5 @@
-﻿using Gameplay.GameControllers.Entities;
+﻿using Framework.Managers;
+using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent;
 
 namespace LostDreams.Events;
@@ -25,6 +26,9 @@ internal class EventHandler
 
     public void DamagePlayer()
     {
+        if (Core.Logic.Penitent.Status.Unattacable)
+            return;
+
         OnPlayerDamaged?.Invoke();
     }
 

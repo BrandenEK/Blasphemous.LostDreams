@@ -29,30 +29,51 @@ class DamageRemovalBead : ModRosaryBead
 
 class DamageRemovalEffect : ModItemEffectOnEquip
 {
-    public static bool WillRemoveDamage { get; private set; }
+    private bool _equipped;
+    private bool _alreadyUsed;
 
-    public static bool HealingFlag { get; set; }
+    protected override void ApplyEffect() => EquipBead();
 
-    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate("damage-removal");
-
-    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate("damage-removal");
+    protected override void RemoveEffect() => UnequipBead();
 
     public DamageRemovalEffect()
     {
         Main.LostDreams.EventHandler.OnPlayerKilled += RegainDamageRemoval;
         Main.LostDreams.EventHandler.OnUsePrieDieu += RegainDamageRemoval;
         Main.LostDreams.EventHandler.OnExitGame += RegainDamageRemoval;
+        Main.LostDreams.EventHandler.OnExitGame += UnequipBead;
         Main.LostDreams.EventHandler.OnPlayerDamaged += UseDamageRemoval;
+    }
+
+    private void CheckForActivation()
+    {
+        if (_equipped && !_alreadyUsed)
+            Main.LostDreams.EffectHandler.Activate("damage-removal");
+        else
+            Main.LostDreams.EffectHandler.Deactivate("damage-removal");
+    }
+
+    private void EquipBead()
+    {
+        _equipped = true;
+        CheckForActivation();
+    }
+
+    private void UnequipBead()
+    {
+        _equipped = false;
+        CheckForActivation();
     }
 
     private void RegainDamageRemoval()
     {
-        Main.LostDreams.Log("RB503: Regain damage removal");
-        WillRemoveDamage = true;
+        _alreadyUsed = false;
+        CheckForActivation();
     }
 
     private void UseDamageRemoval()
     {
-        WillRemoveDamage = false;
+        _alreadyUsed = true;
+        CheckForActivation();
     }
 }

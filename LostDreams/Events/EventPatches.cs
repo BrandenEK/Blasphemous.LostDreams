@@ -20,5 +20,5 @@ class PrieDieu_Use_Patch
 [HarmonyPatch(typeof(PenitentDamageArea), "TakeDamage")]
 public class Penitent_Damage_Patch
 {
-    public static void Postfix() => Main.LostDreams.EventHandler.DamagePlayer();
+    public static void Prefix() => Main.LostDreams.EventHandler.DamagePlayer();
 }
