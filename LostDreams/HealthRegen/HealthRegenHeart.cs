@@ -1,4 +1,5 @@
-﻿using Framework.FrameworkCore.Attributes.Logic;
+﻿using Framework.FrameworkCore.Attributes;
+using Framework.FrameworkCore.Attributes.Logic;
 using Framework.Managers;
 using ModdingAPI.Items;
 using UnityEngine;
@@ -31,21 +32,34 @@ class HealthRegenHeart : ModSwordHeart
 
 class HealthRegenEffect : ModItemEffectOnEquip
 {
-    private FinalBonus _halfHealth;
+    private RawBonus _halfHealth;
 
     protected override void ApplyEffect()
     {
-        Main.LostDreams.EffectHandler.Activate("health-regen");
+        float maxHealth = Core.Logic.Penitent.Stats.Life.CurrentMax;
+        _halfHealth = new RawBonus((maxHealth / 2 + (maxHealth / 2 - 44)) * -1);
+        Core.Logic.Penitent.Stats.Life.AddRawBonus(_halfHealth);
 
-        _halfHealth = new FinalBonus(1, -Core.Logic.Penitent.Stats.Life.CurrentMax / 2);
-        Core.Logic.Penitent.Stats.Life.AddFinalBonus(_halfHealth);
+        Main.LostDreams.TimeHandler.AddTimer("health-regen", 3, true, RegenerateHealth);
     }
 
     protected override void RemoveEffect()
     {
-        Main.LostDreams.EffectHandler.Deactivate("health-regen");
-
         if (_halfHealth != null)
-            Core.Logic.Penitent.Stats.Life.RemoveFinalBonus(_halfHealth);
+            Core.Logic.Penitent.Stats.Life.RemoveRawBonus(_halfHealth);
+
+        Main.LostDreams.TimeHandler.RemoveTimer("health-regen");
+    }
+
+    private void RegenerateHealth()
+    {
+        Life life = Core.Logic.Penitent.Stats.Life;
+
+        if (life.Current >= life.CurrentMax)
+            return;
+
+        Main.LostDreams.LogWarning("HE501: Regenerating small health");
+        float amount = life.CurrentMax * 0.015f;
+        life.Current += amount;
     }
 }

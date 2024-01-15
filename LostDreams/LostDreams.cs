@@ -12,6 +12,7 @@ public class LostDreams : Mod
 
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal EffectHandler EffectHandler { get; } = new();
+    internal TimeHandler TimeHandler { get; } = new();
 
     protected override void Initialize()
     {
@@ -32,9 +33,16 @@ public class LostDreams : Mod
         // Reset handlers when exiting a game
         EffectHandler.Reset();
         AcquisitionHandler.Reset();
+        TimeHandler.Reset();
 
         // Handle extra functionality for certain items
         Log("RB503: Regain damage removal (mainmenu)");
         DamageRemovalEffect.RegainDamageRemoval();
+    }
+
+    protected override void Update()
+    {
+        // Update handlers every frame
+        TimeHandler.Update();
     }
 }
