@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace LostDreams.DamageRemoval;
 
-[HarmonyPatch(typeof(PenitentDamageArea), "TakeDamage")]
+[HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
 public class Penitent_Damage_Patch
 {
     [HarmonyPriority(Priority.High)]

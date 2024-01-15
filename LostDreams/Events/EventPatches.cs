@@ -1,4 +1,5 @@
-﻿using Gameplay.GameControllers.Entities;
+﻿using Gameplay.GameControllers.Enemies.Framework.Damage;
+using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Damage;
 using HarmonyLib;
 using Tools.Level.Interactables;
@@ -17,8 +18,14 @@ class PrieDieu_Use_Patch
     public static void Prefix() => Main.LostDreams.EventHandler.UsePrieDieu();
 }
 
-[HarmonyPatch(typeof(PenitentDamageArea), "TakeDamage")]
+[HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
 public class Penitent_Damage_Patch
 {
     public static void Prefix() => Main.LostDreams.EventHandler.DamagePlayer();
+}
+
+[HarmonyPatch(typeof(EnemyDamageArea), nameof(EnemyDamageArea.TakeDamage))]
+public class Enemy_Damage_Patch
+{
+    public static void Prefix() => Main.LostDreams.EventHandler.DamageEnemy();
 }

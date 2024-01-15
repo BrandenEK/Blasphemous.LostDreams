@@ -32,6 +32,11 @@ internal class EventHandler
         OnPlayerDamaged?.Invoke();
     }
 
+    public void DamageEnemy()
+    {
+        OnEnemyDamaged?.Invoke();
+    }
+
     public void UsePrieDieu()
     {
         OnUsePrieDieu?.Invoke();
