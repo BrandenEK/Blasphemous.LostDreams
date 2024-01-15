@@ -2,6 +2,7 @@
 ﻿using LostDreams.ChargeTimeDecrease;
 ﻿using LostDreams.DamageRemovalOnce;
 using ModdingAPI;
+using LostDreams.HealthRegen;
 
 namespace LostDreams;
 
@@ -17,6 +18,8 @@ public class LostDreams : Mod
         // Register all new items
         RegisterItem(new ChargeTimeBead().AddEffect<ChargeTimeEffect>()); // RB501
         RegisterItem(new DamageRemovalBead().AddEffect<DamageRemovalEffect>()); // RB503
+
+        RegisterItem(new HealthRegenHeart().AddEffect<HealthRegenEffect>()); // HE501
 
         RegisterItem(new GuiltFragmentItem().AddEffect<GuiltFragmentEffect>()); // QI502
     }

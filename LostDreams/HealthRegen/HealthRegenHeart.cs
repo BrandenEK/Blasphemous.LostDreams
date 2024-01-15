@@ -1,4 +1,6 @@
-﻿using ModdingAPI.Items;
+﻿using Framework.FrameworkCore.Attributes.Logic;
+using Framework.Managers;
+using ModdingAPI.Items;
 using UnityEngine;
 
 namespace LostDreams.HealthRegen;
@@ -29,7 +31,21 @@ class HealthRegenHeart : ModSwordHeart
 
 class HealthRegenEffect : ModItemEffectOnEquip
 {
-    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate("health-regen");
+    private FinalBonus _halfHealth;
 
-    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate("health-regen");
+    protected override void ApplyEffect()
+    {
+        Main.LostDreams.EffectHandler.Activate("health-regen");
+
+        _halfHealth = new FinalBonus(1, -Core.Logic.Penitent.Stats.Life.CurrentMax / 2);
+        Core.Logic.Penitent.Stats.Life.AddFinalBonus(_halfHealth);
+    }
+
+    protected override void RemoveEffect()
+    {
+        Main.LostDreams.EffectHandler.Deactivate("health-regen");
+
+        if (_halfHealth != null)
+            Core.Logic.Penitent.Stats.Life.RemoveFinalBonus(_halfHealth);
+    }
 }
