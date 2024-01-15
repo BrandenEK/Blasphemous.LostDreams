@@ -39,19 +39,19 @@ class DamageRemovalEffect : ModItemEffectOnEquip
 
     public DamageRemovalEffect()
     {
-        Main.LostDreams.Log("Registering events");
         Main.LostDreams.EventHandler.OnPlayerKilled += RegainDamageRemoval;
         Main.LostDreams.EventHandler.OnUsePrieDieu += RegainDamageRemoval;
         Main.LostDreams.EventHandler.OnExitGame += RegainDamageRemoval;
+        Main.LostDreams.EventHandler.OnPlayerDamaged += UseDamageRemoval;
     }
 
-    public static void RegainDamageRemoval()
+    private void RegainDamageRemoval()
     {
         Main.LostDreams.Log("RB503: Regain damage removal");
         WillRemoveDamage = true;
     }
 
-    public static void UseDamageRemoval()
+    private void UseDamageRemoval()
     {
         WillRemoveDamage = false;
     }

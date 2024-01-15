@@ -9,6 +9,9 @@ internal class EventHandler
 
     public event EventDelegate OnPlayerKilled;
     public event EventDelegate OnEnemyKilled;
+    public event EventDelegate OnPlayerDamaged;
+    public event EventDelegate OnEnemyDamaged;
+
     public event EventDelegate OnUsePrieDieu;
     public event EventDelegate OnExitGame;
 
@@ -18,6 +21,11 @@ internal class EventHandler
             OnPlayerKilled?.Invoke();
         else
             OnEnemyKilled?.Invoke();
+    }
+
+    public void DamagePlayer()
+    {
+        OnPlayerDamaged?.Invoke();
     }
 
     public void UsePrieDieu()

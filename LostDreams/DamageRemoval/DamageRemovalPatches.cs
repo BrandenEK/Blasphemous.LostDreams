@@ -17,7 +17,6 @@ public class Penitent_Damage_Patch
         {
             Main.LostDreams.Log("RB503: Removing all damage");
             hit.DamageAmount = 0;
-            DamageRemovalEffect.UseDamageRemoval();
 
             DamageRemovalEffect.HealingFlag = true;
             Object.FindObjectOfType<HealingAura>()?.StartAura(Core.Logic.Penitent.Status.Orientation);
