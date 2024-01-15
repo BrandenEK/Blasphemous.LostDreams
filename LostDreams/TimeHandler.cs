@@ -8,6 +8,7 @@ namespace LostDreams;
 internal class TimeHandler
 {
     private readonly Dictionary<string, Timer> _timers = new();
+    private readonly List<string> _toClear = new();
 
     public void AddTimer(string id, float length, bool repeat, Action callback)
     {
@@ -32,16 +33,30 @@ internal class TimeHandler
         if (Core.Logic.Penitent == null)
             return;
 
-        foreach (var timer in _timers.Values)
+        // Update each timer
+        foreach (var timer in _timers)
         {
-            timer.OnUpdate();
+            if (timer.Value.OnUpdate())
+                _toClear.Add(timer.Key);
         }
+
+        if (_toClear.Count == 0)
+            return;
+
+        // Remove all timers that dont repeat
+        foreach (var id in _toClear)
+        {
+            Main.LostDreams.Log($"Stopping timer: {id}");
+            _timers.Remove(id);
+        }
+        _toClear.Clear();
     }
 
     public void Reset()
     {
         Main.LostDreams.Log("Clearing all timers");
         _timers.Clear();
+        _toClear.Clear();
     }
 
     class Timer
@@ -61,7 +76,6 @@ internal class TimeHandler
             _nextActivation = Time.time + _length;
         }
 
-        // Maybe return true if repeat is true so that the timer handler can remove it
         public bool OnUpdate()
         {
             if (Time.time < _nextActivation)
@@ -69,7 +83,7 @@ internal class TimeHandler
 
             _nextActivation = Time.time + _length;
             _callback();
-            return true;
+            return !_repeat;
         }
     }
 }

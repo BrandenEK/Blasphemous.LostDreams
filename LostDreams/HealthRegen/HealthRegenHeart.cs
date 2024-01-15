@@ -36,10 +36,7 @@ class HealthRegenEffect : ModItemEffectOnEquip
 
     protected override void ApplyEffect()
     {
-        float maxHealth = Core.Logic.Penitent.Stats.Life.CurrentMax;
-        _halfHealth = new RawBonus((maxHealth / 2 + (maxHealth / 2 - 44)) * -1);
-        Core.Logic.Penitent.Stats.Life.AddRawBonus(_halfHealth);
-
+        Main.LostDreams.TimeHandler.AddTimer("health-regen-half", 0.05f, false, ApplyHalfHealth);
         Main.LostDreams.TimeHandler.AddTimer("health-regen", 3, true, RegenerateHealth);
     }
 
@@ -51,6 +48,12 @@ class HealthRegenEffect : ModItemEffectOnEquip
         Main.LostDreams.TimeHandler.RemoveTimer("health-regen");
     }
 
+    private void ApplyHalfHealth()
+    {
+        _halfHealth = new RawBonus(-Core.Logic.Penitent.Stats.Life.CurrentMax / 2);
+        Core.Logic.Penitent.Stats.Life.AddRawBonus(_halfHealth);
+    }
+
     private void RegenerateHealth()
     {
         Life life = Core.Logic.Penitent.Stats.Life;
@@ -58,7 +61,7 @@ class HealthRegenEffect : ModItemEffectOnEquip
         if (life.Current >= life.CurrentMax)
             return;
 
-        Main.LostDreams.LogWarning("HE501: Regenerating small health");
+        Main.LostDreams.Log("HE501: Regenerating small health");
         float amount = life.CurrentMax * 0.015f;
         life.Current += amount;
     }
