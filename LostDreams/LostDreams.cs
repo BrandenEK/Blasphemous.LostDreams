@@ -4,6 +4,7 @@ using LostDreams.DamageRemoval;
 using ModdingAPI;
 using LostDreams.DamageStack;
 using LostDreams.Events;
+using LostDreams.Acquisition;
 
 namespace LostDreams;
 

@@ -3,7 +3,7 @@ using Framework.Managers;
 using Gameplay.UI;
 using ModdingAPI;
 
-namespace LostDreams;
+namespace LostDreams.Acquisition;
 
 internal class AcquisitionHandler
 {
