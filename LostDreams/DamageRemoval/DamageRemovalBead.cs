@@ -1,7 +1,7 @@
 ﻿using ModdingAPI.Items;
 using UnityEngine;
 
-namespace LostDreams.DamageRemovalOnce;
+namespace LostDreams.DamageRemoval;
 
 class DamageRemovalBead : ModRosaryBead
 {
@@ -37,8 +37,17 @@ class DamageRemovalEffect : ModItemEffectOnEquip
 
     protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate("damage-removal");
 
+    public DamageRemovalEffect()
+    {
+        Main.LostDreams.Log("Registering events");
+        Main.LostDreams.EventHandler.OnPlayerKilled += RegainDamageRemoval;
+        Main.LostDreams.EventHandler.OnUsePrieDieu += RegainDamageRemoval;
+        Main.LostDreams.EventHandler.OnExitGame += RegainDamageRemoval;
+    }
+
     public static void RegainDamageRemoval()
     {
+        Main.LostDreams.Log("RB503: Regain damage removal");
         WillRemoveDamage = true;
     }
 

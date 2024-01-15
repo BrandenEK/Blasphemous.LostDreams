@@ -1,7 +1,7 @@
 ﻿using ModdingAPI.Items;
 using UnityEngine;
 
-namespace LostDreams.GuiltFragmentBonus;
+namespace LostDreams.GuiltFragment;
 
 class GuiltFragmentItem : ModQuestItem
 {
