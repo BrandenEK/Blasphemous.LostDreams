@@ -1,0 +1,12 @@
+{
+	"AddedObjects":
+	[
+		{
+			"Type": "CollectibleItem",
+			"Id": "RB504",
+			"XPos": -1023.3,
+			"YPos": 41,
+			"Condition": "flag:ESDRAS_CHAPEL"
+		}
+	]
+}
