@@ -1,0 +1,11 @@
+{
+	"AddedObjects":
+	[
+		{
+			"Type": "CollectibleItem",
+			"Id": "RB502",
+			"XPos": 427,
+			"YPos": -167,
+		}
+	]
+}
