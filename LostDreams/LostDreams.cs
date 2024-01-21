@@ -1,10 +1,10 @@
-﻿using LostDreams.GuiltFragment;
-using LostDreams.ChargeTime;
-using LostDreams.DamageRemoval;
-using ModdingAPI;
-using LostDreams.DamageStack;
+﻿using LostDreams.Acquisition;
 using LostDreams.Events;
-using LostDreams.Acquisition;
+using LostDreams.Items.ChargeTime;
+using LostDreams.Items.DamageRemoval;
+using LostDreams.Items.DamageStack;
+using LostDreams.Items.GuiltFragment;
+using ModdingAPI;
 
 namespace LostDreams;
 

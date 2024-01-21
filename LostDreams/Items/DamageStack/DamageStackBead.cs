@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace LostDreams.DamageStack;
+namespace LostDreams.Items.DamageStack;
 
 class DamageStackBead : ModRosaryBead
 {

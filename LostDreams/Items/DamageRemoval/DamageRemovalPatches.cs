@@ -6,7 +6,7 @@ using HarmonyLib;
 using System.Collections;
 using UnityEngine;
 
-namespace LostDreams.DamageRemoval;
+namespace LostDreams.Items.DamageRemoval;
 
 [HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
 public class Penitent_Damage_Patch

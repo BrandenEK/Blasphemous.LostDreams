@@ -1,7 +1,7 @@
 ﻿using ModdingAPI.Items;
 using UnityEngine;
 
-namespace LostDreams.DamageRemoval;
+namespace LostDreams.Items.DamageRemoval;
 
 class DamageRemovalBead : ModRosaryBead
 {
