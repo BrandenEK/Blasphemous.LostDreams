@@ -30,7 +30,9 @@ class DamageStackBead : ModRosaryBead
 
 class DamageStackEffect : ModItemEffectOnEquip
 {
-    public static int CurrentCharges { get; private set; }
+    private static int _charges;
+
+    public static float CurrentMultiplier => 1 + (MAX_MULTIPLIER - 1) * ((float)_charges / MAX_CHARGES);
 
     protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate("damage-stack");
 
@@ -48,15 +50,16 @@ class DamageStackEffect : ModItemEffectOnEquip
         if (!Main.LostDreams.EffectHandler.IsActive("damage-stack"))
             return;
 
-        Main.LostDreams.Log($"RB502: Increasing damage stack to {CurrentCharges + 1}");
-        CurrentCharges = Math.Min(CurrentCharges + 1, MAX_CHARGES);
+        Main.LostDreams.Log($"RB502: Increasing damage stack to {_charges + 1}");
+        _charges = Math.Min(_charges + 1, MAX_CHARGES);
     }
 
     private static void ResetCharges()
     {
         Main.LostDreams.Log("RB502: Resetting damage stack");
-        CurrentCharges = 0;
+        _charges = 0;
     }
 
     private const int MAX_CHARGES = 20;
+    private const float MAX_MULTIPLIER = 2.0f;
 }

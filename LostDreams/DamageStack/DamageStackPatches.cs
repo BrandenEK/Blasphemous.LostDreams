@@ -14,7 +14,7 @@ public class Penitent_Damage_Patch
     {
         if (Main.LostDreams.EffectHandler.IsActive("damage-stack") && !Core.Logic.Penitent.Status.Unattacable)
         {
-            hit.DamageAmount *= 1 + DamageStackEffect.CurrentCharges / 40f;
+            hit.DamageAmount *= DamageStackEffect.CurrentMultiplier;
         }
     }
 }
@@ -27,7 +27,7 @@ public class Enemy_Damage_Patch
     {
         if (Main.LostDreams.EffectHandler.IsActive("damage-stack"))
         {
-            hit.DamageAmount *= 1 + DamageStackEffect.CurrentCharges / 40f;
+            hit.DamageAmount *= DamageStackEffect.CurrentMultiplier;
         }
     }
 }
