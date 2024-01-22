@@ -2,7 +2,7 @@
 ﻿using LostDreams.ChargeTimeDecrease;
 ﻿using LostDreams.DamageRemovalOnce;
 using ModdingAPI;
-using LostDreams.FlaskHealth;
+using LostDreams.TarantoBuff;
 
 namespace LostDreams;
 
@@ -18,7 +18,7 @@ public class LostDreams : Mod
         // Register all new items
         RegisterItem(new ChargeTimeBead().AddEffect<ChargeTimeEffect>()); // RB501
         RegisterItem(new DamageRemovalBead().AddEffect<DamageRemovalEffect>()); // RB503
-        RegisterItem(new FlaskHealthBead().AddEffect<FlaskHealthEffect>()); // RB504
+        RegisterItem(new TarantoBuffBead().AddEffect<TarantoBuffEffect>()); // RB504
 
         RegisterItem(new GuiltFragmentItem().AddEffect<GuiltFragmentEffect>()); // QI502
     }
