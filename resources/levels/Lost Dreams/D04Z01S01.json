@@ -2,15 +2,15 @@
     "AddedObjects":
     [
         {
-            "Type": "PlatformWood",
-            "XPos": 13.3,
-            "YPos": 36
-        },
-        {
             "Type": "CollectibleItem",
             "Id": "HE501",
             "XPos": 13.3,
-            "YPos": 36.5
+            "YPos": 36.7
+        },
+         {
+            "Type": "PlatformWood",
+            "XPos": 13.3,
+            "YPos": 36
         },
         {
             "Type": "PlatformBlood",
