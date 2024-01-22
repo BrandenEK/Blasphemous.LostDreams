@@ -1,0 +1,105 @@
+{
+    "AddedObjects":
+    [
+        {
+            "Type": "PlatformWood",
+            "XPos": 13.3,
+            "YPos": 36
+        },
+        {
+            "Type": "CollectibleItem",
+            "Id": "HE501",
+            "XPos": 13.3,
+            "YPos": 36.5
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP01",
+            "XPos": 18.3,
+            "YPos": 37.5,
+            "FacingDirection": false,
+            "ExtraData": "BP02"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP02",
+            "XPos": 22,
+            "YPos": 40,
+            "FacingDirection": false,
+            "ExtraData": "BP01"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP03",
+            "XPos": 26,
+            "YPos": 38,
+            "FacingDirection": false,
+            "ExtraData": "BP02"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP04",
+            "XPos": 30,
+            "YPos": 40,
+            "FacingDirection": false,
+            "ExtraData": "BP03"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP05",
+            "XPos": 34,
+            "YPos": 38,
+            "FacingDirection": false,
+            "ExtraData": "BP04"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP06",
+            "XPos": 38,
+            "YPos": 40,
+            "FacingDirection": false,
+            "ExtraData": "BP05"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP07",
+            "XPos": 42,
+            "YPos": 38,
+            "FacingDirection": false,
+            "ExtraData": "BP06"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP08",
+            "XPos": 46,
+            "YPos": 40,
+            "FacingDirection": false,
+            "ExtraData": "BP07"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP09",
+            "XPos": 50,
+            "YPos": 38,
+            "FacingDirection": false,
+            "ExtraData": "BP08"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP10",
+            "XPos": 54,
+            "YPos": 40,
+            "FacingDirection": false,
+            "ExtraData": "BP09"
+        },
+        {
+            "Type": "PlatformBlood",
+            "Id": "BP11",
+            "XPos": 58,
+            "YPos": 38,
+            "FacingDirection": true,
+            "ExtraData": "BP10"
+        },
+    ]
+
+}
