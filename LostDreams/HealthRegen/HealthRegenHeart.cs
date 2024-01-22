@@ -37,7 +37,7 @@ class HealthRegenEffect : ModItemEffectOnEquip
     protected override void ApplyEffect()
     {
         Main.LostDreams.TimeHandler.AddTimer("health-regen-half", 0.05f, false, ApplyHalfHealth);
-        Main.LostDreams.TimeHandler.AddTimer("health-regen", 3, true, RegenerateHealth);
+        Main.LostDreams.TimeHandler.AddTimer("health-regen", 1, true, RegenerateHealth);
     }
 
     protected override void RemoveEffect()
