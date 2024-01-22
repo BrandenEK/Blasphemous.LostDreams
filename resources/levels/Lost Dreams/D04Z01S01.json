@@ -2,7 +2,7 @@
     "AddedObjects":
     [
         {
-            "Type": "CollectibleItem",
+            "Type": "SwordHeartItem",
             "Id": "HE501",
             "XPos": 13.3,
             "YPos": 37
