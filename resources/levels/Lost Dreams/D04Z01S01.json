@@ -5,7 +5,8 @@
             "Type": "SwordHeartItem",
             "Id": "HE501",
             "XPos": 13.3,
-            "YPos": 37
+            "YPos": 37,
+            "FacingDirection": true
         },
          {
             "Type": "PlatformWood",
