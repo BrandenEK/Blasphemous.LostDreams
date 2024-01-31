@@ -1,7 +1,7 @@
 ﻿using ModdingAPI.Items;
 using UnityEngine;
 
-namespace LostDreams.ChargeTimeDecrease;
+namespace LostDreams.Items.ChargeTime;
 
 class ChargeTimeBead : ModRosaryBead
 {

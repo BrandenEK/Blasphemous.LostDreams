@@ -1,6 +1,9 @@
-﻿using LostDreams.GuiltFragmentBonus;
-﻿using LostDreams.ChargeTimeDecrease;
-﻿using LostDreams.DamageRemovalOnce;
+﻿using LostDreams.Acquisition;
+using LostDreams.Events;
+using LostDreams.Items.ChargeTime;
+using LostDreams.Items.DamageRemoval;
+using LostDreams.Items.DamageStack;
+using LostDreams.Items.GuiltFragment;
 using ModdingAPI;
 
 namespace LostDreams;
@@ -11,11 +14,13 @@ public class LostDreams : Mod
 
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal EffectHandler EffectHandler { get; } = new();
+    internal EventHandler EventHandler { get; } = new();
 
     protected override void Initialize()
     {
         // Register all new items
         RegisterItem(new ChargeTimeBead().AddEffect<ChargeTimeEffect>()); // RB501
+        RegisterItem(new DamageStackBead().AddEffect<DamageStackEffect>()); // RB502
         RegisterItem(new DamageRemovalBead().AddEffect<DamageRemovalEffect>()); // RB503
 
         RegisterItem(new GuiltFragmentItem().AddEffect<GuiltFragmentEffect>()); // QI502
@@ -29,9 +34,6 @@ public class LostDreams : Mod
         // Reset handlers when exiting a game
         EffectHandler.Reset();
         AcquisitionHandler.Reset();
-
-        // Handle extra functionality for certain items
-        Log("RB503: Regain damage removal (mainmenu)");
-        DamageRemovalEffect.RegainDamageRemoval();
+        EventHandler.Reset();
     }
 }
