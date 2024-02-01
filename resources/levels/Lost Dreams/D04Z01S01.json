@@ -1,0 +1,150 @@
+{
+    "additions": [
+        {
+            "Type": "item-shrine",
+            "Id": "HE501",
+            "position": {
+                "x": 13.3,
+                "y": 37
+            }
+        },
+        {
+            "Type": "platform-wood",
+            "position": {
+                "x": 13.3,
+                "y": 36
+            }
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP01",
+            "position": {
+                "x": 18.3,
+                "y": 37.5
+            },
+            "properties": [
+                "false"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP02",
+            "position": {
+                "x": 22,
+                "y": 40
+            },
+            "properties": [
+                "false",
+                "BP01"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP03",
+            "position": {
+                "x": 26,
+                "y": 38
+            },
+            "properties": [
+                "false",
+                "BP02"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP04",
+            "position": {
+                "x": 30,
+                "y": 40
+            },
+            "properties": [
+                "false",
+                "BP03"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP05",
+            "position": {
+                "x": 34,
+                "y": 38
+            },
+            "properties": [
+                "false",
+                "BP04"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP06",
+            "position": {
+                "x": 38,
+                "y": 40
+            },
+            "properties": [
+                "false",
+                "BP05"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP07",
+            "position": {
+                "x": 42,
+                "y": 38
+            },
+            "properties": [
+                "false",
+                "BP06"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP08",
+            "position": {
+                "x": 46,
+                "y": 40
+            },
+            "properties": [
+                "false",
+                "BP07"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP09",
+            "position": {
+                "x": 50,
+                "y": 38
+            },
+            "properties": [
+                "false",
+                "BP08"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP10",
+            "position": {
+                "x": 54,
+                "y": 40
+            },
+            "properties": [
+                "false",
+                "BP09"
+            ]
+        },
+        {
+            "Type": "platform-blood",
+            "Id": "BP11",
+            "position": {
+                "x": 58,
+                "y": 38
+            },
+            "properties": [
+                "true",
+                "BP10"
+            ]
+        }
+    ]
+}

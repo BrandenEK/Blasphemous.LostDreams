@@ -4,6 +4,7 @@ using Blasphemous.LostDreams.Items.ChargeTime;
 using Blasphemous.LostDreams.Items.DamageRemoval;
 using Blasphemous.LostDreams.Items.DamageStack;
 using Blasphemous.LostDreams.Items.GuiltFragment;
+using Blasphemous.LostDreams.Items.HealthRegen;
 using Blasphemous.ModdingAPI;
 using Blasphemous.ModdingAPI.Items;
 
@@ -16,6 +17,7 @@ public class LostDreams : BlasMod
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal EffectHandler EffectHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
+    internal TimeHandler TimeHandler { get; } = new();
 
     protected override void OnAllInitialized()
     {
@@ -31,6 +33,13 @@ public class LostDreams : BlasMod
         EffectHandler.Reset();
         AcquisitionHandler.Reset();
         EventHandler.Reset();
+        TimeHandler.Reset();
+    }
+
+    protected override void OnUpdate()
+    {
+        // Update handlers every frame
+        TimeHandler.Update();
     }
 
     protected override void OnRegisterServices(ModServiceProvider provider)
@@ -39,6 +48,9 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new ChargeTimeBead().AddEffect(new ChargeTimeEffect())); // RB501
         provider.RegisterItem(new DamageStackBead().AddEffect(new DamageStackEffect())); // RB502
         provider.RegisterItem(new DamageRemovalBead().AddEffect(new DamageRemovalEffect())); // RB503
+
+        // Sword hearts
+        provider.RegisterItem(new HealthRegenHeart().AddEffect(new HealthRegenEffect())); // HE501
 
         // Quest items
         provider.RegisterItem(new GuiltFragmentItem().AddEffect(new GuiltFragmentEffect())); // QI502
