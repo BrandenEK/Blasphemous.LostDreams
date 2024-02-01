@@ -3,7 +3,7 @@ using Gameplay.UI.Widgets;
 using HarmonyLib;
 using Tools.Playmaker2.Action;
 
-namespace LostDreams.Acquisition;
+namespace Blasphemous.LostDreams.Acquisition;
 
 /// <summary>
 /// After completing the game, give one of the ending reward items
@@ -24,7 +24,7 @@ class Item_Cutscene_Patch
         if (item == null)
             return;
 
-        Main.LostDreams.AcquisitionHandler.GiveItem(item, true, true);
+        Main.Blasphemous.LostDreams.AcquisitionHandler.GiveItem(item, true, true);
     }
 }
 
@@ -36,7 +36,7 @@ class Item_Credits_Patch
 {
     public static void Postfix()
     {
-        Main.LostDreams.AcquisitionHandler.DisplayQueuedItem();
+        Main.Blasphemous.LostDreams.AcquisitionHandler.DisplayQueuedItem();
     }
 }
 

@@ -6,7 +6,7 @@ using HarmonyLib;
 using System.Collections;
 using UnityEngine;
 
-namespace LostDreams.Items.DamageRemoval;
+namespace Blasphemous.LostDreams.Items.DamageRemoval;
 
 [HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
 public class Penitent_Damage_Patch
@@ -14,9 +14,9 @@ public class Penitent_Damage_Patch
     [HarmonyPriority(Priority.High)]
     public static void Prefix(ref Hit hit)
     {
-        if (Main.LostDreams.EffectHandler.IsActive("damage-removal") && !Core.Logic.Penitent.Status.Unattacable)
+        if (Main.Blasphemous.LostDreams.EffectHandler.IsActive("damage-removal") && !Core.Logic.Penitent.Status.Unattacable)
         {
-            Main.LostDreams.Log("RB503: Preventing damage");
+            Main.Blasphemous.LostDreams.Log("RB503: Preventing damage");
             hit.DamageAmount = 0;
 
             Healing_Start_Patch.HealingFlag = true;
