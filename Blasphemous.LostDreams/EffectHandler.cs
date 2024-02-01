@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LostDreams;
+namespace Blasphemous.LostDreams;
 
 internal class EffectHandler
 {
@@ -10,20 +10,20 @@ internal class EffectHandler
     {
         if (!_activeEffects.Contains(effect))
         {
-            Main.Blasphemous.LostDreams.Log("Activating effect: " + effect);
+            Main.LostDreams.Log("Activating effect: " + effect);
             _activeEffects.Add(effect);
         }
     }
 
     public void Deactivate(string effect)
     {
-        Main.Blasphemous.LostDreams.Log("Deactivating effect: " + effect);
+        Main.LostDreams.Log("Deactivating effect: " + effect);
         _activeEffects.Remove(effect);
     }
 
     public void Reset()
     {
-        Main.Blasphemous.LostDreams.Log("Clearing all item effects");
+        Main.LostDreams.Log("Clearing all item effects");
         _activeEffects.Clear();
     }
 

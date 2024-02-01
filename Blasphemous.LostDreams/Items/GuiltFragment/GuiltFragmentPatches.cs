@@ -9,9 +9,9 @@ class GuiltDrop_GiveBonus_Patch
 {
     public static void Postfix()
     {
-        if (Main.Blasphemous.LostDreams.EffectHandler.IsActive("guilt-fragment"))
+        if (Main.LostDreams.EffectHandler.IsActive("guilt-fragment"))
         {
-            Main.Blasphemous.LostDreams.Log("QI502: Increasing guilt drop bonus");
+            Main.LostDreams.Log("QI502: Increasing guilt drop bonus");
             Core.Logic.Penitent.Stats.Life.SetToCurrentMax();
             Core.Logic.Penitent.Stats.Fervour.SetToCurrentMax();
         }

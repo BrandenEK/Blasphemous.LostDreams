@@ -14,9 +14,9 @@ public class Penitent_Damage_Patch
     [HarmonyPriority(Priority.High)]
     public static void Prefix(ref Hit hit)
     {
-        if (Main.Blasphemous.LostDreams.EffectHandler.IsActive("damage-removal") && !Core.Logic.Penitent.Status.Unattacable)
+        if (Main.LostDreams.EffectHandler.IsActive("damage-removal") && !Core.Logic.Penitent.Status.Unattacable)
         {
-            Main.Blasphemous.LostDreams.Log("RB503: Preventing damage");
+            Main.LostDreams.Log("RB503: Preventing damage");
             hit.DamageAmount = 0;
 
             Healing_Start_Patch.HealingFlag = true;

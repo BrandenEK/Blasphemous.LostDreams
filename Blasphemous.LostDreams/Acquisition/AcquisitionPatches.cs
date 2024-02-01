@@ -24,7 +24,7 @@ class Item_Cutscene_Patch
         if (item == null)
             return;
 
-        Main.Blasphemous.LostDreams.AcquisitionHandler.GiveItem(item, true, true);
+        Main.LostDreams.AcquisitionHandler.GiveItem(item, true, true);
     }
 }
 
@@ -36,7 +36,7 @@ class Item_Credits_Patch
 {
     public static void Postfix()
     {
-        Main.Blasphemous.LostDreams.AcquisitionHandler.DisplayQueuedItem();
+        Main.LostDreams.AcquisitionHandler.DisplayQueuedItem();
     }
 }
 

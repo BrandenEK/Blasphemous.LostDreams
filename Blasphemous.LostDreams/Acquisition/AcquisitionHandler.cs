@@ -15,7 +15,7 @@ internal class AcquisitionHandler
         if (obj == null)
             return;
 
-        Main.Blasphemous.LostDreams.Log("Acquiring item: " + item);
+        Main.LostDreams.Log("Acquiring item: " + item);
         if (skipIfOwned && Core.InventoryManager.IsBaseObjectEquipped(obj))
             return;
 

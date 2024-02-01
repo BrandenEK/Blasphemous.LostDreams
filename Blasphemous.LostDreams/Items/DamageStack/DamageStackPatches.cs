@@ -12,7 +12,7 @@ public class Penitent_Damage_Patch
     [HarmonyPriority(Priority.High)]
     public static void Prefix(ref Hit hit)
     {
-        if (Main.Blasphemous.LostDreams.EffectHandler.IsActive("damage-stack") && !Core.Logic.Penitent.Status.Unattacable)
+        if (Main.LostDreams.EffectHandler.IsActive("damage-stack") && !Core.Logic.Penitent.Status.Unattacable)
         {
             hit.DamageAmount *= DamageStackEffect.CurrentMultiplier;
         }
@@ -25,7 +25,7 @@ public class Enemy_Damage_Patch
     [HarmonyPriority(Priority.High)]
     public static void Prefix(ref Hit hit)
     {
-        if (Main.Blasphemous.LostDreams.EffectHandler.IsActive("damage-stack"))
+        if (Main.LostDreams.EffectHandler.IsActive("damage-stack"))
         {
             hit.DamageAmount *= DamageStackEffect.CurrentMultiplier;
         }

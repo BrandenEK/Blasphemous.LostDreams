@@ -14,9 +14,9 @@ class ChargedAttack_SetTimer_Patch
     public static void Postfix(ref float ____currentChargingTime)
     {
         // tier 1 = 1.5, tier 2 = 0.75
-        if (Main.Blasphemous.LostDreams.EffectHandler.IsActive("charge-time"))
+        if (Main.LostDreams.EffectHandler.IsActive("charge-time"))
         {
-            Main.Blasphemous.LostDreams.Log("RB501: Reducing charge time");
+            Main.LostDreams.Log("RB501: Reducing charge time");
             ____currentChargingTime = 0.05f;
         }
     }
@@ -30,7 +30,7 @@ class ChargedAnimation_Enter_Patch
 {
     public static void Postfix(Animator animator)
     {
-        if (Main.Blasphemous.LostDreams.EffectHandler.IsActive("charge-time"))
+        if (Main.LostDreams.EffectHandler.IsActive("charge-time"))
         {
             animator.speed = 4;
         }
@@ -41,7 +41,7 @@ class ChargedAnimation_Exit_Patch
 {
     public static void Postfix(Animator animator)
     {
-        if (Main.Blasphemous.LostDreams.EffectHandler.IsActive("charge-time"))
+        if (Main.LostDreams.EffectHandler.IsActive("charge-time"))
         {
             animator.speed = 1;
         }
