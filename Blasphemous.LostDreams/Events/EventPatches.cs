@@ -4,7 +4,7 @@ using Gameplay.GameControllers.Penitent.Damage;
 using HarmonyLib;
 using Tools.Level.Interactables;
 
-namespace LostDreams.Events;
+namespace Blasphemous.LostDreams.Events;
 
 [HarmonyPatch(typeof(Entity), "KillInstanteneously")]
 class Penitent_Death_Patch

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LostDreams;
+namespace Blasphemous.LostDreams;
 
 internal class EffectHandler
 {

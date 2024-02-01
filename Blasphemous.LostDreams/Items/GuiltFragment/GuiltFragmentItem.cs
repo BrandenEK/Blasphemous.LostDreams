@@ -1,17 +1,17 @@
-﻿using ModdingAPI.Items;
+﻿using Blasphemous.ModdingAPI.Items;
 using UnityEngine;
 
-namespace LostDreams.Items.GuiltFragment;
+namespace Blasphemous.LostDreams.Items.GuiltFragment;
 
 class GuiltFragmentItem : ModQuestItem
 {
     protected override string Id => "QI502";
 
-    protected override string Name => Main.LostDreams.Localize("gfname");
+    protected override string Name => Main.LostDreams.LocalizationHandler.Localize("gfname");
 
-    protected override string Description => Main.LostDreams.Localize("gfdesc");
+    protected override string Description => Main.LostDreams.LocalizationHandler.Localize("gfdesc");
 
-    protected override string Lore => Main.LostDreams.Localize("gflore");
+    protected override string Lore => Main.LostDreams.LocalizationHandler.Localize("gflore");
 
     protected override bool CarryOnStart => false;
 
@@ -19,7 +19,7 @@ class GuiltFragmentItem : ModQuestItem
 
     protected override void LoadImages(out Sprite picture)
     {
-        picture = Main.LostDreams.FileUtil.loadDataImages("guilt-fragment.png", new Vector2Int(30, 30), Vector2Int.zero, 32, 0, true, out Sprite[] images) ? images[0] : null;
+        Main.LostDreams.FileHandler.LoadDataAsSprite("guilt-fragment.png", out picture);
     }
 }
 

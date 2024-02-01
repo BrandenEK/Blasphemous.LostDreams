@@ -2,7 +2,7 @@
 using Gameplay.GameControllers.Penitent.Effects;
 using HarmonyLib;
 
-namespace LostDreams.Items.GuiltFragment;
+namespace Blasphemous.LostDreams.Items.GuiltFragment;
 
 [HarmonyPatch(typeof(GuiltDropRecover), "GiveGuiltBonus")]
 class GuiltDrop_GiveBonus_Patch

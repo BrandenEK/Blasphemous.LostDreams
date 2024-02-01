@@ -3,7 +3,7 @@ using Gameplay.UI.Widgets;
 using HarmonyLib;
 using Tools.Playmaker2.Action;
 
-namespace LostDreams.Acquisition;
+namespace Blasphemous.LostDreams.Acquisition;
 
 /// <summary>
 /// After completing the game, give one of the ending reward items

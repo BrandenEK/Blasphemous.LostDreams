@@ -1,11 +1,12 @@
 {
-	"AddedObjects":
-	[
-		{
-			"Type": "CollectibleItem",
-			"Id": "RB502",
-			"XPos": 427,
-			"YPos": -167,
-		}
-	]
+    "additions": [
+        {
+            "type": "item-ground",
+            "id": "RB502",
+            "position": {
+                "x": 427,
+                "y": -167
+            }
+        }
+    ]
 }

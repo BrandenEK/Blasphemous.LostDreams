@@ -1,12 +1,13 @@
 {
-	"AddedObjects":
-	[
-		{
-			"Type": "CollectibleItem",
-			"Id": "RB503",
-			"XPos": 423,
-			"YPos": 42,
-			"Condition": "flag:SOCORRO_STATE_KILLED"
-		}
-	]
+    "additions": [
+        {
+            "type": "item-ground",
+            "id": "RB503",
+            "position": {
+                "x": 423,
+                "y": 42
+            },
+            "condition": "flag:SOCORRO_STATE_KILLED"
+        }
+    ]
 }

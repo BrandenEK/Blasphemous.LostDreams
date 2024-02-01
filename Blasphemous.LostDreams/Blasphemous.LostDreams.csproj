@@ -2,29 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
 
-    <TargetName>LostDreams</TargetName>
-    <AssemblyName>LostDreams</AssemblyName>
+    <Title>Lost Dreams</Title>
     <Product>Lost Dreams</Product>
+    <Authors>Damocles</Authors>
     <Company>Damocles</Company>
+    <Description>Breathes fresh life into Blasphemous with new items, penitences, and questlines</Description>
     <Version>0.1.0</Version>
+
+    <TargetName>LostDreams</TargetName>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/BrandenEK/Blasphemous-Lost-Dreams</RepositoryUrl>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
-    <PackageReference Include="BepInEx.Core" Version="5.*" />
-    <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
+    <PackageReference Include="Blasphemous.ModdingAPI" Version="2.0.1" />
     <PackageReference Include="Blasphemous.ModdingReferences" Version="4.0.67" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
-    <PackageReference Include="UnityEngine.Modules" Version="2017.4.40" IncludeAssets="compile" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ModdingAPI">
-      <HintPath>..\lib\ModdingAPI.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <Target Name="Development" AfterTargets="PostBuildEvent">
@@ -34,10 +29,8 @@
       <ResourcesFolder>$(SolutionDir)resources\</ResourcesFolder>
     </PropertyGroup>
     <ItemGroup>
-      <Config Include="$(ResourcesFolder)config\*" />
       <DataDlls Include="$(ResourcesFolder)data\*" />
       <DataFiles Include="$(ResourcesFolder)data\$(Product)\*" />
-      <Keybindings Include="$(ResourcesFolder)keybindings\*" />
       <Levels Include="$(ResourcesFolder)levels\$(Product)\*" />
       <Localization Include="$(ResourcesFolder)localization\*" />
     </ItemGroup>
@@ -47,10 +40,8 @@
       <DevFolder>C:\Program Files (x86)\Steam\steamapps\common\Blasphemous\Modding\</DevFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DevFolder)plugins" />
-    <Copy SourceFiles="@(Config)" DestinationFolder="$(DevFolder)config" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(DevFolder)data" />
     <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(Product)" />
-    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(DevFolder)keybindings" />
     <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(DevFolder)localization" />
 
@@ -59,13 +50,30 @@
       <ExportFolder>$(SolutionDir)publish\$(TargetName)\</ExportFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
-    <Copy SourceFiles="@(Config)" DestinationFolder="$(ExportFolder)config" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
     <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(Product)" />
-    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
     <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
     <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />
+
+  </Target>
+
+  <Target Name="AddGeneratedFile" BeforeTargets="BeforeCompile;CoreCompile" Inputs="$(MSBuildAllProjects)" Outputs="$(IntermediateOutputPath)GeneratedFile.cs">
+
+    <!-- Create ModInfo class from relevant data -->
+    <PropertyGroup>
+      <GeneratedText>
+        <![CDATA[ namespace $(RootNamespace) { internal static class ModInfo { public const string MOD_ID = "$(AssemblyName)"%3B public const string MOD_NAME = "$(Product)"%3B public const string MOD_AUTHOR = "$(Company)"%3B public const string MOD_VERSION = "$(Version)"%3B } } ]]>
+      </GeneratedText>
+      <GeneratedFilePath>$(IntermediateOutputPath)ModInfo.cs</GeneratedFilePath>
+    </PropertyGroup>
+
+    <!-- Write ModInfo data to intermediate output -->
+    <ItemGroup>
+      <Compile Include="$(GeneratedFilePath)" />
+      <FileWrites Include="$(GeneratedFilePath)" />
+    </ItemGroup>
+    <WriteLinesToFile Lines="$(GeneratedText)" File="$(GeneratedFilePath)" WriteOnlyWhenDifferent="true" Overwrite="true" />
 
   </Target>
   

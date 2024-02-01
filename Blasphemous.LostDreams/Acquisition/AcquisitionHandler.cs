@@ -1,9 +1,9 @@
-﻿using Framework.Inventory;
+﻿using Blasphemous.ModdingAPI.Items;
+using Framework.Inventory;
 using Framework.Managers;
 using Gameplay.UI;
-using ModdingAPI;
 
-namespace LostDreams.Acquisition;
+namespace Blasphemous.LostDreams.Acquisition;
 
 internal class AcquisitionHandler
 {

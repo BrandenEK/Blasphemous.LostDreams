@@ -2,7 +2,7 @@
 using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent;
 
-namespace LostDreams.Events;
+namespace Blasphemous.LostDreams.Events;
 
 internal class EventHandler
 {

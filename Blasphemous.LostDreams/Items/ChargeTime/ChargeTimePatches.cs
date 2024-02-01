@@ -3,7 +3,7 @@ using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using UnityEngine;
 
-namespace LostDreams.Items.ChargeTime;
+namespace Blasphemous.LostDreams.Items.ChargeTime;
 
 /// <summary>
 /// Reduce how much time to activate charge

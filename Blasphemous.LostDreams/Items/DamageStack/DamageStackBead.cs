@@ -1,18 +1,18 @@
-﻿using ModdingAPI.Items;
+﻿using Blasphemous.ModdingAPI.Items;
 using System;
 using UnityEngine;
 
-namespace LostDreams.Items.DamageStack;
+namespace Blasphemous.LostDreams.Items.DamageStack;
 
 class DamageStackBead : ModRosaryBead
 {
     protected override string Id => "RB502";
 
-    protected override string Name => Main.LostDreams.Localize("dsname");
+    protected override string Name => Main.LostDreams.LocalizationHandler.Localize("dsname");
 
-    protected override string Description => Main.LostDreams.Localize("dsdesc");
+    protected override string Description => Main.LostDreams.LocalizationHandler.Localize("dsdesc");
 
-    protected override string Lore => Main.LostDreams.Localize("dslore");
+    protected override string Lore => Main.LostDreams.LocalizationHandler.Localize("dslore");
 
     protected override bool CarryOnStart => false;
 
@@ -24,7 +24,7 @@ class DamageStackBead : ModRosaryBead
 
     protected override void LoadImages(out Sprite picture)
     {
-        picture = Main.LostDreams.FileUtil.loadDataImages("damage-stack.png", new Vector2Int(30, 30), Vector2Int.zero, 32, 0, true, out Sprite[] images) ? images[0] : null;
+        Main.LostDreams.FileHandler.LoadDataAsSprite("damage-stack.png", out picture);
     }
 }
 

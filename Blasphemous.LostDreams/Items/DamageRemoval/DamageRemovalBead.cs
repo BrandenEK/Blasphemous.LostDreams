@@ -1,17 +1,17 @@
-﻿using ModdingAPI.Items;
+﻿using Blasphemous.ModdingAPI.Items;
 using UnityEngine;
 
-namespace LostDreams.Items.DamageRemoval;
+namespace Blasphemous.LostDreams.Items.DamageRemoval;
 
 class DamageRemovalBead : ModRosaryBead
 {
     protected override string Id => "RB503";
 
-    protected override string Name => Main.LostDreams.Localize("drname");
+    protected override string Name => Main.LostDreams.LocalizationHandler.Localize("drname");
 
-    protected override string Description => Main.LostDreams.Localize("drdesc");
+    protected override string Description => Main.LostDreams.LocalizationHandler.Localize("drdesc");
 
-    protected override string Lore => Main.LostDreams.Localize("drlore");
+    protected override string Lore => Main.LostDreams.LocalizationHandler.Localize("drlore");
 
     protected override bool CarryOnStart => false;
 
@@ -23,7 +23,7 @@ class DamageRemovalBead : ModRosaryBead
 
     protected override void LoadImages(out Sprite picture)
     {
-        picture = Main.LostDreams.FileUtil.loadDataImages("damage-removal.png", new Vector2Int(30, 30), Vector2Int.zero, 32, 0, true, out Sprite[] images) ? images[0] : null;
+        Main.LostDreams.FileHandler.LoadDataAsSprite("damage-removal.png", out picture);
     }
 }
 

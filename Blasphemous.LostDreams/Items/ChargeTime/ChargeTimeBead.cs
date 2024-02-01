@@ -1,17 +1,17 @@
-﻿using ModdingAPI.Items;
+﻿using Blasphemous.ModdingAPI.Items;
 using UnityEngine;
 
-namespace LostDreams.Items.ChargeTime;
+namespace Blasphemous.LostDreams.Items.ChargeTime;
 
 class ChargeTimeBead : ModRosaryBead
 {
     protected override string Id => "RB501";
 
-    protected override string Name => Main.LostDreams.Localize("ctname");
+    protected override string Name => Main.LostDreams.LocalizationHandler.Localize("ctname");
 
-    protected override string Description => Main.LostDreams.Localize("ctdesc");
+    protected override string Description => Main.LostDreams.LocalizationHandler.Localize("ctdesc");
 
-    protected override string Lore => Main.LostDreams.Localize("ctlore");
+    protected override string Lore => Main.LostDreams.LocalizationHandler.Localize("ctlore");
 
     protected override bool CarryOnStart => false;
 
@@ -23,7 +23,7 @@ class ChargeTimeBead : ModRosaryBead
 
     protected override void LoadImages(out Sprite picture)
     {
-        picture = Main.LostDreams.FileUtil.loadDataImages("charge-time.png", new Vector2Int(30, 30), Vector2Int.zero, 32, 0, true, out Sprite[] images) ? images[0] : null;
+        Main.LostDreams.FileHandler.LoadDataAsSprite("charge-time.png", out picture);
     }
 }
 

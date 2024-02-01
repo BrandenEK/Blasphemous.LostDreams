@@ -4,7 +4,7 @@ using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Damage;
 using HarmonyLib;
 
-namespace LostDreams.Items.DamageStack;
+namespace Blasphemous.LostDreams.Items.DamageStack;
 
 [HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
 public class Penitent_Damage_Patch
