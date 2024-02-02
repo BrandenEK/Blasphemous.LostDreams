@@ -4,15 +4,36 @@
             "Type": "item-shrine",
             "Id": "HE501",
             "position": {
-                "x": 13.3,
-                "y": 37
+                "x": 13.8,
+                "y": 37.5
             }
         },
         {
-            "Type": "platform-wood",
+            "Type": "patio-floor",
             "position": {
-                "x": 13.3,
-                "y": 36
+                "x": 13.8,
+                "y": 37.3
+            }
+        },
+        {
+            "Type": "patio-floor",
+            "position": {
+                "x": 15.8,
+                "y": 37.3
+            }
+        },
+        {
+            "Type": "patio-column",
+            "position": {
+                "x": 14.7,
+                "y": 34.7
+            }
+        },
+        {
+            "Type": "patio-bricks",
+            "position": {
+                "x": 16.1,
+                "y": 32.9
             }
         },
         {
