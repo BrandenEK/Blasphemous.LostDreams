@@ -1,5 +1,6 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Events;
+using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Items.ChargeTime;
 using Blasphemous.LostDreams.Items.DamageRemoval;
 using Blasphemous.LostDreams.Items.DamageStack;
@@ -50,9 +51,9 @@ public class LostDreams : BlasMod
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
-        provider.RegisterItem(new ChargeTimeBead().AddEffect(new ChargeTimeEffect())); // RB501
-        provider.RegisterItem(new DamageStackBead().AddEffect(new DamageStackEffect())); // RB502
-        provider.RegisterItem(new DamageRemovalBead().AddEffect(new DamageRemovalEffect())); // RB503
+        provider.RegisterItem(new StandardBead("RB501").AddEffect(new ChargeTimeEffect()));
+        provider.RegisterItem(new StandardBead("RB502").AddEffect(new DamageStackEffect()));
+        provider.RegisterItem(new StandardBead("RB503").AddEffect(new DamageRemovalEffect()));
 
         // Sword hearts
         provider.RegisterItem(new HealthRegenHeart().AddEffect(new HealthRegenEffect())); // HE501
