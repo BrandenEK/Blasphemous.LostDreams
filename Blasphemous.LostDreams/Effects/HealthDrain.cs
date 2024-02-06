@@ -5,7 +5,8 @@ namespace Blasphemous.LostDreams.Effects;
 
 public class HealthDrain : IToggleEffect
 {
-    public bool IsActive => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01") && !IsUsingPrieDieu;
+    public bool IsActive => !IsUsingPrieDieu &&
+        (Main.LostDreams.PenitenceHandler.IsActive("PE_LD01") || Main.LostDreams.ItemHandler.IsEquipped("RB551"));
 
     public static bool IsUsingPrieDieu { get; set; }
 }

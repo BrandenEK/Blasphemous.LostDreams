@@ -66,6 +66,8 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardRosaryBead("RB502", true));
         provider.RegisterItem(new StandardRosaryBead("RB503", true));
 
+        provider.RegisterItem(new StandardRosaryBead("RB551", true));
+
         // Sword hearts
         provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen()));
 
@@ -73,7 +75,7 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardQuestItem("QI502", false));
 
         // Penitences
-        provider.RegisterPenitence(new StandardPenitence(StandardPenitence.CurrentId = "PE_LD01", "RB999"));
+        provider.RegisterPenitence(new StandardPenitence(StandardPenitence.CurrentId = "PE_LD01", "RB551"));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
