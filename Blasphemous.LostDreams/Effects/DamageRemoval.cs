@@ -6,7 +6,32 @@ using HarmonyLib;
 using System.Collections;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Items.DamageRemoval;
+namespace Blasphemous.LostDreams.Effects;
+
+public class DamageRemoval : IToggleEffect
+{
+    private bool _alreadyUsed = false;
+
+    public bool IsActive => !_alreadyUsed && Main.LostDreams.ItemHandler.IsEquipped("RB503");
+
+    public DamageRemoval()
+    {
+        Main.LostDreams.EventHandler.OnPlayerKilled += RegainDamageRemoval;
+        Main.LostDreams.EventHandler.OnUsePrieDieu += RegainDamageRemoval;
+        Main.LostDreams.EventHandler.OnExitGame += RegainDamageRemoval;
+        Main.LostDreams.EventHandler.OnPlayerDamaged += UseDamageRemoval;
+    }
+
+    private void RegainDamageRemoval()
+    {
+        _alreadyUsed = false;
+    }
+
+    private void UseDamageRemoval()
+    {
+        _alreadyUsed = true;
+    }
+}
 
 [HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
 public class Penitent_Damage_Patch
@@ -14,7 +39,7 @@ public class Penitent_Damage_Patch
     [HarmonyPriority(Priority.High)]
     public static void Prefix(ref Hit hit)
     {
-        if (Main.LostDreams.EffectHandler.IsActive("damage-removal") && !Core.Logic.Penitent.Status.Unattacable)
+        if (Main.LostDreams.DamageRemoval.IsActive && !Core.Logic.Penitent.Status.Unattacable)
         {
             Main.LostDreams.Log("RB503: Preventing damage");
             hit.DamageAmount = 0;

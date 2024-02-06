@@ -5,11 +5,6 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Effects;
 
-public static class ChargeTime
-{
-    public static bool IsActive => Main.LostDreams.ItemHandler.IsEquipped("RB501");
-}
-
 /// <summary>
 /// Reduce how much time to activate charge
 /// </summary>
@@ -19,7 +14,7 @@ class ChargedAttack_SetTimer_Patch
     public static void Postfix(ref float ____currentChargingTime)
     {
         // tier 1 = 1.5, tier 2 = 0.75
-        if (ChargeTime.IsActive)
+        if (Main.LostDreams.ItemHandler.IsEquipped("RB501"))
         {
             Main.LostDreams.Log("RB501: Reducing charge time");
             ____currentChargingTime = 0.05f;
@@ -35,7 +30,7 @@ class ChargedAnimation_Enter_Patch
 {
     public static void Postfix(Animator animator)
     {
-        if (ChargeTime.IsActive)
+        if (Main.LostDreams.ItemHandler.IsEquipped("RB501"))
         {
             animator.speed = 4;
         }
@@ -46,7 +41,7 @@ class ChargedAnimation_Exit_Patch
 {
     public static void Postfix(Animator animator)
     {
-        if (ChargeTime.IsActive)
+        if (Main.LostDreams.ItemHandler.IsEquipped("RB501"))
         {
             animator.speed = 1;
         }

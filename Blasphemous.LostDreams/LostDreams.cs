@@ -1,4 +1,5 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
+using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
@@ -15,10 +16,14 @@ public class LostDreams : BlasMod
 {
     public LostDreams() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
+    // Handlers
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal ItemHandler ItemHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
+
+    // Special effects
+    internal IToggleEffect DamageRemoval { get; } = new DamageRemoval();
 
     protected override void OnAllInitialized()
     {
