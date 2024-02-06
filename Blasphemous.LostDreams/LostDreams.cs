@@ -3,11 +3,13 @@ using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
+using Blasphemous.LostDreams.Penitences;
 using Blasphemous.ModdingAPI;
 using Blasphemous.ModdingAPI.Items;
 using Blasphemous.ModdingAPI.Levels;
 using Blasphemous.ModdingAPI.Levels.Loaders;
 using Blasphemous.ModdingAPI.Levels.Modifiers;
+using Blasphemous.ModdingAPI.Penitence;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
@@ -20,6 +22,7 @@ public class LostDreams : BlasMod
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal ItemHandler ItemHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
+    internal PenitenceHandler PenitenceHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
 
     // Special effects
@@ -63,6 +66,9 @@ public class LostDreams : BlasMod
 
         // Quest items
         provider.RegisterItem(new StandardQuestItem("QI502", false));
+
+        // Penitences
+        provider.RegisterPenitence(new StandardPenitence(StandardPenitence.CurrentId = "PE_LD01", "RB999"));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
