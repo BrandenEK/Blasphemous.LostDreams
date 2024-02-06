@@ -24,6 +24,7 @@ public class LostDreams : BlasMod
 
     // Special effects
     internal IToggleEffect DamageRemoval { get; } = new DamageRemoval();
+    internal IMultiplierEffect DamageStack { get; } = new DamageStack();
 
     protected override void OnAllInitialized()
     {

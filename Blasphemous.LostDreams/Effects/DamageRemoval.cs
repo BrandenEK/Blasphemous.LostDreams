@@ -34,7 +34,7 @@ public class DamageRemoval : IToggleEffect
 }
 
 [HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
-public class Penitent_Damage_Patch
+public class Penitent_DamageRemoval_Patch
 {
     [HarmonyPriority(Priority.High)]
     public static void Prefix(ref Hit hit)
