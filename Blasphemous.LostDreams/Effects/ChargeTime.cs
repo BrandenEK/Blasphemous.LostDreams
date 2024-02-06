@@ -7,7 +7,7 @@ namespace Blasphemous.LostDreams.Effects;
 
 public static class ChargeTime
 {
-    public static bool IsActive => Main.LostDreams.EffectHandler.IsActive("RB501");
+    public static bool IsActive => Main.LostDreams.ItemHandler.IsEquipped("RB501");
 }
 
 /// <summary>

@@ -16,7 +16,7 @@ public class LostDreams : BlasMod
     public LostDreams() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
-    internal EffectHandler EffectHandler { get; } = new();
+    internal ItemHandler ItemHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
 
@@ -31,7 +31,7 @@ public class LostDreams : BlasMod
             return;
 
         // Reset handlers when exiting a game
-        EffectHandler.Reset();
+        ItemHandler.Reset();
         AcquisitionHandler.Reset();
         EventHandler.Reset();
         TimeHandler.Reset();
