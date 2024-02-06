@@ -20,6 +20,8 @@ public class StandardRosaryBead : ModRosaryBead
 
     protected override string Lore => Main.LostDreams.LocalizationHandler.Localize(Id + ".l");
 
+    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out Sprite picture) ? picture : null;
+
     protected override bool CarryOnStart => false;
 
     protected override bool PreserveInNGPlus => true;
@@ -27,11 +29,6 @@ public class StandardRosaryBead : ModRosaryBead
     protected override bool AddToPercentCompletion => true;
 
     protected override bool AddInventorySlot => true;
-
-    protected override void LoadImages(out Sprite picture)
-    {
-        Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out picture);
-    }
 }
 
 public class StandardSwordHeart : ModSwordHeart
@@ -51,6 +48,8 @@ public class StandardSwordHeart : ModSwordHeart
 
     protected override string Lore => Main.LostDreams.LocalizationHandler.Localize(Id + ".l");
 
+    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out Sprite picture) ? picture : null;
+
     protected override bool CarryOnStart => false;
 
     protected override bool PreserveInNGPlus => true;
@@ -58,11 +57,6 @@ public class StandardSwordHeart : ModSwordHeart
     protected override bool AddToPercentCompletion => true;
 
     protected override bool AddInventorySlot => true;
-
-    protected override void LoadImages(out Sprite picture)
-    {
-        Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out picture);
-    }
 }
 
 public class StandardQuestItem : ModQuestItem
@@ -81,14 +75,11 @@ public class StandardQuestItem : ModQuestItem
 
     protected override string Lore => Main.LostDreams.LocalizationHandler.Localize(Id + ".l");
 
+    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out Sprite picture) ? picture : null;
+
     protected override bool CarryOnStart => false;
 
     protected override bool PreserveInNGPlus => true;
-
-    protected override void LoadImages(out Sprite picture)
-    {
-        Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out picture);
-    }
 }
 
 public class StandardEquipEffect(string effect) : ModItemEffectOnEquip
