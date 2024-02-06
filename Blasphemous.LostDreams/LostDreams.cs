@@ -28,12 +28,14 @@ public class LostDreams : BlasMod
     // Special effects
     internal IToggleEffect DamageRemoval { get; private set; }
     internal IMultiplierEffect DamageStack { get; private set; }
+    internal IToggleEffect HealthDrain { get; private set; }
 
     protected override void OnInitialize()
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack();
+        HealthDrain = new HealthDrain();
     }
 
     protected override void OnLevelLoaded(string oldLevel, string newLevel)
@@ -52,6 +54,9 @@ public class LostDreams : BlasMod
     {
         // Update handlers every frame
         TimeHandler.Update();
+
+        if (HealthDrain.IsActive)
+            LogWarning("Draining health");
     }
 
     protected override void OnRegisterServices(ModServiceProvider provider)
