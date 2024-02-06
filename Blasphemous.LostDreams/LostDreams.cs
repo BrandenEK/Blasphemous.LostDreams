@@ -51,15 +51,15 @@ public class LostDreams : BlasMod
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
-        provider.RegisterItem(new StandardBead("RB501").AddEffect(new ChargeTimeEffect()));
-        provider.RegisterItem(new StandardBead("RB502").AddEffect(new DamageStackEffect()));
-        provider.RegisterItem(new StandardBead("RB503").AddEffect(new DamageRemovalEffect()));
+        provider.RegisterItem(new StandardRosaryBead("RB501").AddEffect(new ChargeTimeEffect()));
+        provider.RegisterItem(new StandardRosaryBead("RB502").AddEffect(new DamageStackEffect()));
+        provider.RegisterItem(new StandardRosaryBead("RB503").AddEffect(new DamageRemovalEffect()));
 
         // Sword hearts
-        provider.RegisterItem(new HealthRegenHeart().AddEffect(new HealthRegenEffect())); // HE501
+        provider.RegisterItem(new StandardSwordHeart("HE501").AddEffect(new HealthRegenEffect()));
 
         // Quest items
-        provider.RegisterItem(new GuiltFragmentItem().AddEffect(new GuiltFragmentEffect())); // QI502
+        provider.RegisterItem(new StandardQuestItem("QI502").AddEffect(new GuiltFragmentEffect()));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
