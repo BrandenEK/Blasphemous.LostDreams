@@ -91,16 +91,16 @@ public class StandardQuestItem : ModQuestItem
 
 public class StandardEquipEffect(string effect) : ModItemEffectOnEquip
 {
-    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate(effect);
+    protected override void ApplyEffect() => Main.LostDreams.ItemHandler.Equip(effect);
 
-    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate(effect);
+    protected override void RemoveEffect() => Main.LostDreams.ItemHandler.Unequip(effect);
 }
 
 public class StandardAcquireEffect(string effect, bool activateOnce) : ModItemEffectOnAcquire
 {
     protected override bool ActivateOnce => activateOnce;
 
-    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate(effect);
+    protected override void ApplyEffect() => Main.LostDreams.ItemHandler.Equip(effect);
 
-    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate(effect);
+    protected override void RemoveEffect() => Main.LostDreams.ItemHandler.Unequip(effect);
 }
