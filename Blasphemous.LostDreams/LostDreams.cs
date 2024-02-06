@@ -23,12 +23,14 @@ public class LostDreams : BlasMod
     internal TimeHandler TimeHandler { get; } = new();
 
     // Special effects
-    internal IToggleEffect DamageRemoval { get; } = new DamageRemoval();
-    internal IMultiplierEffect DamageStack { get; } = new DamageStack();
+    internal IToggleEffect DamageRemoval { get; private set; }
+    internal IMultiplierEffect DamageStack { get; private set; }
 
-    protected override void OnAllInitialized()
+    protected override void OnInitialize()
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
+        DamageRemoval = new DamageRemoval();
+        DamageStack = new DamageStack();
     }
 
     protected override void OnLevelLoaded(string oldLevel, string newLevel)
@@ -52,12 +54,12 @@ public class LostDreams : BlasMod
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
-        provider.RegisterItem(new StandardRosaryBead("RB501"));
-        provider.RegisterItem(new StandardRosaryBead("RB502"));
-        provider.RegisterItem(new StandardRosaryBead("RB503"));
+        provider.RegisterItem(new StandardRosaryBead("RB501", true));
+        provider.RegisterItem(new StandardRosaryBead("RB502", true));
+        provider.RegisterItem(new StandardRosaryBead("RB503", true));
 
         // Sword hearts
-        provider.RegisterItem(new StandardSwordHeart("HE501"));
+        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen()));
 
         // Quest items
         provider.RegisterItem(new StandardQuestItem("QI502", false));

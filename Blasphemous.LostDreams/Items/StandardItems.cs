@@ -5,10 +5,11 @@ namespace Blasphemous.LostDreams.Items;
 
 public class StandardRosaryBead : ModRosaryBead
 {
-    public StandardRosaryBead(string id)
+    public StandardRosaryBead(string id, bool useEffect)
     {
         Id = id;
-        AddEffect(new StandardEquipEffect(id));
+        if (useEffect)
+            AddEffect(new StandardEquipEffect(id));
     }
 
     protected override string Id { get; }
@@ -35,10 +36,11 @@ public class StandardRosaryBead : ModRosaryBead
 
 public class StandardSwordHeart : ModSwordHeart
 {
-    public StandardSwordHeart(string id)
+    public StandardSwordHeart(string id, bool useEffect)
     {
         Id = id;
-        AddEffect(new StandardEquipEffect(id));
+        if (useEffect)
+            AddEffect(new StandardEquipEffect(id));
     }
 
     protected override string Id { get; }

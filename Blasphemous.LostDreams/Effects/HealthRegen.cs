@@ -1,36 +1,11 @@
 ﻿using Blasphemous.ModdingAPI.Items;
-using Framework.FrameworkCore.Attributes;
 using Framework.FrameworkCore.Attributes.Logic;
+using Framework.FrameworkCore.Attributes;
 using Framework.Managers;
-using UnityEngine;
 
-namespace Blasphemous.LostDreams.Items.HealthRegen;
+namespace Blasphemous.LostDreams.Effects;
 
-class HealthRegenHeart : ModSwordHeart
-{
-    protected override string Id => "HE501";
-
-    protected override string Name => Main.LostDreams.LocalizationHandler.Localize("hrname");
-
-    protected override string Description => Main.LostDreams.LocalizationHandler.Localize("hrdesc");
-
-    protected override string Lore => Main.LostDreams.LocalizationHandler.Localize("hrlore");
-
-    protected override bool CarryOnStart => false;
-
-    protected override bool PreserveInNGPlus => true;
-
-    protected override bool AddToPercentCompletion => true;
-
-    protected override bool AddInventorySlot => true;
-
-    protected override void LoadImages(out Sprite picture)
-    {
-        Main.LostDreams.FileHandler.LoadDataAsSprite("health-regen.png", out picture);
-    }
-}
-
-class HealthRegenEffect : ModItemEffectOnEquip
+public class HealthRegen : ModItemEffectOnEquip
 {
     private RawBonus _halfHealth;
 
