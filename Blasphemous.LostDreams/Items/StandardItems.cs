@@ -3,9 +3,15 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items;
 
-public class StandardRosaryBead(string id) : ModRosaryBead
+public class StandardRosaryBead : ModRosaryBead
 {
-    protected override string Id { get; } = id;
+    public StandardRosaryBead(string id)
+    {
+        Id = id;
+        AddEffect(new StandardEquipEffect(id));
+    }
+
+    protected override string Id { get; }
 
     protected override string Name => Main.LostDreams.LocalizationHandler.Localize(Id + ".n");
 
@@ -27,9 +33,15 @@ public class StandardRosaryBead(string id) : ModRosaryBead
     }
 }
 
-public class StandardSwordHeart(string id) : ModSwordHeart
+public class StandardSwordHeart : ModSwordHeart
 {
-    protected override string Id { get; } = id;
+    public StandardSwordHeart(string id)
+    {
+        Id = id;
+        AddEffect(new StandardEquipEffect(id));
+    }
+
+    protected override string Id { get; }
 
     protected override string Name => Main.LostDreams.LocalizationHandler.Localize(Id + ".n");
 
@@ -51,9 +63,15 @@ public class StandardSwordHeart(string id) : ModSwordHeart
     }
 }
 
-public class StandardQuestItem(string id) : ModQuestItem
+public class StandardQuestItem : ModQuestItem
 {
-    protected override string Id { get; } = id;
+    public StandardQuestItem(string id, bool activateOnce)
+    {
+        Id = id;
+        AddEffect(new StandardAcquireEffect(id, activateOnce));
+    }
+
+    protected override string Id { get; }
 
     protected override string Name => Main.LostDreams.LocalizationHandler.Localize(Id + ".n");
 
@@ -69,4 +87,20 @@ public class StandardQuestItem(string id) : ModQuestItem
     {
         Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out picture);
     }
+}
+
+public class StandardEquipEffect(string effect) : ModItemEffectOnEquip
+{
+    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate(effect);
+
+    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate(effect);
+}
+
+public class StandardAcquireEffect(string effect, bool activateOnce) : ModItemEffectOnAcquire
+{
+    protected override bool ActivateOnce => activateOnce;
+
+    protected override void ApplyEffect() => Main.LostDreams.EffectHandler.Activate(effect);
+
+    protected override void RemoveEffect() => Main.LostDreams.EffectHandler.Deactivate(effect);
 }

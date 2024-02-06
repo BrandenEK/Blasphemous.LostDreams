@@ -1,11 +1,6 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
-using Blasphemous.LostDreams.Items.ChargeTime;
-using Blasphemous.LostDreams.Items.DamageRemoval;
-using Blasphemous.LostDreams.Items.DamageStack;
-using Blasphemous.LostDreams.Items.GuiltFragment;
-using Blasphemous.LostDreams.Items.HealthRegen;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.ModdingAPI;
 using Blasphemous.ModdingAPI.Items;
@@ -51,15 +46,15 @@ public class LostDreams : BlasMod
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
-        provider.RegisterItem(new StandardRosaryBead("RB501").AddEffect(new ChargeTimeEffect()));
-        provider.RegisterItem(new StandardRosaryBead("RB502").AddEffect(new DamageStackEffect()));
-        provider.RegisterItem(new StandardRosaryBead("RB503").AddEffect(new DamageRemovalEffect()));
+        provider.RegisterItem(new StandardRosaryBead("RB501"));
+        provider.RegisterItem(new StandardRosaryBead("RB502"));
+        provider.RegisterItem(new StandardRosaryBead("RB503"));
 
         // Sword hearts
-        provider.RegisterItem(new StandardSwordHeart("HE501").AddEffect(new HealthRegenEffect()));
+        provider.RegisterItem(new StandardSwordHeart("HE501"));
 
         // Quest items
-        provider.RegisterItem(new StandardQuestItem("QI502").AddEffect(new GuiltFragmentEffect()));
+        provider.RegisterItem(new StandardQuestItem("QI502", false));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
