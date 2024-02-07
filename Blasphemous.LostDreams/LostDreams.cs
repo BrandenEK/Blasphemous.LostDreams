@@ -55,10 +55,8 @@ public class LostDreams : BlasMod
         // Update handlers every frame
         TimeHandler.Update();
 
+        // Update special effects
         HealthDrain.Update();
-
-        //if (HealthDrain.IsActive)
-        //    LogWarning("Draining health");
     }
 
     protected override void OnRegisterServices(ModServiceProvider provider)

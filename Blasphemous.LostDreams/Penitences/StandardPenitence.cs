@@ -26,10 +26,10 @@ public class StandardPenitence(string id, string item) : ModPenitence
         [
             new Rect(0, 0, 94, 110),
             new Rect(95, 1, 92, 108),
-            new Rect(190, 0, 16, 16),
-            new Rect(190, 16, 16, 16),
-            new Rect(190, 32, 16, 16),
-            new Rect(188, 92, 18, 18)
+            new Rect(190, 94, 16, 16),
+            new Rect(190, 78, 16, 16),
+            new Rect(190, 62, 16, 16),
+            new Rect(188, 0, 18, 18)
         ], out Sprite[] images);
 
         chooseSelected = images[0];

@@ -10,6 +10,15 @@ namespace Blasphemous.LostDreams.Effects;
 
 public class HealthDrain
 {
+    private const float HIT_HEAL_AMOUNT = 5f;
+    private const float KILL_HEAL_AMOUNT = 15f;
+    private const float DRAIN_DELAY = 2f;
+    private const float DRAIN_AMOUNT = 2f;
+    private const float THORNS_AMOUNT = 10f;
+    private const float CONTACT_AMOUNT = 3f;
+    private const float SPEED_LENGTH = 30f;
+    private const float SPEED_AMOUNT = 30f;
+
     private float _currentDrainDelay = 0f;
     private float _currentSpeedDelay = 0f;
 
@@ -101,15 +110,6 @@ public class HealthDrain
             hit.DamageAmount = CONTACT_AMOUNT;
         }
     }
-
-    private const float HIT_HEAL_AMOUNT = 5f;
-    private const float KILL_HEAL_AMOUNT = 15f;
-    private const float DRAIN_DELAY = 2f;
-    private const float DRAIN_AMOUNT = 2f;
-    private const float THORNS_AMOUNT = 10f;
-    private const float CONTACT_AMOUNT = 3f;
-    private const float SPEED_LENGTH = 30f;
-    private const float SPEED_AMOUNT = 30f;
 }
 
 // Control flag for when a prie dieu is in use
