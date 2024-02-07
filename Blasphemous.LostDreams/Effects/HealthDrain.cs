@@ -34,8 +34,8 @@ public class HealthDrain
 
     public HealthDrain()
     {
-        Main.LostDreams.EventHandler.OnEnemyDamaged += (ref Hit hit) => HealPlayer(HIT_HEAL_AMOUNT);
-        Main.LostDreams.EventHandler.OnEnemyKilled += () => HealPlayer(KILL_HEAL_AMOUNT);
+        Main.LostDreams.EventHandler.OnEnemyDamaged += HitEnemy;
+        Main.LostDreams.EventHandler.OnEnemyKilled += KillEnemy;
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
     }
 
@@ -109,6 +109,17 @@ public class HealthDrain
             Main.LostDreams.Log("Reducing contact damage");
             hit.DamageAmount = CONTACT_AMOUNT;
         }
+    }
+
+    private void HitEnemy(ref Hit hit)
+    {
+        if (hit.AttackingEntity?.name == "Penitent(Clone)")
+            HealPlayer(HIT_HEAL_AMOUNT);
+    }
+
+    private void KillEnemy()
+    {
+        HealPlayer(KILL_HEAL_AMOUNT);
     }
 }
 
