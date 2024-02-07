@@ -1,8 +1,4 @@
-﻿using Framework.Managers;
-using Gameplay.GameControllers.Enemies.Framework.Damage;
-using Gameplay.GameControllers.Entities;
-using Gameplay.GameControllers.Penitent.Damage;
-using HarmonyLib;
+﻿using Gameplay.GameControllers.Entities;
 using System;
 
 namespace Blasphemous.LostDreams.Effects;
@@ -15,7 +11,8 @@ public class DamageStack : IMultiplierEffect
 
     public DamageStack()
     {
-        Main.LostDreams.EventHandler.OnPlayerDamaged += ResetCharges;
+        Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
+        Main.LostDreams.EventHandler.OnEnemyDamaged += EnemyTakeDamage;
         Main.LostDreams.EventHandler.OnEnemyKilled += IncreaseCharges;
         Main.LostDreams.EventHandler.OnExitGame += ResetCharges;
     }
@@ -35,32 +32,23 @@ public class DamageStack : IMultiplierEffect
         Main.LostDreams.Log("RB502: Resetting damage stack");
     }
 
+    private void PlayerTakeDamage(ref Hit hit)
+    {
+        if (!Main.LostDreams.ItemHandler.IsEquipped("RB502"))
+            return;
+
+        hit.DamageAmount *= Main.LostDreams.DamageStack.Multiplier;
+        ResetCharges();
+    }
+
+    private void EnemyTakeDamage(ref Hit hit)
+    {
+        if (!Main.LostDreams.ItemHandler.IsEquipped("RB502"))
+            return;
+
+        hit.DamageAmount *= Main.LostDreams.DamageStack.Multiplier;
+    }
+
     private const int MAX_CHARGES = 20;
     private const float MAX_MULTIPLIER = 2.0f;
-}
-
-[HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
-public class Penitent_DamageStack_Patch
-{
-    [HarmonyPriority(Priority.High)]
-    public static void Prefix(ref Hit hit)
-    {
-        if (Main.LostDreams.ItemHandler.IsEquipped("RB502") && !Core.Logic.Penitent.Status.Unattacable)
-        {
-            hit.DamageAmount *= Main.LostDreams.DamageStack.Multiplier;
-        }
-    }
-}
-
-[HarmonyPatch(typeof(EnemyDamageArea), nameof(EnemyDamageArea.TakeDamage))]
-public class Enemy_Damage_Patch
-{
-    [HarmonyPriority(Priority.High)]
-    public static void Prefix(ref Hit hit)
-    {
-        if (Main.LostDreams.ItemHandler.IsEquipped("RB502"))
-        {
-            hit.DamageAmount *= Main.LostDreams.DamageStack.Multiplier;
-        }
-    }
 }

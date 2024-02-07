@@ -1,6 +1,5 @@
 ﻿using Framework.Managers;
 using Gameplay.GameControllers.Entities;
-using Gameplay.GameControllers.Penitent.Damage;
 using HarmonyLib;
 using Tools.Level.Interactables;
 using UnityEngine;
@@ -21,8 +20,9 @@ public class HealthDrain
 
     public HealthDrain()
     {
-        Main.LostDreams.EventHandler.OnEnemyDamaged += () => HealPlayer(HIT_HEAL_AMOUNT);
+        Main.LostDreams.EventHandler.OnEnemyDamaged += (ref Hit hit) => HealPlayer(HIT_HEAL_AMOUNT);
         Main.LostDreams.EventHandler.OnEnemyKilled += () => HealPlayer(KILL_HEAL_AMOUNT);
+        Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
     }
 
     public void Update()
@@ -49,29 +49,9 @@ public class HealthDrain
         Core.Logic.Penitent.Stats.Life.Current += amount;
     }
 
-    private const float HIT_HEAL_AMOUNT = 5f;
-    private const float KILL_HEAL_AMOUNT = 15f;
-    private const float DRAIN_DELAY = 2f;
-    private const float DRAIN_AMOUNT = 2f;
-    public const float THORNS_AMOUNT = 10f;
-    public const float CONTACT_AMOUNT = 3f;
-}
-
-// Control flag for when a prie dieu is in use
-[HarmonyPatch(typeof(PrieDieu), "OnUpdate")]
-class PrieDieu_Update_Patch
-{
-    public static void Postfix(PrieDieu __instance) => HealthDrain.IsUsingPrieDieu = __instance.BeingUsed;
-}
-
-// Apply damage back to enemy when player is damaged
-[HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
-public class Penitent_DamageThorns_Patch
-{
-    [HarmonyPriority(Priority.High)]
-    public static void Prefix(ref Hit hit)
+    private void PlayerTakeDamage(ref Hit hit)
     {
-        if (!Main.LostDreams.HealthDrain.ShouldApplyThorns || Core.Logic.Penitent.Status.Unattacable)
+        if (!Main.LostDreams.HealthDrain.ShouldApplyThorns)
             return;
 
         IDamageable enemy = hit.AttackingEntity?.GetComponentInChildren<IDamageable>();
@@ -81,7 +61,7 @@ public class Penitent_DamageThorns_Patch
         Main.LostDreams.Log("Applying thorns damage");
         enemy.Damage(new Hit()
         {
-            DamageAmount = HealthDrain.THORNS_AMOUNT,
+            DamageAmount = THORNS_AMOUNT,
             DamageElement = DamageArea.DamageElement.Contact,
             DamageType = DamageArea.DamageType.Normal,
         });
@@ -89,7 +69,21 @@ public class Penitent_DamageThorns_Patch
         if (hit.DamageElement == DamageArea.DamageElement.Contact)
         {
             Main.LostDreams.Log("Reducing contact damage");
-            hit.DamageAmount = HealthDrain.CONTACT_AMOUNT;
+            hit.DamageAmount = CONTACT_AMOUNT;
         }
     }
+
+    private const float HIT_HEAL_AMOUNT = 5f;
+    private const float KILL_HEAL_AMOUNT = 15f;
+    private const float DRAIN_DELAY = 2f;
+    private const float DRAIN_AMOUNT = 2f;
+    private const float THORNS_AMOUNT = 10f;
+    private const float CONTACT_AMOUNT = 3f;
+}
+
+// Control flag for when a prie dieu is in use
+[HarmonyPatch(typeof(PrieDieu), "OnUpdate")]
+class PrieDieu_Update_Patch
+{
+    public static void Postfix(PrieDieu __instance) => HealthDrain.IsUsingPrieDieu = __instance.BeingUsed;
 }

@@ -21,11 +21,11 @@ class PrieDieu_Use_Patch
 [HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
 public class Penitent_Damage_Patch
 {
-    public static void Prefix() => Main.LostDreams.EventHandler.DamagePlayer();
+    public static void Prefix(ref Hit hit) => Main.LostDreams.EventHandler.DamagePlayer(ref hit);
 }
 
 [HarmonyPatch(typeof(EnemyDamageArea), nameof(EnemyDamageArea.TakeDamage))]
 public class Enemy_Damage_Patch
 {
-    public static void Prefix() => Main.LostDreams.EventHandler.DamageEnemy();
+    public static void Prefix(ref Hit hit) => Main.LostDreams.EventHandler.DamageEnemy(ref hit);
 }

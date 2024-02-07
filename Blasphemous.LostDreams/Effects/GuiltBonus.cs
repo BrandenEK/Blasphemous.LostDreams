@@ -4,6 +4,7 @@ using HarmonyLib;
 
 namespace Blasphemous.LostDreams.Effects;
 
+// Fully restore stats when picking up guilt
 [HarmonyPatch(typeof(GuiltDropRecover), "GiveGuiltBonus")]
 class GuiltDrop_GiveBonus_Patch
 {
