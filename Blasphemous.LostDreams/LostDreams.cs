@@ -28,7 +28,7 @@ public class LostDreams : BlasMod
     // Special effects
     internal IToggleEffect DamageRemoval { get; private set; }
     internal IMultiplierEffect DamageStack { get; private set; }
-    internal IToggleEffect HealthDrain { get; private set; }
+    internal HealthDrain HealthDrain { get; private set; }
 
     protected override void OnInitialize()
     {
@@ -54,6 +54,8 @@ public class LostDreams : BlasMod
     {
         // Update handlers every frame
         TimeHandler.Update();
+
+        HealthDrain.Update();
 
         //if (HealthDrain.IsActive)
         //    LogWarning("Draining health");
