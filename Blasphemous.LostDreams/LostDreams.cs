@@ -1,10 +1,7 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
+using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
-using Blasphemous.LostDreams.Items.ChargeTime;
-using Blasphemous.LostDreams.Items.DamageRemoval;
-using Blasphemous.LostDreams.Items.DamageStack;
-using Blasphemous.LostDreams.Items.GuiltFragment;
-using Blasphemous.LostDreams.Items.HealthRegen;
+using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.ModdingAPI;
 using Blasphemous.ModdingAPI.Items;
@@ -19,14 +16,21 @@ public class LostDreams : BlasMod
 {
     public LostDreams() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
+    // Handlers
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
-    internal EffectHandler EffectHandler { get; } = new();
+    internal ItemHandler ItemHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
 
-    protected override void OnAllInitialized()
+    // Special effects
+    internal IToggleEffect DamageRemoval { get; private set; }
+    internal IMultiplierEffect DamageStack { get; private set; }
+
+    protected override void OnInitialize()
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
+        DamageRemoval = new DamageRemoval();
+        DamageStack = new DamageStack();
     }
 
     protected override void OnLevelLoaded(string oldLevel, string newLevel)
@@ -35,7 +39,7 @@ public class LostDreams : BlasMod
             return;
 
         // Reset handlers when exiting a game
-        EffectHandler.Reset();
+        ItemHandler.Reset();
         AcquisitionHandler.Reset();
         EventHandler.Reset();
         TimeHandler.Reset();
@@ -50,15 +54,15 @@ public class LostDreams : BlasMod
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
-        provider.RegisterItem(new ChargeTimeBead().AddEffect(new ChargeTimeEffect())); // RB501
-        provider.RegisterItem(new DamageStackBead().AddEffect(new DamageStackEffect())); // RB502
-        provider.RegisterItem(new DamageRemovalBead().AddEffect(new DamageRemovalEffect())); // RB503
+        provider.RegisterItem(new StandardRosaryBead("RB501", true));
+        provider.RegisterItem(new StandardRosaryBead("RB502", true));
+        provider.RegisterItem(new StandardRosaryBead("RB503", true));
 
         // Sword hearts
-        provider.RegisterItem(new HealthRegenHeart().AddEffect(new HealthRegenEffect())); // HE501
+        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen()));
 
         // Quest items
-        provider.RegisterItem(new GuiltFragmentItem().AddEffect(new GuiltFragmentEffect())); // QI502
+        provider.RegisterItem(new StandardQuestItem("QI502", false));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
