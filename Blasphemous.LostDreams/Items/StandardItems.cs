@@ -1,9 +1,9 @@
-﻿using Blasphemous.ModdingAPI.Items;
+﻿using Blasphemous.Framework.Items;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items;
 
-public class StandardRosaryBead : ModRosaryBead
+internal class StandardRosaryBead : ModRosaryBead
 {
     public StandardRosaryBead(string id, bool useEffect)
     {
@@ -31,7 +31,7 @@ public class StandardRosaryBead : ModRosaryBead
     protected override bool AddInventorySlot => true;
 }
 
-public class StandardSwordHeart : ModSwordHeart
+internal class StandardSwordHeart : ModSwordHeart
 {
     public StandardSwordHeart(string id, bool useEffect)
     {
@@ -59,7 +59,7 @@ public class StandardSwordHeart : ModSwordHeart
     protected override bool AddInventorySlot => true;
 }
 
-public class StandardQuestItem : ModQuestItem
+internal class StandardQuestItem : ModQuestItem
 {
     public StandardQuestItem(string id, bool activateOnce)
     {
@@ -82,14 +82,14 @@ public class StandardQuestItem : ModQuestItem
     protected override bool PreserveInNGPlus => true;
 }
 
-public class StandardEquipEffect(string effect) : ModItemEffectOnEquip
+internal class StandardEquipEffect(string effect) : ModItemEffectOnEquip
 {
     protected override void ApplyEffect() => Main.LostDreams.ItemHandler.Equip(effect);
 
     protected override void RemoveEffect() => Main.LostDreams.ItemHandler.Unequip(effect);
 }
 
-public class StandardAcquireEffect(string effect, bool activateOnce) : ModItemEffectOnAcquire
+internal class StandardAcquireEffect(string effect, bool activateOnce) : ModItemEffectOnAcquire
 {
     protected override bool ActivateOnce => activateOnce;
 

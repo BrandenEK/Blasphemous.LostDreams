@@ -7,7 +7,10 @@ using System;
 
 namespace Blasphemous.LostDreams.Effects;
 
-public class DamageStack : IMultiplierEffect
+/// <summary>
+/// Reset when getting hit, increase charges when killing
+/// </summary>
+internal class DamageStack : IMultiplierEffect
 {
     private int _charges;
 
@@ -40,7 +43,7 @@ public class DamageStack : IMultiplierEffect
 }
 
 [HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
-public class Penitent_DamageStack_Patch
+class Penitent_DamageStack_Patch
 {
     [HarmonyPriority(Priority.High)]
     public static void Prefix(ref Hit hit)
@@ -53,7 +56,7 @@ public class Penitent_DamageStack_Patch
 }
 
 [HarmonyPatch(typeof(EnemyDamageArea), nameof(EnemyDamageArea.TakeDamage))]
-public class Enemy_Damage_Patch
+class Enemy_Damage_Patch
 {
     [HarmonyPriority(Priority.High)]
     public static void Prefix(ref Hit hit)
