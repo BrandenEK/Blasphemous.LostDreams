@@ -4,17 +4,20 @@ using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.ModdingAPI;
-using Blasphemous.ModdingAPI.Items;
-using Blasphemous.ModdingAPI.Levels;
-using Blasphemous.ModdingAPI.Levels.Loaders;
-using Blasphemous.ModdingAPI.Levels.Modifiers;
+using Blasphemous.Framework.Items;
+using Blasphemous.Framework.Levels;
+using Blasphemous.Framework.Levels.Loaders;
+using Blasphemous.Framework.Levels.Modifiers;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
 
+/// <summary>
+/// Handles all new item and penitence effects
+/// </summary>
 public class LostDreams : BlasMod
 {
-    public LostDreams() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
+    internal LostDreams() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
     // Handlers
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
@@ -26,6 +29,9 @@ public class LostDreams : BlasMod
     internal IToggleEffect DamageRemoval { get; private set; }
     internal IMultiplierEffect DamageStack { get; private set; }
 
+    /// <summary>
+    /// Register handlers and create special effects
+    /// </summary>
     protected override void OnInitialize()
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
@@ -33,24 +39,28 @@ public class LostDreams : BlasMod
         DamageStack = new DamageStack();
     }
 
-    protected override void OnLevelLoaded(string oldLevel, string newLevel)
+    /// <summary>
+    /// Reset handlers when exiting a game
+    /// </summary>
+    protected override void OnExitGame()
     {
-        if (newLevel != "MainMenu")
-            return;
-
-        // Reset handlers when exiting a game
         ItemHandler.Reset();
         AcquisitionHandler.Reset();
         EventHandler.Reset();
         TimeHandler.Reset();
     }
 
+    /// <summary>
+    /// Update handlers every frame
+    /// </summary>
     protected override void OnUpdate()
     {
-        // Update handlers every frame
         TimeHandler.Update();
     }
 
+    /// <summary>
+    /// Register all custom things
+    /// </summary>
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
