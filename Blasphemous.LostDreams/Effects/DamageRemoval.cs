@@ -7,7 +7,10 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Effects;
 
-public class DamageRemoval : IToggleEffect
+/// <summary>
+/// Lose it when getting hit, regain it when dead or prie dieu
+/// </summary>
+internal class DamageRemoval : IToggleEffect
 {
     private bool _alreadyUsed = false;
 

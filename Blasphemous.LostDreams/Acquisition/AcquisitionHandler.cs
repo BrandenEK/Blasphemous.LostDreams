@@ -1,4 +1,4 @@
-﻿using Blasphemous.ModdingAPI.Items;
+﻿using Blasphemous.ModdingAPI;
 using Framework.Inventory;
 using Framework.Managers;
 using Gameplay.UI;

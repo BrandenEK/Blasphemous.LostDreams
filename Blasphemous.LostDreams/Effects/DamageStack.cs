@@ -3,7 +3,10 @@ using System;
 
 namespace Blasphemous.LostDreams.Effects;
 
-public class DamageStack : IMultiplierEffect
+/// <summary>
+/// Reset when getting hit, increase charges when killing
+/// </summary>
+internal class DamageStack : IMultiplierEffect
 {
     private int _charges;
 

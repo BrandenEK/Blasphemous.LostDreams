@@ -1,10 +1,10 @@
-﻿using Blasphemous.ModdingAPI.Penitence;
+﻿using Blasphemous.Framework.Penitence;
 using Framework.Managers;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Penitences;
 
-public class StandardPenitence(string id, string item) : ModPenitence
+internal class StandardPenitence(string id, string item) : ModPenitence
 {
     protected override string Id { get; } = id;
 

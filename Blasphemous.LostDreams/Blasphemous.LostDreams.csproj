@@ -13,12 +13,17 @@
 
     <TargetName>LostDreams</TargetName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/BrandenEK/Blasphemous-Lost-Dreams</RepositoryUrl>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>bin\Release\$(TargetName).xml</DocumentationFile>
+    <RepositoryUrl>https://github.com/BrandenEK/Blasphemous.LostDreams</RepositoryUrl>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blasphemous.ModdingAPI" Version="2.0.2" />
+    <PackageReference Include="Blasphemous.Framework.Items" Version="0.1.0" />
+    <PackageReference Include="Blasphemous.Framework.Levels" Version="0.1.0" />
+    <PackageReference Include="Blasphemous.Framework.Penitence" Version="0.1.0" />
+    <PackageReference Include="Blasphemous.ModdingAPI" Version="2.1.0" />
     <PackageReference Include="Blasphemous.ModdingReferences" Version="4.0.67" />
   </ItemGroup>
 
