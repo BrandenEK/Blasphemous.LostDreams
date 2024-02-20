@@ -5,4 +5,4 @@
 ---
 
 ## Features
-- Adds many new items and penitences into the game
+- Miscellaneous performance improvements for the game
