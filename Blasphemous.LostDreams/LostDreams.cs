@@ -85,7 +85,7 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardQuestItem("QI502", false));
 
         // Penitences
-        provider.RegisterPenitence(new StandardPenitence(StandardPenitence.CurrentId = "PE_LD01", "RB551"));
+        provider.RegisterPenitence(new StandardPenitence("PE_LD01", "RB551"));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(

@@ -56,6 +56,8 @@ public class HealthDrain
         {
             _currentDrainDelay = DRAIN_DELAY;
             Core.Logic.Penitent.Stats.Life.Current -= DRAIN_AMOUNT;
+            if (Core.Logic.Penitent.Stats.Life.Current <= 0)
+                Core.Logic.Penitent.KillInstanteneously();
         }
 
         if (_currentSpeedDelay < 0)
