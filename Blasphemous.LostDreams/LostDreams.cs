@@ -35,6 +35,8 @@ public class LostDreams : BlasMod
     protected override void OnInitialize()
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
+        Config cfg = ConfigHandler.Load<Config>();
+
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack();
     }
