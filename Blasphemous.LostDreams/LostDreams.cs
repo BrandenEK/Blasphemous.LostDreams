@@ -39,9 +39,16 @@ public class LostDreams : BlasMod
     protected override void OnInitialize()
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
+        Config cfg = ConfigHandler.Load<Config>();
+        ConfigHandler.Save(cfg);
+
         DamageRemoval = new DamageRemoval();
-        DamageStack = new DamageStack();
+        DamageStack = new DamageStack(cfg.RB502_MAX_CHARGES, cfg.RB502_MAX_MULTIPLIER);
         HealthDrain = new HealthDrain();
+
+        // Temp !!!
+        _regenPercent = cfg.HE501_REGEN_PERCENT;
+        _regenDelay = cfg.HE501_REGEN_DELAY;
     }
 
     /// <summary>
@@ -79,7 +86,7 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
 
         // Sword hearts
-        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen()));
+        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_regenPercent, _regenDelay)));
 
         // Quest items
         provider.RegisterItem(new StandardQuestItem("QI502", false));
@@ -98,4 +105,7 @@ public class LostDreams : BlasMod
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
             new ColliderModifier("Floor", new Vector2(2.7f, 0.4f))));
     }
+
+    // Temp !!!
+    private float _regenPercent, _regenDelay;
 }
