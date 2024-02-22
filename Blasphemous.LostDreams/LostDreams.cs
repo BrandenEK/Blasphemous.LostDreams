@@ -36,9 +36,10 @@ public class LostDreams : BlasMod
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
         Config cfg = ConfigHandler.Load<Config>();
+        ConfigHandler.Save(cfg);
 
         DamageRemoval = new DamageRemoval();
-        DamageStack = new DamageStack();
+        DamageStack = new DamageStack(cfg.RB502_MAX_CHARGES, cfg.RB502_MAX_MULTIPLIER);
     }
 
     /// <summary>

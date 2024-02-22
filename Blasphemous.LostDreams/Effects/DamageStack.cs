@@ -12,12 +12,19 @@ namespace Blasphemous.LostDreams.Effects;
 /// </summary>
 internal class DamageStack : IMultiplierEffect
 {
-    private int _charges;
+    private readonly int _maxCharges;
+    private readonly float _maxMultiplier;
 
-    public float Multiplier => 1 + (MAX_MULTIPLIER - 1) * ((float)_charges / MAX_CHARGES);
+    private int _currentCharges;
 
-    public DamageStack()
+    public float Multiplier => 1 + (_maxMultiplier - 1) * ((float)_currentCharges / _maxCharges);
+
+    public DamageStack(int maxCharges, float maxMultiplier)
     {
+        _maxCharges = maxCharges;
+        _maxMultiplier = maxMultiplier;
+        Main.LostDreams.LogError(_maxCharges + " - " +  _maxMultiplier);
+
         Main.LostDreams.EventHandler.OnPlayerDamaged += ResetCharges;
         Main.LostDreams.EventHandler.OnEnemyKilled += IncreaseCharges;
         Main.LostDreams.EventHandler.OnExitGame += ResetCharges;
@@ -28,18 +35,15 @@ internal class DamageStack : IMultiplierEffect
         if (!Main.LostDreams.ItemHandler.IsEquipped("RB502"))
             return;
 
-        _charges = Math.Min(_charges + 1, MAX_CHARGES);
-        Main.LostDreams.Log($"RB502: Increasing damage stack to {_charges}");
+        _currentCharges = Math.Min(_currentCharges + 1, _maxCharges);
+        Main.LostDreams.Log($"RB502: Increasing damage stack to {_currentCharges}");
     }
 
     private void ResetCharges()
     {
-        _charges = 0;
+        _currentCharges = 0;
         Main.LostDreams.Log("RB502: Resetting damage stack");
     }
-
-    private const int MAX_CHARGES = 20;
-    private const float MAX_MULTIPLIER = 2.0f;
 }
 
 [HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
