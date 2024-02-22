@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Effects;
 
+/// <summary>
+/// Handles LD01
+/// </summary>
 public class HealthDrain
 {
     private readonly Config _config;
@@ -16,15 +19,21 @@ public class HealthDrain
     private float _currentDrainDelay = 0f;
     private float _currentSpeedDelay = 0f;
 
+    /// <summary>
+    /// Should drain health if penitence is active and not resting at prie dieu
+    /// </summary>
     public bool ShouldDrainHealth => !IsUsingPrieDieu
         && Main.LostDreams.PenitenceHandler.IsActive("PE_LD01");
 
+    /// <summary>
+    /// Should apply thorns if penitence is active or bead is equipped
+    /// </summary>
     public bool ShouldApplyThorns => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
         || Main.LostDreams.ItemHandler.IsEquipped("RB551");
 
-    public static bool IsUsingPrieDieu { get; set; }
+    internal static bool IsUsingPrieDieu { get; set; }
 
-    public HealthDrain(Config config)
+    internal HealthDrain(Config config)
     {
         _config = config;
         _attackSpeedBonus = new RawBonus(config.LD01_SPEED_AMOUNT);
@@ -34,6 +43,9 @@ public class HealthDrain
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
     }
 
+    /// <summary>
+    /// Processes the health drain cycle and speed cycle
+    /// </summary>
     public void Update()
     {
         if (!ShouldDrainHealth || Core.Logic.Penitent == null)
@@ -61,6 +73,9 @@ public class HealthDrain
         }
     }
 
+    /// <summary>
+    /// Adds or removes the attack speed bonus
+    /// </summary>
     public void ChangeAttackSpeed(bool enable)
     {
         if (enable)
@@ -75,6 +90,9 @@ public class HealthDrain
         }
     }
 
+    /// <summary>
+    /// Adds health to the player
+    /// </summary>
     private void HealPlayer(float amount)
     {
         if (!ShouldDrainHealth)
@@ -83,6 +101,9 @@ public class HealthDrain
         Core.Logic.Penitent.Stats.Life.Current += amount;
     }
 
+    /// <summary>
+    /// Apply thorns damage back to the enemy and reduce damage if contact
+    /// </summary>
     private void PlayerTakeDamage(ref Hit hit)
     {
         if (!Main.LostDreams.HealthDrain.ShouldApplyThorns)

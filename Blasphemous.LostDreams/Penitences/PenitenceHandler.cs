@@ -2,7 +2,7 @@
 
 namespace Blasphemous.LostDreams.Penitences;
 
-public class PenitenceHandler
+internal class PenitenceHandler
 {
     private readonly List<string> _active = new();
 
