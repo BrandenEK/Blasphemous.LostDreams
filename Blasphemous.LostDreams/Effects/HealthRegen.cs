@@ -10,7 +10,19 @@ namespace Blasphemous.LostDreams.Effects;
 /// </summary>
 public class HealthRegen : ModItemEffectOnEquip
 {
+    private readonly float _regenPercent;
+    private readonly float _regenDelay;
+
     private RawBonus _halfHealth;
+
+    /// <summary>
+    /// Initializes regen parameters
+    /// </summary>
+    public HealthRegen(float regenPercent, float regenDelay)
+    {
+        _regenPercent = regenPercent;
+        _regenDelay = regenDelay;
+    }
 
     /// <summary>
     /// Add timer for regen, but almost immediately half health
@@ -18,7 +30,7 @@ public class HealthRegen : ModItemEffectOnEquip
     protected override void ApplyEffect()
     {
         Main.LostDreams.TimeHandler.AddTimer("health-regen-half", 0.05f, false, ApplyHalfHealth);
-        Main.LostDreams.TimeHandler.AddTimer("health-regen", REGEN_DELAY, true, RegenerateHealth);
+        Main.LostDreams.TimeHandler.AddTimer("health-regen", _regenDelay, true, RegenerateHealth);
     }
 
     /// <summary>
@@ -46,10 +58,7 @@ public class HealthRegen : ModItemEffectOnEquip
             return;
 
         //Main.LostDreams.Log("HE501: Regenerating small health");
-        float amount = life.CurrentMax * REGEN_PERCENT;
+        float amount = life.CurrentMax * _regenPercent;
         life.Current += amount;
     }
-
-    private const float REGEN_PERCENT = 0.015f;
-    private const float REGEN_DELAY = 1f;
 }

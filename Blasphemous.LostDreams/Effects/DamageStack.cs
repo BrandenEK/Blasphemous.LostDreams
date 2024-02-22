@@ -23,7 +23,6 @@ internal class DamageStack : IMultiplierEffect
     {
         _maxCharges = maxCharges;
         _maxMultiplier = maxMultiplier;
-        Main.LostDreams.LogError(_maxCharges + " - " +  _maxMultiplier);
 
         Main.LostDreams.EventHandler.OnPlayerDamaged += ResetCharges;
         Main.LostDreams.EventHandler.OnEnemyKilled += IncreaseCharges;
