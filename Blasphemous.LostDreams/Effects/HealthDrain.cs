@@ -10,19 +10,11 @@ namespace Blasphemous.LostDreams.Effects;
 
 public class HealthDrain
 {
-    private const float HIT_HEAL_AMOUNT = 5f;
-    private const float KILL_HEAL_AMOUNT = 15f;
-    private const float DRAIN_DELAY = 2f;
-    private const float DRAIN_AMOUNT = 2f;
-    private const float THORNS_AMOUNT = 10f;
-    private const float CONTACT_AMOUNT = 3f;
-    private const float SPEED_LENGTH = 30f;
-    private const float SPEED_AMOUNT = 30f;
+    private readonly Config _config;
+    private readonly RawBonus _attackSpeedBonus;
 
     private float _currentDrainDelay = 0f;
     private float _currentSpeedDelay = 0f;
-
-    private readonly RawBonus _attackSpeedBonus = new(SPEED_AMOUNT);
 
     public bool ShouldDrainHealth => !IsUsingPrieDieu
         && Main.LostDreams.PenitenceHandler.IsActive("PE_LD01");
@@ -32,8 +24,11 @@ public class HealthDrain
 
     public static bool IsUsingPrieDieu { get; set; }
 
-    public HealthDrain()
+    public HealthDrain(Config config)
     {
+        _config = config;
+        _attackSpeedBonus = new RawBonus(config.LD01_SPEED_AMOUNT);
+
         Main.LostDreams.EventHandler.OnEnemyDamaged += HitEnemy;
         Main.LostDreams.EventHandler.OnEnemyKilled += KillEnemy;
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
@@ -43,7 +38,7 @@ public class HealthDrain
     {
         if (!ShouldDrainHealth || Core.Logic.Penitent == null)
         {
-            _currentDrainDelay = DRAIN_DELAY;
+            _currentDrainDelay = _config.LD01_DRAIN_DELAY;
             _currentSpeedDelay = 0f;
             return;
         }
@@ -54,8 +49,8 @@ public class HealthDrain
 
         if (_currentDrainDelay <= 0)
         {
-            _currentDrainDelay = DRAIN_DELAY;
-            Core.Logic.Penitent.Stats.Life.Current -= DRAIN_AMOUNT;
+            _currentDrainDelay = _config.LD01_DRAIN_DELAY;
+            Core.Logic.Penitent.Stats.Life.Current -= _config.LD01_DRAIN_AMOUNT;
             if (Core.Logic.Penitent.Stats.Life.Current <= 0)
                 Core.Logic.Penitent.KillInstanteneously();
         }
@@ -70,7 +65,7 @@ public class HealthDrain
     {
         if (enable)
         {
-            _currentSpeedDelay = SPEED_LENGTH;
+            _currentSpeedDelay = _config.LD01_SPEED_LENGTH;
             Core.Logic.Penitent.Stats.AttackSpeed.AddRawBonus(_attackSpeedBonus);
         }
         else
@@ -100,7 +95,7 @@ public class HealthDrain
         Main.LostDreams.Log("Applying thorns damage");
         enemy.Damage(new Hit()
         {
-            DamageAmount = THORNS_AMOUNT,
+            DamageAmount = _config.LD01_THORNS_AMOUNT,
             DamageElement = DamageArea.DamageElement.Contact,
             DamageType = DamageArea.DamageType.Normal,
             AttackingEntity = Core.Logic.Penitent.gameObject
@@ -109,19 +104,19 @@ public class HealthDrain
         if (hit.DamageElement == DamageArea.DamageElement.Contact)
         {
             Main.LostDreams.Log("Reducing contact damage");
-            hit.DamageAmount = CONTACT_AMOUNT;
+            hit.DamageAmount = _config.LD01_CONTACT_AMOUNT;
         }
     }
 
     private void HitEnemy(ref Hit hit)
     {
         if (hit.AttackingEntity?.name == "Penitent(Clone)")
-            HealPlayer(HIT_HEAL_AMOUNT);
+            HealPlayer(_config.LD01_HIT_HEAL_AMOUNT);
     }
 
     private void KillEnemy()
     {
-        HealPlayer(KILL_HEAL_AMOUNT);
+        HealPlayer(_config.LD01_KILL_HEAL_AMOUNT);
     }
 }
 

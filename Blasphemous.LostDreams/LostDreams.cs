@@ -44,7 +44,7 @@ public class LostDreams : BlasMod
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502_MAX_CHARGES, cfg.RB502_MAX_MULTIPLIER);
-        HealthDrain = new HealthDrain();
+        HealthDrain = new HealthDrain(cfg);
 
         // Temp !!!
         _regenPercent = cfg.HE501_REGEN_PERCENT;
