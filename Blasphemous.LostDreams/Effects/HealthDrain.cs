@@ -1,5 +1,4 @@
-﻿using Framework.FrameworkCore.Attributes.Logic;
-using Framework.Managers;
+﻿using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
@@ -14,10 +13,9 @@ namespace Blasphemous.LostDreams.Effects;
 public class HealthDrain
 {
     private readonly Config _config;
-    private readonly RawBonus _attackSpeedBonus;
 
     private float _currentDrainDelay = 0f;
-    private float _currentSpeedDelay = 0f;
+    private bool _pauseDrain = false;
 
     /// <summary>
     /// Should drain health if penitence is active and not resting at prie dieu
@@ -36,11 +34,11 @@ public class HealthDrain
     internal HealthDrain(Config config)
     {
         _config = config;
-        _attackSpeedBonus = new RawBonus(config.LD01_SPEED_AMOUNT);
 
         Main.LostDreams.EventHandler.OnEnemyDamaged += HitEnemy;
         Main.LostDreams.EventHandler.OnEnemyKilled += KillEnemy;
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
+        Main.LostDreams.EventHandler.OnExitGame += ResumeDrain;
     }
 
     /// <summary>
@@ -48,17 +46,15 @@ public class HealthDrain
     /// </summary>
     public void Update()
     {
-        if (!ShouldDrainHealth || Core.Logic.Penitent == null)
+        // Reset health drain
+        if (_pauseDrain || !ShouldDrainHealth || Core.Logic.Penitent == null)
         {
             _currentDrainDelay = _config.LD01_DRAIN_DELAY;
-            _currentSpeedDelay = 0f;
             return;
         }
 
+        // Decrease and process health drain
         _currentDrainDelay -= Time.deltaTime;
-        if (_currentSpeedDelay > 0)
-            _currentSpeedDelay -= Time.deltaTime;
-
         if (_currentDrainDelay <= 0)
         {
             _currentDrainDelay = _config.LD01_DRAIN_DELAY;
@@ -66,28 +62,23 @@ public class HealthDrain
             if (Core.Logic.Penitent.Stats.Life.Current <= 0)
                 Core.Logic.Penitent.KillInstanteneously();
         }
-
-        if (_currentSpeedDelay < 0)
-        {
-            ChangeAttackSpeed(false);
-        }
     }
 
     /// <summary>
-    /// Adds or removes the attack speed bonus
+    /// Start a timer based on flask health and pause drain until then
     /// </summary>
-    public void ChangeAttackSpeed(bool enable)
+    public void OnDrinkFlask()
     {
-        if (enable)
-        {
-            _currentSpeedDelay = _config.LD01_SPEED_LENGTH;
-            Core.Logic.Penitent.Stats.AttackSpeed.AddRawBonus(_attackSpeedBonus);
-        }
-        else
-        {
-            _currentSpeedDelay = 0f;
-            Core.Logic.Penitent.Stats.AttackSpeed.RemoveRawBonus(_attackSpeedBonus);
-        }
+        float time = _config.LD01_FLASK_BASE + _config.LD01_FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
+        Main.LostDreams.Log($"Pausing health drain for {time} seconds");
+        Main.LostDreams.TimeHandler.AddTimer("drain-pause", time, false, ResumeDrain);
+        _pauseDrain = true;
+    }
+
+    private void ResumeDrain()
+    {
+        Main.LostDreams.Log("Resuming health drain");
+        _pauseDrain = false;
     }
 
     /// <summary>
@@ -148,7 +139,7 @@ class PrieDieu_Update_Patch
     public static void Postfix(PrieDieu __instance) => HealthDrain.IsUsingPrieDieu = __instance.BeingUsed;
 }
 
-// When using a flask, increase attack speed until time limit or leave room
+// When using a flask, perform special action instead of heal
 [HarmonyPatch(typeof(Healing), "Heal")]
 class Heal_Start_Patch
 {
@@ -158,7 +149,7 @@ class Heal_Start_Patch
             return true;
 
         Core.Logic.Penitent.Stats.Flask.Current--;
-        Main.LostDreams.HealthDrain.ChangeAttackSpeed(true);
+        Main.LostDreams.HealthDrain.OnDrinkFlask();
         return false;
     }
 }

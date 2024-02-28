@@ -28,8 +28,8 @@ public class Config
     public float LD01_THORNS_AMOUNT = 10f;
     /// <summary> Damage applied to the player in place of contact damage </summary>
     public float LD01_CONTACT_AMOUNT = 3f;
-    /// <summary> Length in seconds of the attack speed increase from drinking a flask </summary>
-    public float LD01_SPEED_LENGTH = 30f;
-    /// <summary> Attack speed increase gained from drinking a flask </summary>
-    public float LD01_SPEED_AMOUNT = 30f;
+    /// <summary> Base time that drinking a flask stops health drain </summary>
+    public float LD01_FLASK_BASE = 5f;
+    /// <summary> Additional time per level that drinking a flask stops health drain </summary>
+    public float LD01_FLASK_INCREASE = 1f;
 }
