@@ -2,7 +2,7 @@
 using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
-using Tools.Level.Interactables;
+using System.Linq;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Effects;
@@ -20,16 +20,14 @@ public class HealthDrain
     /// <summary>
     /// Should drain health if penitence is active and not resting at prie dieu
     /// </summary>
-    public bool ShouldDrainHealth => !IsUsingPrieDieu
-        && Main.LostDreams.PenitenceHandler.IsActive("PE_LD01");
+    public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
+        && !DRAIN_BLOCKS.Any(Core.Input.HasBlocker);
 
     /// <summary>
     /// Should apply thorns if penitence is active or bead is equipped
     /// </summary>
     public bool ShouldApplyThorns => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
         || Main.LostDreams.ItemHandler.IsEquipped("RB551");
-
-    internal static bool IsUsingPrieDieu { get; set; }
 
     internal HealthDrain(Config config)
     {
@@ -134,13 +132,11 @@ public class HealthDrain
     {
         HealPlayer(_config.LD01_KILL_HEAL_AMOUNT);
     }
-}
 
-// Control flag for when a prie dieu is in use
-[HarmonyPatch(typeof(PrieDieu), "OnUpdate")]
-class PrieDieu_Update_Patch
-{
-    public static void Postfix(PrieDieu __instance) => HealthDrain.IsUsingPrieDieu = __instance.BeingUsed;
+    private static readonly string[] DRAIN_BLOCKS =
+    {
+        "DIALOG", "CINEMATIC", "INTERACTABLE", "POP_UP"
+    };
 }
 
 // When using a flask, perform special action instead of heal
