@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Framework.FrameworkCore.Attributes;
+using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
@@ -18,7 +19,7 @@ public class HealthDrain
     private bool _pauseDrain = false;
 
     /// <summary>
-    /// Should drain health if penitence is active and not resting at prie dieu
+    /// Should drain health if penitence is active and not resting at prie dieu or other input blocks
     /// </summary>
     public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
         && !DRAIN_BLOCKS.Any(Core.Input.HasBlocker);
@@ -56,9 +57,7 @@ public class HealthDrain
         if (_currentDrainDelay <= 0)
         {
             _currentDrainDelay = _config.LD01_DRAIN_DELAY;
-            Core.Logic.Penitent.Stats.Life.Current -= _config.LD01_DRAIN_AMOUNT;
-            if (Core.Logic.Penitent.Stats.Life.Current <= 0)
-                Core.Logic.Penitent.KillInstanteneously();
+            PerformDrain();
         }
     }
 
@@ -77,6 +76,17 @@ public class HealthDrain
     {
         Main.LostDreams.Log("Resuming health drain");
         _pauseDrain = false;
+    }
+
+    private void PerformDrain()
+    {
+        Life life = Core.Logic.Penitent.Stats.Life;
+        float amount = _config.LD01_DRAIN_BASE + _config.LD01_DRAIN_INCREASE * life.GetUpgrades();
+
+        Main.LostDreams.Log("Draining player by " + amount);
+        life.Current -= amount;
+        if (life.Current <= 0)
+            Core.Logic.Penitent.KillInstanteneously();
     }
 
     /// <summary>

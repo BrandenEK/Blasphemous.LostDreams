@@ -24,8 +24,10 @@ public class Config
     public float LD01_KILL_HEAL_AMOUNT = 15f;
     /// <summary> Number of seconds between each health drain tick </summary>
     public float LD01_DRAIN_DELAY = 2f;
-    /// <summary> Amount of health lost every tick </summary>
-    public float LD01_DRAIN_AMOUNT = 2f;
+    /// <summary> Base amount of health lost every tick </summary>
+    public float LD01_DRAIN_BASE = 2f;
+    /// <summary> Additional amount per health upgrade of health lost every tick </summary>
+    public float LD01_DRAIN_INCREASE = 2f;
     /// <summary> Damage applied to enemies when the player is hit </summary>
     public float LD01_THORNS_AMOUNT = 10f;
     /// <summary> Damage applied to the player in place of contact damage </summary>
