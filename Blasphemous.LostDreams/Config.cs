@@ -16,8 +16,10 @@ public class Config
     /// <summary> How many seconds in between each heal tick </summary>
     public float HE501_REGEN_DELAY = 1f;
 
-    /// <summary> Amount of health restored when hitting an enemy </summary>
-    public float LD01_HIT_HEAL_AMOUNT = 5f;
+    /// <summary> When hitting an enemy with the sword, restore health by damage times this multiplier </summary>
+    public float LD01_SWORD_HEAL_PERCENT = 0.2f;
+    /// <summary> When hitting an enemy with anything else, restore health by this amount </summary>
+    public float LD01_PRAYER_HEAL_AMOUNT = 3f;
     /// <summary> Amount of health restored when killing an enemy </summary>
     public float LD01_KILL_HEAL_AMOUNT = 15f;
     /// <summary> Number of seconds between each health drain tick </summary>

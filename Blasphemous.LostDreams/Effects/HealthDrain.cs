@@ -89,6 +89,7 @@ public class HealthDrain
         if (!ShouldDrainHealth)
             return;
 
+        Main.LostDreams.Log("Healing player by " + amount);
         Core.Logic.Penitent.Stats.Life.Current += amount;
     }
 
@@ -122,8 +123,11 @@ public class HealthDrain
 
     private void HitEnemy(ref Hit hit)
     {
-        if (hit.AttackingEntity?.name == "Penitent(Clone)")
-            HealPlayer(_config.LD01_HIT_HEAL_AMOUNT);
+        float healAmount = hit.AttackingEntity?.name == "Penitent(Clone)"
+            ? hit.DamageAmount * _config.LD01_SWORD_HEAL_PERCENT
+            : _config.LD01_PRAYER_HEAL_AMOUNT;
+
+        HealPlayer(healAmount);
     }
 
     private void KillEnemy()
