@@ -1,25 +1,34 @@
 ﻿using Framework.Managers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
 
 internal class TimeHandler
 {
-    private readonly Dictionary<string, Timer> _timers = new();
-    private readonly List<string> _toClear = new();
+    private readonly Dictionary<string, ITimeable> _timers = new();
 
-    public void AddTimer(string id, float length, bool repeat, Action callback)
+    public void AddCountdown(string id, float length, Action onFinish)
+    {
+        AddTimeable(id, new Countdown(length, onFinish));
+    }
+
+    public void AddTicker(string id, float length, bool permanent, Action onTick)
+    {
+        AddTimeable(id, new Ticker(length, permanent, onTick));
+    }
+
+    private void AddTimeable(string id, ITimeable timeable)
     {
         if (_timers.ContainsKey(id))
         {
             Main.LostDreams.LogError($"A timer with id {id} already exists.");
             return;
         }
-
         Main.LostDreams.Log($"Adding timer: {id}");
-        _timers.Add(id, new Timer(length, repeat, callback));
+        _timers.Add(id, timeable);
     }
 
     public void RemoveTimer(string id)
@@ -28,62 +37,77 @@ internal class TimeHandler
         _timers.Remove(id);
     }
 
+    private void RemoveTimeables(Func<ITimeable, bool> predicate)
+    {
+        var toRemove = _timers.Where(x => predicate(x.Value)).ToArray();
+        foreach (var t in toRemove)
+        {
+            Main.LostDreams.Log($"Stopping timer: {t.Key}");
+            _timers.Remove(t.Key);
+        }
+    }
+
     public void Update()
     {
-        if (Core.Logic.Penitent == null)
+        if (!Main.LostDreams.LoadStatus.GameSceneLoaded || Core.Logic.Penitent == null)
             return;
 
         // Update each timer
-        foreach (var timer in _timers)
-        {
-            if (timer.Value.OnUpdate())
-                _toClear.Add(timer.Key);
-        }
+        foreach (var timer in _timers.Values)
+            timer.OnUpdate();
 
-        if (_toClear.Count == 0)
-            return;
-
-        // Remove all timers that dont repeat
-        foreach (var id in _toClear)
-        {
-            Main.LostDreams.Log($"Stopping timer: {id}");
-            _timers.Remove(id);
-        }
-        _toClear.Clear();
+        // Remove all unecessary timers
+        RemoveTimeables(x => x.ShouldBeRemoved);
     }
 
     public void Reset()
     {
-        Main.LostDreams.Log("Clearing all timers");
-        _timers.Clear();
-        _toClear.Clear();
+        RemoveTimeables(x => !x.IsPermanent);
     }
 
-    class Timer
+    class Countdown(float length, Action onFinish) : ITimeable
     {
-        private readonly Action _callback;
-        private readonly float _length;
-        private readonly bool _repeat;
+        private readonly Action _onFinish = onFinish;
+        private readonly float _finishTime = Time.time + length;
 
-        private float _nextActivation;
+        public bool ShouldBeRemoved { get; private set; } = false;
+        public bool IsPermanent => false;
 
-        public Timer(float length, bool repeat, Action callback)
+        public void OnUpdate()
         {
-            _length = length;
-            _repeat = repeat;
-            _callback = callback;
+            if (Time.time < _finishTime)
+                return;
 
-            _nextActivation = Time.time + _length;
+            ShouldBeRemoved = true;
+            _onFinish();
         }
+    }
 
-        public bool OnUpdate()
+    class Ticker(float length, bool permanent, Action onTick) : ITimeable
+    {
+        private readonly Action _onTick = onTick;
+        private readonly float _length = length;
+
+        private float _nextActivation = Time.time + length;
+
+        public bool ShouldBeRemoved => false;
+        public bool IsPermanent => permanent;
+
+        public void OnUpdate()
         {
             if (Time.time < _nextActivation)
-                return false;
+                return;
 
             _nextActivation = Time.time + _length;
-            _callback();
-            return !_repeat;
+            _onTick();
         }
+    }
+
+    interface ITimeable
+    {
+        bool ShouldBeRemoved { get; }
+        bool IsPermanent { get; }
+
+        void OnUpdate();
     }
 }

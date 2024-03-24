@@ -18,6 +18,8 @@ public class HealthDrain
     private float _currentDrainDelay = 0f;
     private bool _pauseDrain = false;
 
+    private bool _reverse = false;
+
     /// <summary>
     /// Should drain health if penitence is active and not resting at prie dieu or other input blocks
     /// </summary>
@@ -38,6 +40,8 @@ public class HealthDrain
         Main.LostDreams.EventHandler.OnEnemyKilled += KillEnemy;
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
         Main.LostDreams.EventHandler.OnExitGame += ResumeDrain;
+
+        Main.LostDreams.TimeHandler.AddTicker("drain-tick", _config.LD01_DRAIN_DELAY, true, PerformDrain);
     }
 
     /// <summary>
@@ -45,20 +49,20 @@ public class HealthDrain
     /// </summary>
     public void Update()
     {
-        // Reset health drain
-        if (_pauseDrain || !ShouldDrainHealth || Core.Logic.Penitent == null)
-        {
-            _currentDrainDelay = _config.LD01_DRAIN_DELAY;
-            return;
-        }
+        //// Reset health drain
+        //if (_pauseDrain || !ShouldDrainHealth || Core.Logic.Penitent == null)
+        //{
+        //    _currentDrainDelay = _config.LD01_DRAIN_DELAY;
+        //    return;
+        //}
 
-        // Decrease and process health drain
-        _currentDrainDelay -= Time.deltaTime;
-        if (_currentDrainDelay <= 0)
-        {
-            _currentDrainDelay = _config.LD01_DRAIN_DELAY;
-            PerformDrain();
-        }
+        //// Decrease and process health drain
+        //_currentDrainDelay -= Time.deltaTime;
+        //if (_currentDrainDelay <= 0)
+        //{
+        //    _currentDrainDelay = _config.LD01_DRAIN_DELAY;
+        //    PerformDrain();
+        //}
     }
 
     /// <summary>
@@ -68,20 +72,27 @@ public class HealthDrain
     {
         float time = _config.LD01_FLASK_BASE + _config.LD01_FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
         Main.LostDreams.Log($"Pausing health drain for {time} seconds");
-        Main.LostDreams.TimeHandler.AddTimer("drain-pause", time, false, ResumeDrain);
+        Main.LostDreams.TimeHandler.AddCountdown("drain-pause", time, ResumeDrain);
         _pauseDrain = true;
+        _reverse = true;
     }
 
     private void ResumeDrain()
     {
         Main.LostDreams.Log("Resuming health drain");
         _pauseDrain = false;
+        _reverse = false;
     }
 
     private void PerformDrain()
     {
+        if (!ShouldDrainHealth)
+            return;
+
         Life life = Core.Logic.Penitent.Stats.Life;
         float amount = _config.LD01_DRAIN_BASE + _config.LD01_DRAIN_INCREASE * life.GetUpgrades();
+        if (_reverse)
+            amount *= -1;
 
         Main.LostDreams.Log("Draining player by " + amount);
         life.Current -= amount;
