@@ -4,6 +4,7 @@ using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Penitences;
+using Blasphemous.LostDreams.Timing;
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;
 using Blasphemous.Framework.Levels;
