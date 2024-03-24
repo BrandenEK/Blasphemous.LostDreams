@@ -69,9 +69,6 @@ public class LostDreams : BlasMod
     protected override void OnUpdate()
     {
         TimeHandler.Update();
-
-        // Update special effects
-        HealthDrain.Update();
     }
 
     /// <summary>

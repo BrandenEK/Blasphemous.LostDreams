@@ -4,7 +4,6 @@ using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using System.Linq;
-using UnityEngine;
 
 namespace Blasphemous.LostDreams.Effects;
 
@@ -14,9 +13,6 @@ namespace Blasphemous.LostDreams.Effects;
 public class HealthDrain
 {
     private readonly Config _config;
-
-    private float _currentDrainDelay = 0f;
-    private bool _pauseDrain = false;
 
     private bool _reverse = false;
 
@@ -45,42 +41,19 @@ public class HealthDrain
     }
 
     /// <summary>
-    /// Processes the health drain cycle and speed cycle
-    /// </summary>
-    public void Update()
-    {
-        //// Reset health drain
-        //if (_pauseDrain || !ShouldDrainHealth || Core.Logic.Penitent == null)
-        //{
-        //    _currentDrainDelay = _config.LD01_DRAIN_DELAY;
-        //    return;
-        //}
-
-        //// Decrease and process health drain
-        //_currentDrainDelay -= Time.deltaTime;
-        //if (_currentDrainDelay <= 0)
-        //{
-        //    _currentDrainDelay = _config.LD01_DRAIN_DELAY;
-        //    PerformDrain();
-        //}
-    }
-
-    /// <summary>
-    /// Start a timer based on flask health and pause drain until then
+    /// Start a timer based on flask health and reverse drain until then
     /// </summary>
     public void OnDrinkFlask()
     {
         float time = _config.LD01_FLASK_BASE + _config.LD01_FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
-        Main.LostDreams.Log($"Pausing health drain for {time} seconds");
-        Main.LostDreams.TimeHandler.AddCountdown("drain-pause", time, ResumeDrain);
-        _pauseDrain = true;
+        Main.LostDreams.Log($"Reversing health drain for {time} seconds");
+        Main.LostDreams.TimeHandler.AddCountdown("drain-reverse", time, ResumeDrain);
         _reverse = true;
     }
 
     private void ResumeDrain()
     {
         Main.LostDreams.Log("Resuming health drain");
-        _pauseDrain = false;
         _reverse = false;
     }
 
