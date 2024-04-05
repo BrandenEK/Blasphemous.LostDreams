@@ -116,15 +116,21 @@ public class HealthDrain
     private void HitEnemy(ref Hit hit)
     {
         float healAmount = hit.AttackingEntity?.name == "Penitent(Clone)"
-            ? hit.DamageAmount * _config.LD01_SWORD_HEAL_PERCENT
-            : _config.LD01_PRAYER_HEAL_AMOUNT;
+            ? hit.DamageAmount * ApplyHealthModifier(_config.LD01_HEAL_SWORD_BASE, _config.LD01_HEAL_SWORD_INCREASE)
+            : ApplyHealthModifier(_config.LD01_HEAL_PRAYER_BASE, _config.LD01_HEAL_PRAYER_INCREASE);
 
         HealPlayer(healAmount);
     }
 
     private void KillEnemy()
     {
-        HealPlayer(_config.LD01_KILL_HEAL_AMOUNT);
+        float amount = ApplyHealthModifier(_config.LD01_HEAL_KILL_BASE, _config.LD01_HEAL_KILL_INCREASE);
+        HealPlayer(amount);
+    }
+
+    private float ApplyHealthModifier(float baseAmount, float increaseAmount)
+    {
+        return baseAmount + increaseAmount * (Core.Logic.Penitent?.Stats.Life.GetUpgrades() ?? 0);
     }
 
     private static readonly string[] DRAIN_BLOCKS =
