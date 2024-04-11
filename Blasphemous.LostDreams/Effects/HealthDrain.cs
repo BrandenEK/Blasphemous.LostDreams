@@ -4,6 +4,7 @@ using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Blasphemous.LostDreams.Effects;
 
@@ -20,7 +21,7 @@ public class HealthDrain
     /// Should drain health if penitence is active and not resting at prie dieu or other input blocks
     /// </summary>
     public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
-        && !Core.Input.HasBlocker("LD01");
+        && !Core.Input.HasBlocker("LD01") && !BLOCKED_SCENES.Contains(Core.LevelManager.currentLevel?.LevelName);
 
     /// <summary>
     /// Should apply thorns if penitence is active or bead is equipped
@@ -132,6 +133,11 @@ public class HealthDrain
     {
         return baseAmount + increaseAmount * (Core.Logic.Penitent?.Stats.Life.GetUpgrades() ?? 0);
     }
+
+    private static readonly string[] BLOCKED_SCENES =
+    [
+        "D07Z01S03", "D14Z01S01", "D14Z02S01", "D14Z03S01",
+    ];
 }
 
 // When using a flask, perform special action instead of heal
