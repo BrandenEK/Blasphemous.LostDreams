@@ -3,7 +3,7 @@ using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace Blasphemous.LostDreams.Effects;
 
@@ -20,7 +20,7 @@ public class HealthDrain
     /// Should drain health if penitence is active and not resting at prie dieu or other input blocks
     /// </summary>
     public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
-        && !DRAIN_BLOCKS.Any(Core.Input.HasBlocker);
+        && !Core.Input.HasBlocker("LD01");
 
     /// <summary>
     /// Should apply thorns if penitence is active or bead is equipped
@@ -132,11 +132,6 @@ public class HealthDrain
     {
         return baseAmount + increaseAmount * (Core.Logic.Penitent?.Stats.Life.GetUpgrades() ?? 0);
     }
-
-    private static readonly string[] DRAIN_BLOCKS =
-    {
-        "DIALOG", "CINEMATIC", "INTERACTABLE", "POP_UP"
-    };
 }
 
 // When using a flask, perform special action instead of heal
@@ -151,5 +146,18 @@ class Heal_Start_Patch
         Core.Logic.Penitent.Stats.Flask.Current--;
         Main.LostDreams.HealthDrain.OnDrinkFlask();
         return false;
+    }
+}
+
+// When checking for LD01 input, block everything unless only player logic
+[HarmonyPatch(typeof(InputManager), nameof(InputManager.HasBlocker))]
+class Input_Block_Patch
+{
+    public static void Postfix(string name, List<string> ___inputBlockers, ref bool __result)
+    {
+        if (name != "LD01")
+            return;
+
+        __result = ___inputBlockers.Count > 1 || ___inputBlockers.Count == 1 && ___inputBlockers[0] != "PLAYER_LOGIC";
     }
 }
