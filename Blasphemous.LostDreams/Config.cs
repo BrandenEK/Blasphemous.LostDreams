@@ -32,19 +32,19 @@ public class Config
     public float LD01_HEAL_KILL_INCREASE = 2.5f;
 
     /// <summary> Base time that drinking a flask stops health drain </summary>
-    public float LD01_FLASK_BASE = 5f;
+    public float LD01_FLASK_BASE = 10f;
     /// <summary> Additional time per level that drinking a flask stops health drain </summary>
-    public float LD01_FLASK_INCREASE = 1f;
+    public float LD01_FLASK_INCREASE = 6f;
 
     /// <summary> Number of seconds between each health drain tick </summary>
     public float LD01_DRAIN_DELAY = 2f;
     /// <summary> Base amount of health lost every tick </summary>
-    public float LD01_DRAIN_BASE = 2f;
+    public float LD01_DRAIN_BASE = 4f;
     /// <summary> Additional amount per health upgrade of health lost every tick </summary>
-    public float LD01_DRAIN_INCREASE = 2f;
+    public float LD01_DRAIN_INCREASE = 0.75f;
 
     /// <summary> Damage applied to enemies when the player is hit </summary>
-    public float LD01_THORNS_AMOUNT = 10f;
+    public float LD01_THORNS_AMOUNT = 40f;
     /// <summary> Damage applied to the player in place of contact damage </summary>
     public float LD01_CONTACT_AMOUNT = 3f;
 }
