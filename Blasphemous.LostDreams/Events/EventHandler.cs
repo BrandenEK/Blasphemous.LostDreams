@@ -1,5 +1,4 @@
-﻿using Framework.Managers;
-using Gameplay.GameControllers.Entities;
+﻿using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent;
 
 namespace Blasphemous.LostDreams.Events;
@@ -31,9 +30,6 @@ internal class EventHandler
 
     public void DamagePlayer(ref Hit hit)
     {
-        if (Core.Logic.Penitent.Status.Unattacable)
-            return;
-
         OnPlayerDamaged?.Invoke(ref hit);
     }
 
