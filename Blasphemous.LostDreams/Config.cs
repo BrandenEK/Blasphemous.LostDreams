@@ -13,6 +13,6 @@ public class Config
     /// <summary> Properties for HE501 </summary>
     public HE501Config HE501 { get; set; } = new();
 
-    /// <summary> Properties for LD01 </summary>
-    public LD01Config LD01 { get; set; } = new();
+    /// <summary> Properties for PE501 </summary>
+    public PE501Config PE501 { get; set; } = new();
 }

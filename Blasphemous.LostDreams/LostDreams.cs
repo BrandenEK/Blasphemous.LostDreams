@@ -45,7 +45,7 @@ public class LostDreams : BlasMod
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502);
-        HealthDrain = new HealthDrain(cfg.LD01);
+        HealthDrain = new HealthDrain(cfg.PE501);
 
         // Temp !!!
         _tempHE501 = cfg.HE501;
@@ -89,7 +89,7 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardQuestItem("QI502", false));
 
         // Penitences
-        provider.RegisterPenitence(new StandardPenitence("PE_LD01", "RB551"));
+        provider.RegisterPenitence(new StandardPenitence("PE501", "RB551"));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(

@@ -9,27 +9,27 @@ using System.Linq;
 namespace Blasphemous.LostDreams.Effects;
 
 /// <summary>
-/// Handles LD01
+/// Handles PE501
 /// </summary>
 public class HealthDrain
 {
-    private readonly LD01Config _config;
+    private readonly PE501Config _config;
 
     private bool _reverse = false;
 
     /// <summary>
     /// Should drain health if penitence is active and not resting at prie dieu or other input blocks
     /// </summary>
-    public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
+    public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE501")
         && !Core.Input.HasBlocker("LD01") && !BLOCKED_SCENES.Contains(Core.LevelManager.currentLevel?.LevelName);
 
     /// <summary>
     /// Should apply thorns if penitence is active or bead is equipped
     /// </summary>
-    public bool ShouldApplyThorns => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
+    public bool ShouldApplyThorns => Main.LostDreams.PenitenceHandler.IsActive("PE501")
         || Main.LostDreams.ItemHandler.IsEquipped("RB551");
 
-    internal HealthDrain(LD01Config config)
+    internal HealthDrain(PE501Config config)
     {
         _config = config;
 
@@ -140,8 +140,8 @@ public class HealthDrain
     ];
 }
 
-/// <summary> Properties for LD01 </summary>
-public class LD01Config
+/// <summary> Properties for PE501 </summary>
+public class PE501Config
 {
     /// <summary> Base damage multiplier to heal after sword hit </summary>
     public float HEAL_SWORD_BASE = 0.1f;
