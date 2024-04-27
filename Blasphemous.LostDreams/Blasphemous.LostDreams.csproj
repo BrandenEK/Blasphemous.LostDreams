@@ -41,6 +41,9 @@
       <Resources Include="$(SolutionDir)\resources\**\*.*" />
     </ItemGroup>
     
+    <!-- Clear export folder -->
+    <RemoveDir Directories="$(ExportFolder)" />
+    
     <!-- Copy plugin & resources to dev folder -->
     <Copy SourceFiles="@(Resources)" DestinationFolder="$(ExportFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(PluginDll)" DestinationFolder="$(ExportFolder)\plugins" SkipUnchangedFiles="true" />
@@ -49,7 +52,7 @@
     <Copy SourceFiles="@(Resources)" DestinationFolder="$(DevFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(PluginDll)" DestinationFolder="$(DevFolder)\plugins" SkipUnchangedFiles="true" />
     
-    <!-- Zip mod for export -->
+    <!-- Zip export folder -->
     <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)\..\$(TargetName).zip" Overwrite="true" />
 
   </Target>
