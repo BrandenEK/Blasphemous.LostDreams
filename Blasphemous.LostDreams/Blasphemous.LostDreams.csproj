@@ -22,7 +22,7 @@
   <ItemGroup>
     <PackageReference Include="Blasphemous.Framework.Items" Version="0.1.0" />
     <PackageReference Include="Blasphemous.Framework.Levels" Version="0.1.0" />
-    <PackageReference Include="Blasphemous.Framework.Penitence" Version="0.1.0" />
+    <PackageReference Include="Blasphemous.Framework.Penitence" Version="0.2.0" />
     <PackageReference Include="Blasphemous.ModdingAPI" Version="2.1.0" />
     <PackageReference Include="Blasphemous.ModdingReferences" Version="4.0.67" />
   </ItemGroup>

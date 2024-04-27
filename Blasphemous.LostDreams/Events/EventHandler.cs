@@ -1,5 +1,4 @@
-﻿using Framework.Managers;
-using Gameplay.GameControllers.Entities;
+﻿using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent;
 
 namespace Blasphemous.LostDreams.Events;
@@ -8,13 +7,18 @@ internal class EventHandler
 {
     public delegate void EventDelegate();
 
-    public event EventDelegate OnPlayerKilled;
-    public event EventDelegate OnEnemyKilled;
-    public event EventDelegate OnPlayerDamaged;
-    public event EventDelegate OnEnemyDamaged;
+    public delegate void StandardEvent();
+    public delegate void HitEvent(ref Hit hit);
+    public delegate void EntityEvent(Entity entity);
 
-    public event EventDelegate OnUsePrieDieu;
-    public event EventDelegate OnExitGame;
+    public event StandardEvent OnUsePrieDieu;
+    public event StandardEvent OnExitGame;
+
+    public event HitEvent OnPlayerDamaged;
+    public event HitEvent OnEnemyDamaged;
+
+    public event StandardEvent OnPlayerKilled;
+    public event StandardEvent OnEnemyKilled;
 
     public void KillEntity(Entity entity)
     {
@@ -24,17 +28,14 @@ internal class EventHandler
             OnEnemyKilled?.Invoke();
     }
 
-    public void DamagePlayer()
+    public void DamagePlayer(ref Hit hit)
     {
-        if (Core.Logic.Penitent.Status.Unattacable)
-            return;
-
-        OnPlayerDamaged?.Invoke();
+        OnPlayerDamaged?.Invoke(ref hit);
     }
 
-    public void DamageEnemy()
+    public void DamageEnemy(ref Hit hit)
     {
-        OnEnemyDamaged?.Invoke();
+        OnEnemyDamaged?.Invoke(ref hit);
     }
 
     public void UsePrieDieu()

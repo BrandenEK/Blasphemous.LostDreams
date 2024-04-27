@@ -3,11 +3,14 @@ using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
+using Blasphemous.LostDreams.Penitences;
+using Blasphemous.LostDreams.Timing;
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;
 using Blasphemous.Framework.Levels;
 using Blasphemous.Framework.Levels.Loaders;
 using Blasphemous.Framework.Levels.Modifiers;
+using Blasphemous.Framework.Penitence;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
@@ -23,11 +26,13 @@ public class LostDreams : BlasMod
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal ItemHandler ItemHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
+    internal PenitenceHandler PenitenceHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
 
     // Special effects
     internal IToggleEffect DamageRemoval { get; private set; }
     internal IMultiplierEffect DamageStack { get; private set; }
+    internal HealthDrain HealthDrain { get; private set; }
 
     /// <summary>
     /// Register handlers and create special effects
@@ -40,6 +45,7 @@ public class LostDreams : BlasMod
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502_MAX_CHARGES, cfg.RB502_MAX_MULTIPLIER);
+        HealthDrain = new HealthDrain(cfg);
 
         // Temp !!!
         _regenPercent = cfg.HE501_REGEN_PERCENT;
@@ -75,11 +81,16 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardRosaryBead("RB502", true));
         provider.RegisterItem(new StandardRosaryBead("RB503", true));
 
+        provider.RegisterItem(new StandardRosaryBead("RB551", true));
+
         // Sword hearts
         provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_regenPercent, _regenDelay)));
 
         // Quest items
         provider.RegisterItem(new StandardQuestItem("QI502", false));
+
+        // Penitences
+        provider.RegisterPenitence(new StandardPenitence("PE_LD01", "RB551"));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(

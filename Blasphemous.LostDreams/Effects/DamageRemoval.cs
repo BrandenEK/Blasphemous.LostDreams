@@ -1,7 +1,6 @@
 ﻿using Framework.Managers;
 using Gameplay.GameControllers.Effects.Player.Healing;
 using Gameplay.GameControllers.Entities;
-using Gameplay.GameControllers.Penitent.Damage;
 using HarmonyLib;
 using System.Collections;
 using UnityEngine;
@@ -22,7 +21,7 @@ internal class DamageRemoval : IToggleEffect
         Main.LostDreams.EventHandler.OnPlayerKilled += RegainDamageRemoval;
         Main.LostDreams.EventHandler.OnUsePrieDieu += RegainDamageRemoval;
         Main.LostDreams.EventHandler.OnExitGame += RegainDamageRemoval;
-        Main.LostDreams.EventHandler.OnPlayerDamaged += UseDamageRemoval;
+        Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
     }
 
     private void RegainDamageRemoval()
@@ -30,30 +29,22 @@ internal class DamageRemoval : IToggleEffect
         _alreadyUsed = false;
     }
 
-    private void UseDamageRemoval()
+    private void PlayerTakeDamage(ref Hit hit)
     {
+        if (!Main.LostDreams.DamageRemoval.IsActive)
+            return;
+
+        Main.LostDreams.Log("RB503: Preventing damage");
+        hit.DamageAmount = 0;
         _alreadyUsed = true;
+
+        Healing_Start_Patch.HealingFlag = true;
+        Object.FindObjectOfType<HealingAura>()?.StartAura(Core.Logic.Penitent.Status.Orientation);
+        Core.Logic.Penitent.Audio.PrayerInvincibility();
     }
 }
 
-[HarmonyPatch(typeof(PenitentDamageArea), nameof(PenitentDamageArea.TakeDamage))]
-class Penitent_DamageRemoval_Patch
-{
-    [HarmonyPriority(Priority.High)]
-    public static void Prefix(ref Hit hit)
-    {
-        if (Main.LostDreams.DamageRemoval.IsActive && !Core.Logic.Penitent.Status.Unattacable)
-        {
-            Main.LostDreams.Log("RB503: Preventing damage");
-            hit.DamageAmount = 0;
-
-            Healing_Start_Patch.HealingFlag = true;
-            Object.FindObjectOfType<HealingAura>()?.StartAura(Core.Logic.Penitent.Status.Orientation);
-            Core.Logic.Penitent.Audio.PrayerInvincibility();
-        }
-    }
-}
-
+// Show blue aura when damage is prevented
 [HarmonyPatch(typeof(HealingAura), "StartAura")]
 class Healing_Start_Patch
 {
