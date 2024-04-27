@@ -17,7 +17,7 @@ internal class StandardPenitence(string id, string item) : ModPenitenceWithBead
     {
         get
         {
-            Main.LostDreams.FileHandler.LoadDataAsVariableSpritesheet(Id + ".png",
+            Main.LostDreams.FileHandler.LoadDataAsVariableSpritesheet($"penitences/{Id}.png",
             [
                 new Rect(0, 0, 94, 110),
                 new Rect(95, 1, 92, 108),
