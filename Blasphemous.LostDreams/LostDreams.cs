@@ -84,6 +84,7 @@ public class LostDreams : BlasMod
 
         // Sword hearts
         provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_tempHE501)));
+        provider.RegisterItem(new StandardSwordHeart("HE502", true));
 
         // Quest items
         provider.RegisterItem(new StandardQuestItem("QI502", false));
