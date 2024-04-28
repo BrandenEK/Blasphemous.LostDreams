@@ -16,9 +16,9 @@ RB551.n: Reliquary of Writhing Thorns
 RB551.d: It retains in its bosom the mark of a fulfilled penance. It pierces the heart of its wearer with the scars of twisting pain, causing enemies to take damage upon striking you.
 RB551.l: To obtain forgiveness for the sin committed, the repentant must roll their body in a bed of thorns to combat the inherent drive to sin. Only the pain of those lacerations can open up the pores of one’s flesh and allow their blood to leak out, taking the inherent sin with it.
 
-PR501.n: Enemy swap
-PR501.d: desc
-PR501.l: lore
+PR501.n: Fandango of Atonement
+PR501.d: A plea to the frozen winds for safety. Causes the Penitent One to switch places with a nearby enemy.
+PR501.l: A plea to thee, cold winds beyond\nWhisk me away from my demise\nA plea to thee, cold winds beyond\nTurn my luck around to face me\nAnd take me away from the impious
 
 HE501.n: Piercing Heart of Exalted Pain
 HE501.d: Sword core, sharp to the touch. Can be inserted into Mea Culpa. This thorny briar seeks to bury itself into human flesh, increasing the wielder's pain tolerance at the cost of constant agony. Gives the Penitent One natural health regeneration, but cuts his total health in half.
