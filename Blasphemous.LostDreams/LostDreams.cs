@@ -47,7 +47,7 @@ public class LostDreams : BlasMod
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502);
-        HE502 = new HE502();
+        HE502 = new HE502(cfg.HE502);
         HealthDrain = new HealthDrain(cfg.PE501);
 
         // Temp !!!

@@ -1,4 +1,5 @@
 ﻿using Blasphemous.LostDreams.Effects;
+using Blasphemous.LostDreams.Swords;
 
 namespace Blasphemous.LostDreams;
 
@@ -12,6 +13,9 @@ public class Config
 
     /// <summary> Properties for HE501 </summary>
     public HE501Config HE501 { get; set; } = new();
+
+    /// <summary> Properties for HE502 </summary>
+    public HE502.Config HE502 { get; set; } = new();
 
     /// <summary> Properties for PE501 </summary>
     public PE501Config PE501 { get; set; } = new();
