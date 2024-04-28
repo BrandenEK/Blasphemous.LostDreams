@@ -80,6 +80,8 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardRosaryBead("RB502", true));
         provider.RegisterItem(new StandardRosaryBead("RB503", true));
 
+        provider.RegisterItem(new StandardRosaryBead("RB506", true));
+
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
 
         // Sword hearts
