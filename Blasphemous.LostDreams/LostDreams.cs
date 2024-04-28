@@ -12,6 +12,7 @@ using Blasphemous.Framework.Levels.Loaders;
 using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.Framework.Penitence;
 using UnityEngine;
+using Blasphemous.LostDreams.Swords;
 
 namespace Blasphemous.LostDreams;
 
@@ -32,6 +33,7 @@ public class LostDreams : BlasMod
     // Special effects
     internal IToggleEffect DamageRemoval { get; private set; }
     internal IMultiplierEffect DamageStack { get; private set; }
+    internal IToggleEffect HE502 { get; private set; }
     internal HealthDrain HealthDrain { get; private set; }
 
     /// <summary>
@@ -45,6 +47,7 @@ public class LostDreams : BlasMod
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502);
+        HE502 = new HE502();
         HealthDrain = new HealthDrain(cfg.PE501);
 
         // Temp !!!
