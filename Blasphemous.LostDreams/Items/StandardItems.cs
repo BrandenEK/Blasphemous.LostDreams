@@ -20,7 +20,7 @@ internal class StandardRosaryBead : ModRosaryBead
 
     protected override string Lore => Main.LostDreams.LocalizationHandler.Localize(Id + ".l");
 
-    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out Sprite picture) ? picture : null;
+    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite($"beads/{Id}.png", out Sprite picture) ? picture : null;
 
     protected override bool CarryOnStart => false;
 
@@ -48,7 +48,7 @@ internal class StandardSwordHeart : ModSwordHeart
 
     protected override string Lore => Main.LostDreams.LocalizationHandler.Localize(Id + ".l");
 
-    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out Sprite picture) ? picture : null;
+    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite($"swords/{Id}.png", out Sprite picture) ? picture : null;
 
     protected override bool CarryOnStart => false;
 
@@ -75,7 +75,7 @@ internal class StandardQuestItem : ModQuestItem
 
     protected override string Lore => Main.LostDreams.LocalizationHandler.Localize(Id + ".l");
 
-    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite(Id + ".png", out Sprite picture) ? picture : null;
+    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite($"questitems/{Id}.png", out Sprite picture) ? picture : null;
 
     protected override bool CarryOnStart => false;
 

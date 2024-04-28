@@ -44,12 +44,11 @@ public class LostDreams : BlasMod
         ConfigHandler.Save(cfg);
 
         DamageRemoval = new DamageRemoval();
-        DamageStack = new DamageStack(cfg.RB502_MAX_CHARGES, cfg.RB502_MAX_MULTIPLIER);
-        HealthDrain = new HealthDrain(cfg);
+        DamageStack = new DamageStack(cfg.RB502);
+        HealthDrain = new HealthDrain(cfg.PE501);
 
         // Temp !!!
-        _regenPercent = cfg.HE501_REGEN_PERCENT;
-        _regenDelay = cfg.HE501_REGEN_DELAY;
+        _tempHE501 = cfg.HE501;
     }
 
     /// <summary>
@@ -84,13 +83,13 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
 
         // Sword hearts
-        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_regenPercent, _regenDelay)));
+        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_tempHE501)));
 
         // Quest items
         provider.RegisterItem(new StandardQuestItem("QI502", false));
 
         // Penitences
-        provider.RegisterPenitence(new StandardPenitence("PE_LD01", "RB551"));
+        provider.RegisterPenitence(new StandardPenitence("PE501", "RB551"));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
@@ -105,5 +104,5 @@ public class LostDreams : BlasMod
     }
 
     // Temp !!!
-    private float _regenPercent, _regenDelay;
+    private HE501Config _tempHE501;
 }

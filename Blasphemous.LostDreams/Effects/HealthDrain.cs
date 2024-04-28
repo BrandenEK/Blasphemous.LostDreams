@@ -9,27 +9,27 @@ using System.Linq;
 namespace Blasphemous.LostDreams.Effects;
 
 /// <summary>
-/// Handles LD01
+/// Handles PE501
 /// </summary>
 public class HealthDrain
 {
-    private readonly Config _config;
+    private readonly PE501Config _config;
 
     private bool _reverse = false;
 
     /// <summary>
     /// Should drain health if penitence is active and not resting at prie dieu or other input blocks
     /// </summary>
-    public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
+    public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE501")
         && !Core.Input.HasBlocker("LD01") && !BLOCKED_SCENES.Contains(Core.LevelManager.currentLevel?.LevelName);
 
     /// <summary>
     /// Should apply thorns if penitence is active or bead is equipped
     /// </summary>
-    public bool ShouldApplyThorns => Main.LostDreams.PenitenceHandler.IsActive("PE_LD01")
+    public bool ShouldApplyThorns => Main.LostDreams.PenitenceHandler.IsActive("PE501")
         || Main.LostDreams.ItemHandler.IsEquipped("RB551");
 
-    internal HealthDrain(Config config)
+    internal HealthDrain(PE501Config config)
     {
         _config = config;
 
@@ -38,7 +38,7 @@ public class HealthDrain
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
         Main.LostDreams.EventHandler.OnExitGame += ResumeDrain;
 
-        Main.LostDreams.TimeHandler.AddTicker("drain-tick", _config.LD01_DRAIN_DELAY, true, PerformDrain);
+        Main.LostDreams.TimeHandler.AddTicker("drain-tick", _config.DRAIN_DELAY, true, PerformDrain);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class HealthDrain
     /// </summary>
     public void OnDrinkFlask()
     {
-        float time = _config.LD01_FLASK_BASE + _config.LD01_FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
+        float time = _config.FLASK_BASE + _config.FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
         Main.LostDreams.Log($"Reversing health drain for {time} seconds");
         Main.LostDreams.TimeHandler.AddCountdown("drain-reverse", time, ResumeDrain);
         _reverse = true;
@@ -64,7 +64,7 @@ public class HealthDrain
             return;
 
         Life life = Core.Logic.Penitent.Stats.Life;
-        float amount = _config.LD01_DRAIN_BASE + _config.LD01_DRAIN_INCREASE * life.GetUpgrades();
+        float amount = _config.DRAIN_BASE + _config.DRAIN_INCREASE * life.GetUpgrades();
         if (_reverse)
             amount *= -1;
 
@@ -101,7 +101,7 @@ public class HealthDrain
         Main.LostDreams.Log("Applying thorns damage");
         enemy.Damage(new Hit()
         {
-            DamageAmount = _config.LD01_THORNS_AMOUNT,
+            DamageAmount = _config.THORNS_AMOUNT,
             DamageElement = DamageArea.DamageElement.Contact,
             DamageType = DamageArea.DamageType.Normal,
             AttackingEntity = Core.Logic.Penitent.gameObject
@@ -110,22 +110,22 @@ public class HealthDrain
         if (hit.DamageElement == DamageArea.DamageElement.Contact)
         {
             Main.LostDreams.Log("Reducing contact damage");
-            hit.DamageAmount = _config.LD01_CONTACT_AMOUNT;
+            hit.DamageAmount = _config.CONTACT_AMOUNT;
         }
     }
 
     private void HitEnemy(ref Hit hit)
     {
         float healAmount = hit.AttackingEntity?.name == "Penitent(Clone)"
-            ? hit.DamageAmount * ApplyHealthModifier(_config.LD01_HEAL_SWORD_BASE, _config.LD01_HEAL_SWORD_INCREASE)
-            : ApplyHealthModifier(_config.LD01_HEAL_PRAYER_BASE, _config.LD01_HEAL_PRAYER_INCREASE);
+            ? hit.DamageAmount * ApplyHealthModifier(_config.HEAL_SWORD_BASE, _config.HEAL_SWORD_INCREASE)
+            : ApplyHealthModifier(_config.HEAL_PRAYER_BASE, _config.HEAL_PRAYER_INCREASE);
 
         HealPlayer(healAmount);
     }
 
     private void KillEnemy()
     {
-        float amount = ApplyHealthModifier(_config.LD01_HEAL_KILL_BASE, _config.LD01_HEAL_KILL_INCREASE);
+        float amount = ApplyHealthModifier(_config.HEAL_KILL_BASE, _config.HEAL_KILL_INCREASE);
         HealPlayer(amount);
     }
 
@@ -138,6 +138,42 @@ public class HealthDrain
     [
         "D07Z01S03", "D14Z01S01", "D14Z02S01", "D14Z03S01",
     ];
+}
+
+/// <summary> Properties for PE501 </summary>
+public class PE501Config
+{
+    /// <summary> Base damage multiplier to heal after sword hit </summary>
+    public float HEAL_SWORD_BASE = 0.1f;
+    /// <summary> Additional damage multiplier to heal after sword hit </summary>
+    public float HEAL_SWORD_INCREASE = 0.015f;
+
+    /// <summary> Base amount to heal after prayer hit </summary>
+    public float HEAL_PRAYER_BASE = 3f;
+    /// <summary> Additional amount to heal after prayer hit </summary>
+    public float HEAL_PRAYER_INCREASE = 0.45f;
+
+    /// <summary> Base amount to heal after killing enemy </summary>
+    public float HEAL_KILL_BASE = 15f;
+    /// <summary> Additional amount to heal after killing enemy </summary>
+    public float HEAL_KILL_INCREASE = 2.5f;
+
+    /// <summary> Base time that drinking a flask stops health drain </summary>
+    public float FLASK_BASE = 10f;
+    /// <summary> Additional time per level that drinking a flask stops health drain </summary>
+    public float FLASK_INCREASE = 6f;
+
+    /// <summary> Number of seconds between each health drain tick </summary>
+    public float DRAIN_DELAY = 2f;
+    /// <summary> Base amount of health lost every tick </summary>
+    public float DRAIN_BASE = 4f;
+    /// <summary> Additional amount per health upgrade of health lost every tick </summary>
+    public float DRAIN_INCREASE = 0.75f;
+
+    /// <summary> Damage applied to enemies when the player is hit </summary>
+    public float THORNS_AMOUNT = 40f;
+    /// <summary> Damage applied to the player in place of contact damage </summary>
+    public float CONTACT_AMOUNT = 3f;
 }
 
 // When using a flask, perform special action instead of heal

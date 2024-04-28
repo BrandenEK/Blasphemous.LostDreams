@@ -10,18 +10,16 @@ namespace Blasphemous.LostDreams.Effects;
 /// </summary>
 public class HealthRegen : ModItemEffectOnEquip
 {
-    private readonly float _regenPercent;
-    private readonly float _regenDelay;
+    private readonly HE501Config _config;
 
     private RawBonus _halfHealth;
 
     /// <summary>
     /// Initializes regen parameters
     /// </summary>
-    public HealthRegen(float regenPercent, float regenDelay)
+    public HealthRegen(HE501Config config)
     {
-        _regenPercent = regenPercent;
-        _regenDelay = regenDelay;
+        _config = config;
     }
 
     /// <summary>
@@ -30,7 +28,7 @@ public class HealthRegen : ModItemEffectOnEquip
     protected override void ApplyEffect()
     {
         Main.LostDreams.TimeHandler.AddCountdown("health-regen-half", 0.05f, ApplyHalfHealth);
-        Main.LostDreams.TimeHandler.AddTicker("health-regen", _regenDelay, false, RegenerateHealth);
+        Main.LostDreams.TimeHandler.AddTicker("health-regen", _config.REGEN_DELAY, false, RegenerateHealth);
     }
 
     /// <summary>
@@ -58,7 +56,16 @@ public class HealthRegen : ModItemEffectOnEquip
             return;
 
         //Main.LostDreams.Log("HE501: Regenerating small health");
-        float amount = life.CurrentMax * _regenPercent;
+        float amount = life.CurrentMax * _config.REGEN_PERCENT;
         life.Current += amount;
     }
+}
+
+/// <summary> Properties for HE501 </summary>
+public class HE501Config
+{
+    /// <summary> The decimal multiplied by your maximum health to heal every tick </summary>
+    public float REGEN_PERCENT = 0.015f;
+    /// <summary> How many seconds in between each heal tick </summary>
+    public float REGEN_DELAY = 1f;
 }

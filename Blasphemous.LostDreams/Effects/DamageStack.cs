@@ -8,17 +8,15 @@ namespace Blasphemous.LostDreams.Effects;
 /// </summary>
 internal class DamageStack : IMultiplierEffect
 {
-    private readonly int _maxCharges;
-    private readonly float _maxMultiplier;
+    private readonly RB502Config _config;
 
     private int _currentCharges;
 
-    public float Multiplier => 1 + (_maxMultiplier - 1) * ((float)_currentCharges / _maxCharges);
+    public float Multiplier => 1 + (_config.MAX_MULTIPLIER - 1) * ((float)_currentCharges / _config.MAX_CHARGES);
 
-    public DamageStack(int maxCharges, float maxMultiplier)
+    public DamageStack(RB502Config config)
     {
-        _maxCharges = maxCharges;
-        _maxMultiplier = maxMultiplier;
+        _config = config;
 
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
         Main.LostDreams.EventHandler.OnEnemyDamaged += EnemyTakeDamage;
@@ -31,7 +29,7 @@ internal class DamageStack : IMultiplierEffect
         if (!Main.LostDreams.ItemHandler.IsEquipped("RB502"))
             return;
 
-        _currentCharges = Math.Min(_currentCharges + 1, _maxCharges);
+        _currentCharges = Math.Min(_currentCharges + 1, _config.MAX_CHARGES);
         Main.LostDreams.Log($"RB502: Increasing damage stack to {_currentCharges}");
     }
 
@@ -57,4 +55,13 @@ internal class DamageStack : IMultiplierEffect
 
         hit.DamageAmount *= Main.LostDreams.DamageStack.Multiplier;
     }
+}
+
+/// <summary> Properties for RB502 </summary>
+public class RB502Config
+{
+    /// <summary> The total number of charges you can go up to </summary>
+    public int MAX_CHARGES = 20;
+    /// <summary> The multiplier added to damage when you have maximum charges </summary>
+    public float MAX_MULTIPLIER = 2.0f;
 }
