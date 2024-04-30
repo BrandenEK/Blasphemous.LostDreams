@@ -84,7 +84,7 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
 
         // Prayers
-        provider.RegisterItem(new StandardPrayer("PR501", 30).AddEffect(new PR501()));
+        provider.RegisterItem(new StandardPrayer("PR501", 30).AddEffect(new PR501(30)));
 
         // Sword hearts
         provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_tempHE501)));
