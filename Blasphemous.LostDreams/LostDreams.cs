@@ -4,6 +4,7 @@ using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Penitences;
+using Blasphemous.LostDreams.Prayers;
 using Blasphemous.LostDreams.Timing;
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;
@@ -83,7 +84,7 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
 
         // Prayers
-        provider.RegisterItem(new StandardPrayer("PR501", 30));
+        provider.RegisterItem(new StandardPrayer("PR501", 30).AddEffect(new PR501()));
 
         // Sword hearts
         provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_tempHE501)));
