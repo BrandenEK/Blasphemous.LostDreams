@@ -1,4 +1,5 @@
 ﻿using Blasphemous.Framework.Items;
+using CreativeSpore.SmartColliders;
 using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using System.Linq;
@@ -31,8 +32,24 @@ public class PR501(float _range) : ModItemEffectOnPrayerUse
 
         Main.LostDreams.Log($"PR501: Swapping places with {enemy.name}");
         Vector3 playerPosition = Core.Logic.Penitent.transform.position;
-        Core.Logic.Penitent.transform.position = enemy.transform.position;
-        enemy.transform.position = playerPosition;
+        Vector3 enemyPosition = enemy.transform.position;
+
+        MoveEntity(enemy, Vector3.zero);
+        MoveEntity(Core.Logic.Penitent, enemyPosition);
+        MoveEntity(enemy, playerPosition);
+    }
+
+    private void MoveEntity(Entity entity, Vector3 position)
+    {
+        SmartPlatformCollider collider = entity.GetComponentInChildren<SmartPlatformCollider>();
+
+        if (collider != null)
+            collider.enabled = false;
+
+        entity.transform.position = position;
+
+        if (collider != null)
+            collider.enabled = true;
     }
 
     private Enemy FindClosestEnemy()
