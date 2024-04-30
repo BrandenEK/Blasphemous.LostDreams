@@ -23,6 +23,8 @@ public class LostDreams : BlasMod
 {
     internal LostDreams() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
+    private Config _config = new();
+
     // Handlers
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal ItemHandler ItemHandler { get; } = new();
@@ -41,15 +43,12 @@ public class LostDreams : BlasMod
     protected override void OnInitialize()
     {
         LocalizationHandler.RegisterDefaultLanguage("en");
-        Config cfg = ConfigHandler.Load<Config>();
-        ConfigHandler.Save(cfg);
+        _config = ConfigHandler.Load<Config>();
+        ConfigHandler.Save(_config);
 
         DamageRemoval = new DamageRemoval();
-        DamageStack = new DamageStack(cfg.RB502);
-        HealthDrain = new HealthDrain(cfg.PE501);
-
-        // Temp !!!
-        _tempHE501 = cfg.HE501;
+        DamageStack = new DamageStack(_config.RB502);
+        HealthDrain = new HealthDrain(_config.PE501);
     }
 
     /// <summary>
@@ -84,10 +83,10 @@ public class LostDreams : BlasMod
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
 
         // Prayers
-        provider.RegisterItem(new StandardPrayer("PR501", 30).AddEffect(new PR501(30)));
+        provider.RegisterItem(new StandardPrayer("PR501", _config.PR501.FERVOUR_COST).AddEffect(new PR501(_config.PR501)));
 
         // Sword hearts
-        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_tempHE501)));
+        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_config.HE501)));
 
         // Quest items
         provider.RegisterItem(new StandardQuestItem("QI502", false));
@@ -106,7 +105,4 @@ public class LostDreams : BlasMod
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
             new ColliderModifier("Floor", new Vector2(2.7f, 0.4f))));
     }
-
-    // Temp !!!
-    private HE501Config _tempHE501;
 }

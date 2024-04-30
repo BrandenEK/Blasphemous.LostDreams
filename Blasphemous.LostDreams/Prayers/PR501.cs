@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Prayers;
 
-public class PR501(float _range) : ModItemEffectOnPrayerUse
+public class PR501(PR501.Config _config) : ModItemEffectOnPrayerUse
 {
     protected override float EffectTime { get; } = 0;
 
@@ -58,12 +58,18 @@ public class PR501(float _range) : ModItemEffectOnPrayerUse
 
         return Object.FindObjectsOfType<Enemy>()
             .Select(e => new EnemyDistance(e, Vector3.Distance(playerPosition, e.transform.position)))
-            .Where(x => x.Distance <= _range)
+            .Where(x => x.Distance <= _config.MAX_RANGE)
             .OrderBy(x => x.Distance)
             .FirstOrDefault()?.Enemy;
     }
 
-    class EnemyDistance(Enemy e, float d)
+    public class Config
+    {
+        public int FERVOUR_COST = 25;
+        public float MAX_RANGE = 10;
+    }
+
+    private class EnemyDistance(Enemy e, float d)
     {
         public Enemy Enemy { get; } = e;
         public float Distance { get; } = d;

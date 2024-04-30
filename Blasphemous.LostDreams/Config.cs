@@ -1,4 +1,5 @@
 ﻿using Blasphemous.LostDreams.Effects;
+using Blasphemous.LostDreams.Prayers;
 
 namespace Blasphemous.LostDreams;
 
@@ -9,6 +10,9 @@ public class Config
 {
     /// <summary> Properties for RB502 </summary>
     public RB502Config RB502 { get; set; } = new();
+
+    /// <summary> Properties for PR501 </summary>
+    public PR501.Config PR501 { get; set; } = new();
 
     /// <summary> Properties for HE501 </summary>
     public HE501Config HE501 { get; set; } = new();
