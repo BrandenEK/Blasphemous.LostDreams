@@ -34,7 +34,7 @@ public class HE502 : IToggleEffect
 
     public class Config
     {
-        public float STANDARD_MULTIPLIER { get; set; } = 0.8f;
-        public float SWORDART_MULTIPLIER { get; set; } = 1.5f;
+        public float STANDARD_MULTIPLIER { get; set; } = 0.7f;
+        public float SWORDART_MULTIPLIER { get; set; } = 1.4f;
     }
 }
