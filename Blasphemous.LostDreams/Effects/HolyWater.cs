@@ -72,7 +72,7 @@ public class HolyWater : ModItemEffectOnEquip
         _hasBeam = true;
         SetBeamDamage();
 
-        // add beam to attack
+        // add beam to attack, code pending
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public class HolyWater : ModItemEffectOnEquip
     /// </summary>
     protected override void ApplyEffect()
     {
-        
+        // code pending, should integrate with the `Update()` method
     }
 
     /// <summary>
@@ -110,14 +110,16 @@ public class HolyWater : ModItemEffectOnEquip
     /// </summary>
     protected override void RemoveEffect()
     {
-        Main.LostDreams.TimeHandler.RemoveTimer("RB504-beam");
+        // code pending
     }
 
     
 }
 
 
-
+/// <summary> 
+/// Configuration parameters for RB504 - Holy Water Captured In Glass
+/// </summary>
 public class RB504Config
 {
     /// <summary> 
@@ -128,7 +130,7 @@ public class RB504Config
     /// <summary>
     /// the base damage of the beam (not scaling to anything)
     /// </summary>
-    public float BEAM_BASE_DAMAGE = 0f;
+    public float BEAM_BASE_DAMAGE = 40f;
 
     /// <summary>
     /// the beam damage's scaling factor based on TPO's current Mea Culpa `Strength` attribute
