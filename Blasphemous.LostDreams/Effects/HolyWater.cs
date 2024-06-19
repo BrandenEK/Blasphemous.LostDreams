@@ -35,7 +35,7 @@ public class HolyWater : ModItemEffectOnEquip
     {
         get 
         {
-            return (Core.Logic.Penitent.Stats.Life.Current > Core.Logic.Penitent.Stats.Life.MaxValue * 0.99f);
+            return (Core.Logic.Penitent.Stats.Life.Current > Core.Logic.Penitent.Stats.Life.CurrentMax * 0.99f);
         }
     }
 
@@ -69,10 +69,11 @@ public class HolyWater : ModItemEffectOnEquip
     /// </summary>
     public void AddBeamToAttack()
     {
+        Main.LostDreams.Log($"Triggers holy water bead projectile effect!");
         _hasBeam = true;
         SetBeamDamage();
-
-        // add beam to attack, code pending
+        // add beam to attack, code WIP
+        //_beamEffect = new();
     }
 
     /// <summary>
@@ -81,10 +82,10 @@ public class HolyWater : ModItemEffectOnEquip
     /// </summary>
     protected override void Update()
     {
-        base.Update();
         if (_canShootBeam && !_hasBeam && Main.LostDreams.ItemHandler.IsEquipped("RB504"))
         {
             _currentTimeLapse += Time.deltaTime;
+            Main.LostDreams.Log($"HolyWater current timer: {_currentTimeLapse}");
             if (_currentTimeLapse >= _config.BEAM_COOLDOWN)
             {
                 AddBeamToAttack();
@@ -102,7 +103,7 @@ public class HolyWater : ModItemEffectOnEquip
     /// </summary>
     protected override void ApplyEffect()
     {
-        // code pending, should integrate with the `Update()` method
+        Main.LostDreams.Log($"HolyWater effect applied");
     }
 
     /// <summary>
@@ -122,6 +123,7 @@ public class HolyWater : ModItemEffectOnEquip
 /// </summary>
 public class RB504Config
 {
+    public RB504Config() { }
     /// <summary> 
     /// The cooldown before the next attack can send a beam, in seconds.
     /// </summary>
