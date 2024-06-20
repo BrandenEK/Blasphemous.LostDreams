@@ -105,7 +105,7 @@ public class HolyWater : ModItemEffectOnEquip
     {
         Main.LostDreams.Log($"HolyWater effect applied");
     }
-
+    
     /// <summary>
     /// removes timer and removes existing beam effect
     /// </summary>
