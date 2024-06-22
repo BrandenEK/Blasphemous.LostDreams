@@ -107,6 +107,9 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
             new ColliderModifier("Floor", new Vector2(2.7f, 0.4f))));
+        provider.RegisterObjectCreator("npc", new ObjectCreator(
+            new EmptyLoader("NPC"),
+            new NpcModifier()));
     }
 
     // Temp !!!
