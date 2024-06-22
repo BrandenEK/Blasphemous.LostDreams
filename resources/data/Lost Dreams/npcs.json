@@ -1,0 +1,9 @@
+[
+    {
+        "id": "TEST_NPC",
+        "animation": "TEST_ANIM",
+        "facingRight": true,
+        "colliderWidth": 1,
+        "colliderHeight": 2
+    }
+]

@@ -13,6 +13,7 @@ using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.Framework.Penitence;
 using UnityEngine;
 using Blasphemous.LostDreams.Animation;
+using Blasphemous.LostDreams.Npc;
 
 namespace Blasphemous.LostDreams;
 
@@ -32,6 +33,7 @@ public class LostDreams : BlasMod
 
     // New stuff
     internal AnimationLoader AnimationLoader { get; private set; }
+    internal NpcLoader NpcLoader { get; private set; }
 
     // Special effects
     internal IToggleEffect DamageRemoval { get; private set; }
@@ -48,6 +50,7 @@ public class LostDreams : BlasMod
         ConfigHandler.Save(cfg);
 
         AnimationLoader = new AnimationLoader(FileHandler);
+        NpcLoader = new NpcLoader(FileHandler);
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502);
