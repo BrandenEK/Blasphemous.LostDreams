@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Blasphemous.LostDreams.Animation;
+using UnityEngine;
 
-namespace Blasphemous.LostDreams.Animation;
+namespace Blasphemous.LostDreams.Components;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ModAnimator : MonoBehaviour

@@ -1,7 +1,6 @@
 ﻿using Blasphemous.Framework.Levels;
 using Blasphemous.Framework.Levels.Modifiers;
-using Blasphemous.LostDreams.Animation;
-using Framework.Managers;
+using Blasphemous.LostDreams.Components;
 using Gameplay.GameControllers.Entities;
 using UnityEngine;
 
@@ -58,13 +57,5 @@ public class NpcModifier : IModifier
         entity.Status.CastShadow = true;
         entity.Status.IsGrounded = true;
         var shadow = obj.AddComponent<EntityShadow>();
-    }
-}
-
-public class ModDamageArea : DamageArea
-{
-    private void Awake()
-    {
-        damageAreaCollider = GetComponent<BoxCollider2D>();
     }
 }
