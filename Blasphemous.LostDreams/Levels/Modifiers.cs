@@ -1,6 +1,7 @@
 ﻿using Blasphemous.Framework.Levels;
 using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.LostDreams.Components;
+using Blasphemous.LostDreams.Npc;
 using Gameplay.GameControllers.Entities;
 using UnityEngine;
 
@@ -36,26 +37,40 @@ public class ColliderModifier : IModifier
     }
 }
 
-
 public class NpcModifier : IModifier
 {
     public void Apply(GameObject obj, ObjectData data)
     {
-        var sr = obj.AddComponent<SpriteRenderer>();
-        sr.sortingLayerName = "Player";
-        sr.sortingOrder = -1000;
+        NpcInfo info = Main.LostDreams.NpcLoader[data.id];
 
-        var anim = obj.AddComponent<ModAnimator>();
-        anim.Animation = Main.LostDreams.AnimationLoader[data.properties[0]];
+        obj.name = info.Id;
 
-        var animator = obj.AddComponent<Animator>();
-        var collider = obj.AddComponent<BoxCollider2D>();
-        collider.size = new Vector2(2, 2f);
-        collider.offset = new Vector2(0, 1f);
-        var damagearea = obj.AddComponent<ModDamageArea>();
-        var entity = obj.AddComponent<Entity>();
-        entity.Status.CastShadow = true;
-        entity.Status.IsGrounded = true;
-        var shadow = obj.AddComponent<EntityShadow>();
+        var sr = obj.GetComponent<SpriteRenderer>();
+        sr.flipX = !info.FacingRight;
+
+        var anim = obj.GetComponent<ModAnimator>();
+        anim.Animation = Main.LostDreams.AnimationLoader[info.Animation];
+
+        var collider = obj.GetComponent<BoxCollider2D>();
+        collider.size = new Vector2(info.ColliderWidth, info.ColliderHeight);
+        collider.offset = new Vector2(0, info.ColliderHeight / 2);
+
+
+        //var sr = obj.AddComponent<SpriteRenderer>();
+        //sr.sortingLayerName = "Player";
+        //sr.sortingOrder = -1000;
+
+        //var anim = obj.AddComponent<ModAnimator>();
+        //anim.Animation = Main.LostDreams.AnimationLoader[data.properties[0]];
+
+        //var animator = obj.AddComponent<Animator>();
+        //var collider = obj.AddComponent<BoxCollider2D>();
+        //collider.size = new Vector2(2, 2f);
+        //collider.offset = new Vector2(0, 1f);
+        //var damagearea = obj.AddComponent<ModDamageArea>();
+        //var entity = obj.AddComponent<Entity>();
+        //entity.Status.CastShadow = true;
+        //entity.Status.IsGrounded = true;
+        //var shadow = obj.AddComponent<EntityShadow>();
     }
 }
