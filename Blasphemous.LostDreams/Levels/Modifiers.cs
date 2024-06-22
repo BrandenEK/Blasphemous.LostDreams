@@ -1,5 +1,8 @@
 ﻿using Blasphemous.Framework.Levels;
 using Blasphemous.Framework.Levels.Modifiers;
+using Blasphemous.LostDreams.Components;
+using Blasphemous.LostDreams.Npc;
+using Gameplay.GameControllers.Entities;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Levels;
@@ -31,5 +34,27 @@ public class ColliderModifier : IModifier
 
         var collider = obj.AddComponent<BoxCollider2D>();
         collider.size = _size;
+    }
+}
+
+public class NpcModifier : IModifier
+{
+    public void Apply(GameObject obj, ObjectData data)
+    {
+        NpcInfo info = Main.LostDreams.NpcStorage[data.id];
+
+        obj.name = info.Id;
+
+        var anim = obj.GetComponent<ModAnimator>();
+        anim.Animation = Main.LostDreams.AnimationStorage[info.Animation];
+
+        var collider = obj.GetComponent<BoxCollider2D>();
+        collider.size = new Vector2(info.ColliderWidth, info.ColliderHeight);
+        collider.offset = new Vector2(0, info.ColliderHeight / 2);
+
+        var entity = obj.AddComponent<Entity>();
+        entity.Status.CastShadow = true;
+        entity.Status.IsGrounded = true;
+        obj.AddComponent<EntityShadow>();
     }
 }
