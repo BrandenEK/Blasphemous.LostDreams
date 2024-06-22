@@ -1,6 +1,8 @@
 ﻿using Blasphemous.Framework.Levels;
 using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.LostDreams.Animation;
+using Framework.Managers;
+using Gameplay.GameControllers.Entities;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Levels;
@@ -41,9 +43,28 @@ public class NpcModifier : IModifier
     public void Apply(GameObject obj, ObjectData data)
     {
         var sr = obj.AddComponent<SpriteRenderer>();
-        sr.sortingLayerName = "After Player";
+        sr.sortingLayerName = "Player";
+        sr.sortingOrder = -1000;
 
         var anim = obj.AddComponent<ModAnimator>();
         anim.Animation = Main.LostDreams.AnimationLoader[data.properties[0]];
+
+        var animator = obj.AddComponent<Animator>();
+        var collider = obj.AddComponent<BoxCollider2D>();
+        collider.size = new Vector2(2, 2f);
+        collider.offset = new Vector2(0, 1f);
+        var damagearea = obj.AddComponent<ModDamageArea>();
+        var entity = obj.AddComponent<Entity>();
+        entity.Status.CastShadow = true;
+        entity.Status.IsGrounded = true;
+        var shadow = obj.AddComponent<EntityShadow>();
+    }
+}
+
+public class ModDamageArea : DamageArea
+{
+    private void Awake()
+    {
+        damageAreaCollider = GetComponent<BoxCollider2D>();
     }
 }
