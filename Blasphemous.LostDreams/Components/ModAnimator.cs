@@ -39,6 +39,7 @@ public class ModAnimator : MonoBehaviour
             _currentIdx = 0;
 
         sr.sprite = _animation.Sprites[_currentIdx];
+        _nextUpdateTime = Time.time + _animation.SecondsPerFrame;
     }
 
     private SpriteRenderer sr;
