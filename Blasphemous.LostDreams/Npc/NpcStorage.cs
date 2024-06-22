@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Blasphemous.LostDreams.Npc;
 
-public class NpcLoader
+public class NpcStorage
 {
     private readonly Dictionary<string, NpcInfo> _npcs = new();
 
     public NpcInfo this[string id] => _npcs.TryGetValue(id, out var info)
         ? info : throw new System.Exception($"Npc {id} was never loaded");
 
-    public NpcLoader(FileHandler file)
+    public NpcStorage(FileHandler file)
     {
         string infoPath = "npcs.json";
         if (!file.LoadDataAsJson(infoPath, out NpcInfo[] imports))

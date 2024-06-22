@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Animation;
 
-public class AnimationLoader
+public class AnimationStorage
 {
     private readonly Dictionary<string, AnimationInfo> _animations = new();
 
     public AnimationInfo this[string name] => _animations.TryGetValue(name, out var info)
         ? info : throw new System.Exception($"Animation {name} was never loaded");
 
-    public AnimationLoader(FileHandler file)
+    public AnimationStorage(FileHandler file)
     {
         string infoPath = "animations.json";
         if (!file.LoadDataAsJson(infoPath, out AnimationImportInfo[] imports))

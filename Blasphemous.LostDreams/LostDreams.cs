@@ -32,8 +32,8 @@ public class LostDreams : BlasMod
     internal TimeHandler TimeHandler { get; } = new();
 
     // New stuff
-    internal AnimationLoader AnimationLoader { get; private set; }
-    internal NpcLoader NpcLoader { get; private set; }
+    internal AnimationStorage AnimationStorage { get; private set; }
+    internal NpcStorage NpcStorage { get; private set; }
 
     // Special effects
     internal IToggleEffect DamageRemoval { get; private set; }
@@ -49,8 +49,8 @@ public class LostDreams : BlasMod
         Config cfg = ConfigHandler.Load<Config>();
         ConfigHandler.Save(cfg);
 
-        AnimationLoader = new AnimationLoader(FileHandler);
-        NpcLoader = new NpcLoader(FileHandler);
+        AnimationStorage = new AnimationStorage(FileHandler);
+        NpcStorage = new NpcStorage(FileHandler);
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502);
