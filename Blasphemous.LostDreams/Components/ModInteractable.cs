@@ -11,7 +11,17 @@ public class ModInteractable : MonoBehaviour
     public void Interact()
     {
         Main.LostDreams.Log("Using interactable");
-        Core.Dialog.StartConversation("DLG_LD_001", true, false);
+        Core.Logic.Penitent.Animator.SetBool("IS_DIALOGUE_MODE", true);
+
+        if (Core.Dialog.StartConversation("DLG_LD_001", true, false))
+        {
+            Core.Dialog.OnDialogFinished += OnDialogEnd;
+        }
+    }
+
+    private void OnDialogEnd(string id, int response)
+    {
+        Core.Logic.Penitent.Animator.SetBool("IS_DIALOGUE_MODE", false);
     }
 }
 
