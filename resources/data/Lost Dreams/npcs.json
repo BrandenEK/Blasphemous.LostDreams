@@ -1,0 +1,8 @@
+[
+    {
+        "id": "TEST_NPC",
+        "animation": "TEST_ANIM",
+        "colliderWidth": 1,
+        "colliderHeight": 2
+    }
+]

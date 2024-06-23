@@ -12,6 +12,8 @@ using Blasphemous.Framework.Levels.Loaders;
 using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.Framework.Penitence;
 using UnityEngine;
+using Blasphemous.LostDreams.Animation;
+using Blasphemous.LostDreams.Npc;
 
 namespace Blasphemous.LostDreams;
 
@@ -29,6 +31,10 @@ public class LostDreams : BlasMod
     internal PenitenceHandler PenitenceHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
 
+    // New stuff
+    internal AnimationStorage AnimationStorage { get; private set; }
+    internal NpcStorage NpcStorage { get; private set; }
+
     // Special effects
     internal IToggleEffect DamageRemoval { get; private set; }
     internal IMultiplierEffect DamageStack { get; private set; }
@@ -42,6 +48,9 @@ public class LostDreams : BlasMod
         LocalizationHandler.RegisterDefaultLanguage("en");
         Config cfg = ConfigHandler.Load<Config>();
         ConfigHandler.Save(cfg);
+
+        AnimationStorage = new AnimationStorage(FileHandler);
+        NpcStorage = new NpcStorage(FileHandler);
 
         DamageRemoval = new DamageRemoval();
         DamageStack = new DamageStack(cfg.RB502);
@@ -103,6 +112,9 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
             new ColliderModifier("Floor", new Vector2(2.7f, 0.4f))));
+        provider.RegisterObjectCreator("npc", new ObjectCreator(
+            new NpcLoader(),
+            new NpcModifier()));
     }
 
     // Temp !!!

@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using System;
 
 namespace Blasphemous.LostDreams;
 
@@ -14,5 +15,12 @@ internal class Main : BaseUnityPlugin
     private void Start()
     {
         LostDreams = new LostDreams();
+    }
+
+    public static T Validate<T>(T obj, Func<T, bool> validate)
+    {
+        return validate(obj)
+            ? obj
+            : throw new Exception($"{obj} is an invalid import argument");
     }
 }
