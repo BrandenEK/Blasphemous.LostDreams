@@ -45,16 +45,19 @@ public class NpcModifier : IModifier
 
         obj.name = info.Id;
 
-        var anim = obj.GetComponent<ModAnimator>();
+        // Modify body properties (Animator, hitbox, etc)
+        GameObject body = obj.transform.GetChild(1).gameObject;
+
+        var anim = body.GetComponent<ModAnimator>();
         anim.Animation = Main.LostDreams.AnimationStorage[info.Animation];
 
-        var collider = obj.GetComponent<BoxCollider2D>();
+        var collider = body.GetComponent<BoxCollider2D>();
         collider.size = new Vector2(info.ColliderWidth, info.ColliderHeight);
         collider.offset = new Vector2(0, info.ColliderHeight / 2);
 
-        var entity = obj.AddComponent<Entity>();
+        var entity = body.AddComponent<Entity>();
         entity.Status.CastShadow = true;
         entity.Status.IsGrounded = true;
-        obj.AddComponent<EntityShadow>();
+        body.AddComponent<EntityShadow>();
     }
 }
