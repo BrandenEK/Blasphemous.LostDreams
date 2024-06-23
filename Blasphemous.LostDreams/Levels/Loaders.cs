@@ -59,7 +59,7 @@ public class InteractableLoader : ILoader
 
         Object.Destroy(obj.transform.GetChild(1).gameObject);
         Object.Destroy(obj.transform.GetChild(0).gameObject);
-        // Interact icon never appeared when FSM was destroyed
+        Object.Destroy(obj.GetComponent<PlayMakerFSM>());
 
         Result = obj;
         yield break;
