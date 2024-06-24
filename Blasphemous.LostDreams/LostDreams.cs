@@ -42,7 +42,6 @@ public class LostDreams : BlasMod
     internal NpcStorage NpcStorage { get; private set; }
 
     // Special effects
-    internal IToggleEffect DamageRemoval { get; private set; }
     internal HealthDrain HealthDrain { get; private set; }
 
     /// <summary>
@@ -62,7 +61,6 @@ public class LostDreams : BlasMod
         DialogStorage = new DialogStorage(FileHandler);
         NpcStorage = new NpcStorage(FileHandler);
 
-        DamageRemoval = new DamageRemoval();
         HealthDrain = new HealthDrain(cfg.PE501);
 
         // Temp !!!
@@ -99,7 +97,7 @@ public class LostDreams : BlasMod
 
         //provider.RegisterItem(new StandardRosaryBead("RB501", false).AddEffect(new RB501()));
         //provider.RegisterItem(new StandardRosaryBead("RB502", true));
-        provider.RegisterItem(new StandardRosaryBead("RB503", true));
+        //provider.RegisterItem(new StandardRosaryBead("RB503", true));
 
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
 

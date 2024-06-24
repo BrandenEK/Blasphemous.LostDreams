@@ -5,18 +5,13 @@ using HarmonyLib;
 using System.Collections;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Effects;
+namespace Blasphemous.LostDreams.Beads;
 
-/// <summary>
-/// Lose it when getting hit, regain it when dead or prie dieu
-/// </summary>
-internal class DamageRemoval : IToggleEffect
+internal class RB503 : RosaryBeadEffect
 {
     private bool _alreadyUsed = false;
 
-    public bool IsActive => !_alreadyUsed && Main.LostDreams.ItemHandler.IsEquipped("RB503");
-
-    public DamageRemoval()
+    public RB503()
     {
         Main.LostDreams.EventHandler.OnPlayerKilled += RegainDamageRemoval;
         Main.LostDreams.EventHandler.OnUsePrieDieu += RegainDamageRemoval;
@@ -31,7 +26,7 @@ internal class DamageRemoval : IToggleEffect
 
     private void PlayerTakeDamage(ref Hit hit)
     {
-        if (!Main.LostDreams.DamageRemoval.IsActive)
+        if (_alreadyUsed || !IsEquipped)
             return;
 
         Main.LostDreams.Log("RB503: Preventing damage");
@@ -44,7 +39,9 @@ internal class DamageRemoval : IToggleEffect
     }
 }
 
-// Show blue aura when damage is prevented
+/// <summary>
+/// Show blue aura when damage is prevented
+/// </summary>
 [HarmonyPatch(typeof(HealingAura), "StartAura")]
 class Healing_Start_Patch
 {

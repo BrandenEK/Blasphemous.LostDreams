@@ -8,6 +8,7 @@ internal class RosaryBeadList
 
     public RosaryBead RB501 { get; }
     public RosaryBead RB502 { get; }
+    public RosaryBead RB503 { get; }
 
     public RosaryBeadList(Config cfg)
     {
@@ -15,6 +16,7 @@ internal class RosaryBeadList
         {
             RB501 = new(new RB501()),
             RB502 = new(new RB502(cfg.RB502)),
+            RB503 = new(new RB503()),
         };
     }
 }
