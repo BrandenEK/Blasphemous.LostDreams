@@ -27,7 +27,7 @@ public class HealthDrain
     /// Should apply thorns if penitence is active or bead is equipped
     /// </summary>
     public bool ShouldApplyThorns => Main.LostDreams.PenitenceHandler.IsActive("PE501")
-        || Main.LostDreams.ItemHandler.IsEquipped("RB551");
+        || Main.LostDreams.RosaryBeadList.RB551.IsEquipped;
 
     internal HealthDrain(PE501Config config)
     {

@@ -3,7 +3,6 @@ using Blasphemous.LostDreams.Animation;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
-using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Items.QuestItems;
 using Blasphemous.LostDreams.Items.RosaryBeads;
 using Blasphemous.LostDreams.Items.SwordHearts;
@@ -30,7 +29,6 @@ public class LostDreams : BlasMod
 
     // Handlers
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
-    internal ItemHandler ItemHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
     internal PenitenceHandler PenitenceHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
@@ -75,7 +73,6 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnExitGame()
     {
-        ItemHandler.Reset();
         AcquisitionHandler.Reset();
         EventHandler.Reset();
         TimeHandler.Reset();
@@ -102,8 +99,6 @@ public class LostDreams : BlasMod
 
         foreach (var heart in SwordHeartList.Items)
             provider.RegisterItem(heart);
-
-        provider.RegisterItem(new StandardRosaryBead("RB551", true));
 
         // Penitences
         provider.RegisterPenitence(new StandardPenitence("PE501", "RB551"));
