@@ -1,12 +1,12 @@
 ﻿using Blasphemous.Framework.Items;
 
-namespace Blasphemous.LostDreams.RosaryBeads;
+namespace Blasphemous.LostDreams.Items;
 
-internal class RosaryBeadEffect : ModItemEffectOnEquip
+internal class EquipEffect : ModItemEffectOnEquip
 {
     public bool IsEquipped { get; private set; }
 
-    public RosaryBeadEffect()
+    public EquipEffect()
     {
         Main.LostDreams.EventHandler.OnExitGame += RemoveEffect;
     }

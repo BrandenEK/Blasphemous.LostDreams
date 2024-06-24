@@ -1,15 +1,16 @@
 ﻿using Blasphemous.Framework.Items;
+using Blasphemous.LostDreams.Items;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.RosaryBeads;
 
 internal class RosaryBead : ModRosaryBead
 {
-    private readonly RosaryBeadEffect _effect;
+    private readonly EquipEffect _effect;
 
     public bool IsEquipped => _effect.IsEquipped;
 
-    public RosaryBead(RosaryBeadEffect effect)
+    public RosaryBead(EquipEffect effect)
     {
         Id = effect.GetType().Name;
         AddEffect(_effect = effect);

@@ -1,9 +1,10 @@
-﻿using Gameplay.GameControllers.Entities;
+﻿using Blasphemous.LostDreams.Items;
+using Gameplay.GameControllers.Entities;
 using System;
 
 namespace Blasphemous.LostDreams.RosaryBeads;
 
-internal class RB502 : RosaryBeadEffect
+internal class RB502 : EquipEffect
 {
     private readonly RB502Config _config;
 

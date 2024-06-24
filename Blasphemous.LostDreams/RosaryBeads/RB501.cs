@@ -1,11 +1,12 @@
-﻿using Gameplay.GameControllers.AnimationBehaviours.Player.Attack;
+﻿using Blasphemous.LostDreams.Items;
+using Gameplay.GameControllers.AnimationBehaviours.Player.Attack;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.RosaryBeads;
 
-internal class RB501 : RosaryBeadEffect { }
+internal class RB501 : EquipEffect { }
 
 /// <summary>
 /// Reduce how much time to activate charge

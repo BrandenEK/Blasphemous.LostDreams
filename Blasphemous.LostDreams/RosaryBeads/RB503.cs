@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.LostDreams.Items;
+using Framework.Managers;
 using Gameplay.GameControllers.Effects.Player.Healing;
 using Gameplay.GameControllers.Entities;
 using HarmonyLib;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.RosaryBeads;
 
-internal class RB503 : RosaryBeadEffect
+internal class RB503 : EquipEffect
 {
     private bool _alreadyUsed = false;
 
