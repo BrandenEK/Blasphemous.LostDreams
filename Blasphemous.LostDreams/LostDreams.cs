@@ -1,8 +1,12 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
+using Blasphemous.LostDreams.Animation;
+using Blasphemous.LostDreams.Beads;
+using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
+using Blasphemous.LostDreams.Npc;
 using Blasphemous.LostDreams.Penitences;
 using Blasphemous.LostDreams.Timing;
 using Blasphemous.ModdingAPI;
@@ -12,9 +16,6 @@ using Blasphemous.Framework.Levels.Loaders;
 using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.Framework.Penitence;
 using UnityEngine;
-using Blasphemous.LostDreams.Animation;
-using Blasphemous.LostDreams.Dialog;
-using Blasphemous.LostDreams.Npc;
 
 namespace Blasphemous.LostDreams;
 
@@ -88,7 +89,7 @@ public class LostDreams : BlasMod
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
-        provider.RegisterItem(new StandardRosaryBead("RB501", true));
+        provider.RegisterItem(new StandardRosaryBead("RB501", true).AddEffect(new RB501()));
         provider.RegisterItem(new StandardRosaryBead("RB502", true));
         provider.RegisterItem(new StandardRosaryBead("RB503", true));
 
