@@ -65,9 +65,6 @@ public class LostDreams : BlasMod
         NpcStorage = new NpcStorage(FileHandler);
 
         HealthDrain = new HealthDrain(cfg.PE501);
-
-        // Temp !!!
-        _tempHE501 = cfg.HE501;
     }
 
     /// <summary>
@@ -100,14 +97,7 @@ public class LostDreams : BlasMod
         foreach (var heart in SwordHeartList.Items)
             provider.RegisterItem(heart);
 
-        //provider.RegisterItem(new StandardRosaryBead("RB501", false).AddEffect(new RB501()));
-        //provider.RegisterItem(new StandardRosaryBead("RB502", true));
-        //provider.RegisterItem(new StandardRosaryBead("RB503", true));
-
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
-
-        // Sword hearts
-        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_tempHE501)));
 
         // Quest items
         provider.RegisterItem(new StandardQuestItem("QI502", false));
@@ -129,7 +119,4 @@ public class LostDreams : BlasMod
             new NpcLoader(),
             new NpcModifier()));
     }
-
-    // Temp !!!
-    private HE501Config _tempHE501;
 }

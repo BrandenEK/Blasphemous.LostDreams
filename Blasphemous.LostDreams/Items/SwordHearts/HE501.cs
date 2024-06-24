@@ -1,39 +1,26 @@
-﻿using Blasphemous.Framework.Items;
+﻿using Framework.FrameworkCore.Attributes;
 using Framework.FrameworkCore.Attributes.Logic;
-using Framework.FrameworkCore.Attributes;
 using Framework.Managers;
 
-namespace Blasphemous.LostDreams.Effects;
+namespace Blasphemous.LostDreams.Items.SwordHearts;
 
-/// <summary>
-/// Cuts health in half, but applies a timer for regen
-/// </summary>
-public class HealthRegen : ModItemEffectOnEquip
+internal class HE501 : EquipEffect
 {
     private readonly HE501Config _config;
 
     private RawBonus _halfHealth;
 
-    /// <summary>
-    /// Initializes regen parameters
-    /// </summary>
-    public HealthRegen(HE501Config config)
+    public HE501(HE501Config config)
     {
         _config = config;
     }
 
-    /// <summary>
-    /// Add timer for regen, but almost immediately half health
-    /// </summary>
     protected override void ApplyEffect()
     {
         Main.LostDreams.TimeHandler.AddCountdown("health-regen-half", 0.05f, ApplyHalfHealth);
         Main.LostDreams.TimeHandler.AddTicker("health-regen", _config.REGEN_DELAY, false, RegenerateHealth);
     }
 
-    /// <summary>
-    /// Remove half health and stop timer for regen
-    /// </summary>
     protected override void RemoveEffect()
     {
         if (_halfHealth != null)
