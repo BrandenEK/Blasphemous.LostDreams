@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.SwordHearts;
 
-internal class HE501 : EquipEffect
+internal class HE501 : EffectOnEquip
 {
     private readonly HE501Config _config;
 

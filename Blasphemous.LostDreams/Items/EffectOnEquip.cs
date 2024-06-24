@@ -2,11 +2,11 @@
 
 namespace Blasphemous.LostDreams.Items;
 
-internal class EquipEffect : ModItemEffectOnEquip
+internal class EffectOnEquip : ModItemEffectOnEquip
 {
     public bool IsEquipped { get; private set; }
 
-    public EquipEffect()
+    public EffectOnEquip()
     {
         Main.LostDreams.EventHandler.OnExitGame += RemoveEffect;
     }

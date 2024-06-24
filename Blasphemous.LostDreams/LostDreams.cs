@@ -4,6 +4,7 @@ using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
+using Blasphemous.LostDreams.Items.QuestItems;
 using Blasphemous.LostDreams.Items.RosaryBeads;
 using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
@@ -35,6 +36,7 @@ public class LostDreams : BlasMod
     internal TimeHandler TimeHandler { get; } = new();
 
     // Item lists
+    internal QuestItemList QuestItemList { get; private set; }
     internal RosaryBeadList RosaryBeadList { get; private set; }
     internal SwordHeartList SwordHeartList { get; private set; }
 
@@ -56,6 +58,7 @@ public class LostDreams : BlasMod
         ConfigHandler.Save(cfg);
 
         // Initialize item lists
+        QuestItemList = new QuestItemList(cfg);
         RosaryBeadList = new RosaryBeadList(cfg);
         SwordHeartList = new SwordHeartList(cfg);
 
@@ -91,6 +94,9 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
+        foreach (var quest in QuestItemList.Items)
+            provider.RegisterItem(quest);
+
         foreach (var bead in RosaryBeadList.Items)
             provider.RegisterItem(bead);
 

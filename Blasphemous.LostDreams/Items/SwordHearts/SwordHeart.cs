@@ -5,11 +5,11 @@ namespace Blasphemous.LostDreams.Items.SwordHearts;
 
 internal class SwordHeart : ModSwordHeart
 {
-    private readonly EquipEffect _effect;
+    private readonly EffectOnEquip _effect;
 
     public bool IsEquipped => _effect.IsEquipped;
 
-    public SwordHeart(EquipEffect effect)
+    public SwordHeart(EffectOnEquip effect)
     {
         Id = effect.GetType().Name;
         AddEffect(_effect = effect);

@@ -3,7 +3,7 @@ using System;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
-internal class RB502 : EquipEffect
+internal class RB502 : EffectOnEquip
 {
     private readonly RB502Config _config;
 

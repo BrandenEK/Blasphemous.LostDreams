@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
-internal class RB503 : EquipEffect
+internal class RB503 : EffectOnEquip
 {
     private bool _alreadyUsed = false;
 

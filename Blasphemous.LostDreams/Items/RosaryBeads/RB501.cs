@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
-internal class RB501 : EquipEffect { }
+internal class RB501 : EffectOnEquip { }
 
 /// <summary>
 /// Reduce how much time to activate charge

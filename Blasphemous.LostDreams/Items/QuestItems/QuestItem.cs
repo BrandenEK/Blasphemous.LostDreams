@@ -1,15 +1,15 @@
 ﻿using Blasphemous.Framework.Items;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Items.RosaryBeads;
+namespace Blasphemous.LostDreams.Items.QuestItems;
 
-internal class RosaryBead : ModRosaryBead
+internal class QuestItem : ModQuestItem
 {
-    private readonly EffectOnEquip _effect;
+    private readonly EffectOnAcquire _effect;
 
-    public bool IsEquipped => _effect.IsEquipped;
+    public bool IsAcquired => _effect.IsAcquired;
 
-    public RosaryBead(EffectOnEquip effect)
+    public QuestItem(EffectOnAcquire effect)
     {
         Id = effect.GetType().Name;
         AddEffect(_effect = effect);
@@ -23,13 +23,9 @@ internal class RosaryBead : ModRosaryBead
 
     protected override string Lore => Main.LostDreams.LocalizationHandler.Localize(Id + ".l");
 
-    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite($"beads/{Id}.png", out Sprite picture) ? picture : null;
+    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite($"questitems/{Id}.png", out Sprite picture) ? picture : null;
 
     protected override bool CarryOnStart => false;
 
     protected override bool PreserveInNGPlus => true;
-
-    protected override bool AddToPercentCompletion => true;
-
-    protected override bool AddInventorySlot => true;
 }
