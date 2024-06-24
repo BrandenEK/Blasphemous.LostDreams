@@ -1,4 +1,5 @@
-﻿using Blasphemous.LostDreams.Effects;
+﻿using Blasphemous.LostDreams.Beads;
+using Blasphemous.LostDreams.Effects;
 
 namespace Blasphemous.LostDreams;
 
