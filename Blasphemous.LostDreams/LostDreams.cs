@@ -3,6 +3,7 @@ using Blasphemous.LostDreams.Animation;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
+using Blasphemous.LostDreams.Items.Penitences;
 using Blasphemous.LostDreams.Items.QuestItems;
 using Blasphemous.LostDreams.Items.RosaryBeads;
 using Blasphemous.LostDreams.Items.SwordHearts;
@@ -34,6 +35,7 @@ public class LostDreams : BlasMod
     internal TimeHandler TimeHandler { get; } = new();
 
     // Item lists
+    internal PenitenceList PenitenceList { get; private set; }
     internal QuestItemList QuestItemList { get; private set; }
     internal RosaryBeadList RosaryBeadList { get; private set; }
     internal SwordHeartList SwordHeartList { get; private set; }
@@ -56,6 +58,7 @@ public class LostDreams : BlasMod
         ConfigHandler.Save(cfg);
 
         // Initialize item lists
+        PenitenceList = new PenitenceList(cfg);
         QuestItemList = new QuestItemList(cfg);
         RosaryBeadList = new RosaryBeadList(cfg);
         SwordHeartList = new SwordHeartList(cfg);
@@ -84,6 +87,9 @@ public class LostDreams : BlasMod
     protected override void OnUpdate()
     {
         TimeHandler.Update();
+
+        // Temporarily update penitences until handled by framework
+        
     }
 
     /// <summary>
@@ -91,6 +97,9 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
+        foreach (var penitence in PenitenceList.Items)
+            provider.RegisterPenitence(penitence);
+
         foreach (var quest in QuestItemList.Items)
             provider.RegisterItem(quest);
 
