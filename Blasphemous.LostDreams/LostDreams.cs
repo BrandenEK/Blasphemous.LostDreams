@@ -1,6 +1,5 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Animation;
-using Blasphemous.LostDreams.Beads;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
@@ -8,6 +7,7 @@ using Blasphemous.LostDreams.Items;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
 using Blasphemous.LostDreams.Penitences;
+using Blasphemous.LostDreams.RosaryBeads;
 using Blasphemous.LostDreams.Timing;
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;

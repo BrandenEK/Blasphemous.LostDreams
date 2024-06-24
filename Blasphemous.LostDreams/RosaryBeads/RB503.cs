@@ -5,7 +5,7 @@ using HarmonyLib;
 using System.Collections;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Beads;
+namespace Blasphemous.LostDreams.RosaryBeads;
 
 internal class RB503 : RosaryBeadEffect
 {

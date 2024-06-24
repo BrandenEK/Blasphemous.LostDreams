@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Blasphemous.LostDreams.Beads;
+namespace Blasphemous.LostDreams.RosaryBeads;
 
 internal class RosaryBeadList
 {

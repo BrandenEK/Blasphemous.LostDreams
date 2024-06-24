@@ -3,7 +3,7 @@ using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Beads;
+namespace Blasphemous.LostDreams.RosaryBeads;
 
 internal class RB501 : RosaryBeadEffect { }
 

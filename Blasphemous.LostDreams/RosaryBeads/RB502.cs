@@ -1,7 +1,7 @@
 ﻿using Gameplay.GameControllers.Entities;
 using System;
 
-namespace Blasphemous.LostDreams.Beads;
+namespace Blasphemous.LostDreams.RosaryBeads;
 
 internal class RB502 : RosaryBeadEffect
 {

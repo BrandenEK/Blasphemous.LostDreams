@@ -1,6 +1,6 @@
 ﻿using Blasphemous.Framework.Items;
 
-namespace Blasphemous.LostDreams.Beads;
+namespace Blasphemous.LostDreams.RosaryBeads;
 
 internal class RosaryBeadEffect : ModItemEffectOnEquip
 {

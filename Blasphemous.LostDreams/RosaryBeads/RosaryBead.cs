@@ -1,7 +1,7 @@
 ﻿using Blasphemous.Framework.Items;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Beads;
+namespace Blasphemous.LostDreams.RosaryBeads;
 
 internal class RosaryBead : ModRosaryBead
 {
