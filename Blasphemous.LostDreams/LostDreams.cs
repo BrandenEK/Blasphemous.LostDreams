@@ -1,7 +1,6 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Animation;
 using Blasphemous.LostDreams.Dialog;
-using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items.Penitences;
 using Blasphemous.LostDreams.Items.QuestItems;
@@ -9,7 +8,6 @@ using Blasphemous.LostDreams.Items.RosaryBeads;
 using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
-using Blasphemous.LostDreams.Penitences;
 using Blasphemous.LostDreams.Timing;
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;
@@ -31,7 +29,6 @@ public class LostDreams : BlasMod
     // Handlers
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
-    internal PenitenceHandler PenitenceHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
 
     // Item lists
@@ -44,9 +41,6 @@ public class LostDreams : BlasMod
     internal AnimationStorage AnimationStorage { get; private set; }
     internal DialogStorage DialogStorage { get; private set; }
     internal NpcStorage NpcStorage { get; private set; }
-
-    // Special effects
-    internal HealthDrain HealthDrain { get; private set; }
 
     /// <summary>
     /// Register handlers and create special effects
@@ -67,8 +61,6 @@ public class LostDreams : BlasMod
         AnimationStorage = new AnimationStorage(FileHandler);
         DialogStorage = new DialogStorage(FileHandler);
         NpcStorage = new NpcStorage(FileHandler);
-
-        HealthDrain = new HealthDrain(cfg.PE501);
     }
 
     /// <summary>
@@ -89,7 +81,7 @@ public class LostDreams : BlasMod
         TimeHandler.Update();
 
         // Temporarily update penitences until handled by framework
-        
+        PenitenceList.PE501.Update();
     }
 
     /// <summary>
@@ -108,9 +100,6 @@ public class LostDreams : BlasMod
 
         foreach (var heart in SwordHeartList.Items)
             provider.RegisterItem(heart);
-
-        // Penitences
-        provider.RegisterPenitence(new StandardPenitence("PE501", "RB551"));
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
