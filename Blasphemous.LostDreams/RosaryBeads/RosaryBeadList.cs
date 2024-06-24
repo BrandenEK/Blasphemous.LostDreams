@@ -1,22 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Blasphemous.LostDreams.Items;
 
 namespace Blasphemous.LostDreams.RosaryBeads;
 
-internal class RosaryBeadList
+internal class RosaryBeadList(Config cfg) : ItemList<RosaryBead>
 {
-    public IEnumerable<RosaryBead> Items { get; }
-
-    public RosaryBead RB501 { get; }
-    public RosaryBead RB502 { get; }
-    public RosaryBead RB503 { get; }
-
-    public RosaryBeadList(Config cfg)
-    {
-        Items = new RosaryBead[]
-        {
-            RB501 = new(new RB501()),
-            RB502 = new(new RB502(cfg.RB502)),
-            RB503 = new(new RB503()),
-        };
-    }
+    public RosaryBead RB501 { get; } = new RosaryBead(new RB501());
+    public RosaryBead RB502 { get; } = new RosaryBead(new RB502(cfg.RB502));
+    public RosaryBead RB503 { get; } = new RosaryBead(new RB503());
 }
