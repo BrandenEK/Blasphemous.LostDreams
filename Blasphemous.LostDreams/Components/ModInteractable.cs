@@ -28,7 +28,22 @@ public class ModInteractable : MonoBehaviour
 
     private string GetDialogToUse()
     {
-        return Dialogs.First();
+        if (Dialogs == null || !Dialogs.Any())
+            throw new System.Exception("ModInteractable has no dialog ids applied through the level editor");
+
+        foreach (string text in Dialogs)
+        {
+            // If no condition, return this one immediately
+            if (!text.Contains(':'))
+                return text.Trim();
+
+            // If there is a condition, check for it and maybe return
+            string[] parts = text.Split(':');
+            if (Core.Events.GetFlag(parts[0].Trim()))
+                return parts[1].Trim();
+        }
+
+        return Dialogs.Last();
     }
 }
 
