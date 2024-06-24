@@ -4,31 +4,13 @@ using Framework.Managers;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Blasphemous.LostDreams.Dialog;
 
-//[HarmonyPatch(typeof(DialogManager), nameof(DialogManager.Start))]
-//class DialogManager_Start_Patch
-//{
-//    public static void Postfix(Dictionary<string, DialogObject> ___allDialogs)
-//    {
-//        Main.LostDreams.LogWarning("Adding dialogs to dialogmanager");
-
-//        foreach (DialogInfo info in Main.LostDreams.DialogStorage.All)
-//        {
-//            ___allDialogs.Add(info.Id, new DialogObject()
-//            {
-//                id = info.Id,
-//                dialogType = info.Type,
-//                dialogLines = info.TextLines.Select(Main.LostDreams.LocalizationHandler.Localize).ToList(),
-//                answersLines = info.ResponseLines.Select(Main.LostDreams.LocalizationHandler.Localize).ToList(),
-//                itemType = info.Item == null ? InventoryManager.ItemType.Bead : ItemModder.GetItemTypeFromId(info.Item),
-//                item = info.Item,
-//            });
-//        }
-//    }
-//}
-
+/// <summary>
+/// Adds the custom dialog when the conversation starts, and removes it at the end
+/// </summary>
 [HarmonyPatch(typeof(DialogManager), nameof(DialogManager.StartConversation))]
 class DialogManager_StartConversation_Patch
 {
@@ -37,20 +19,20 @@ class DialogManager_StartConversation_Patch
         if (!Main.LostDreams.DialogStorage.TryGetValue(conversiationId, out DialogInfo info))
             return;
 
-        ___allDialogs.Add(conversiationId, new DialogObject()
-        {
-            id = info.Id,
-            dialogType = info.Type,
-            dialogLines = info.TextLines.Select(Main.LostDreams.LocalizationHandler.Localize).ToList(),
-            answersLines = info.ResponseLines.Select(Main.LostDreams.LocalizationHandler.Localize).ToList(),
-            itemType = info.Item == null ? InventoryManager.ItemType.Bead : ItemModder.GetItemTypeFromId(info.Item),
-            item = info.Item,
-        });
+        DialogObject dialog = ScriptableObject.CreateInstance<DialogObject>();
+        dialog.id = info.Id;
+        dialog.dialogType = info.Type;
+        dialog.dialogLines = info.TextLines.Select(Main.LostDreams.LocalizationHandler.Localize).ToList();
+        dialog.answersLines = info.ResponseLines.Select(Main.LostDreams.LocalizationHandler.Localize).ToList();
+        dialog.itemType = info.Item == null ? InventoryManager.ItemType.Bead : ItemModder.GetItemTypeFromId(info.Item);
+        dialog.item = info.Item;
+
+        ___allDialogs.Add(conversiationId, dialog);
     }
 
     public static void Postfix(string conversiationId, Dictionary<string, DialogObject> ___allDialogs)
     {
-        if (!Main.LostDreams.DialogStorage.TryGetValue(conversiationId, out DialogInfo info))
+        if (!Main.LostDreams.DialogStorage.TryGetValue(conversiationId, out _))
             return;
 
         ___allDialogs.Remove(conversiationId);
