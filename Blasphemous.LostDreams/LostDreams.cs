@@ -8,7 +8,6 @@ using Blasphemous.LostDreams.Items.RosaryBeads;
 using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
-using Blasphemous.LostDreams.Timing;
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;
 using Blasphemous.Framework.Levels;
@@ -29,7 +28,6 @@ public class LostDreams : BlasMod
     // Handlers
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
-    internal TimeHandler TimeHandler { get; } = new();
 
     // Item lists
     internal PenitenceList PenitenceList { get; private set; }
@@ -70,7 +68,6 @@ public class LostDreams : BlasMod
     {
         AcquisitionHandler.Reset();
         EventHandler.Reset();
-        TimeHandler.Reset();
     }
 
     /// <summary>
@@ -78,7 +75,8 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnUpdate()
     {
-        TimeHandler.Update();
+        if (!LoadStatus.GameSceneLoaded)
+            return;
 
         // Temporarily update penitences until handled by framework
         PenitenceList.PE501.Update();

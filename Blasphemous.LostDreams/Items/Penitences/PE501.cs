@@ -4,6 +4,7 @@ using Gameplay.GameControllers.Entities;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.Penitences;
 
@@ -11,7 +12,8 @@ internal class PE501 : Penitence
 {
     private readonly PE501Config _config;
 
-    private bool _reverse = false;
+    private float _nextDrainTime;
+    private float _timeToResumeDrain;
 
     /// <summary>
     /// Should drain health if penitence is active and not resting at prie dieu or other input blocks
@@ -23,6 +25,11 @@ internal class PE501 : Penitence
     /// </summary>
     public bool ShouldApplyThorns => IsActive || Main.LostDreams.RosaryBeadList.RB551.IsEquipped;
 
+    /// <summary>
+    /// Should reverse drain if the current time has not passed the reverse cutoff yet
+    /// </summary>
+    public bool ShouldReverseDrain => Time.time < _timeToResumeDrain;
+
     internal PE501(PE501Config config)
     {
         _config = config;
@@ -30,10 +37,23 @@ internal class PE501 : Penitence
         Main.LostDreams.EventHandler.OnEnemyDamaged += HitEnemy;
         Main.LostDreams.EventHandler.OnEnemyKilled += KillEnemy;
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
-        Main.LostDreams.EventHandler.OnExitGame += ResumeDrain;
         Main.LostDreams.EventHandler.OnUseFlask += OnDrinkFlask;
+    }
 
-        Main.LostDreams.TimeHandler.AddTicker("drain-tick", _config.DRAIN_DELAY, true, PerformDrain);
+    protected override void OnActivate()
+    {
+        _nextDrainTime = Time.time + _config.DRAIN_DELAY;
+        _timeToResumeDrain = 0;
+    }
+
+    protected override void OnUpdate()
+    {
+        Main.LostDreams.LogError("Update penitence");
+        if (Time.time >= _nextDrainTime)
+        {
+            PerformDrain();
+            _nextDrainTime = Time.time + _config.DRAIN_DELAY;
+        }
     }
 
     /// <summary>
@@ -48,15 +68,8 @@ internal class PE501 : Penitence
         cancel = true;
 
         float time = _config.FLASK_BASE + _config.FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
+        _timeToResumeDrain = Time.time + time;
         Main.LostDreams.Log($"Reversing health drain for {time} seconds");
-        Main.LostDreams.TimeHandler.AddCountdown("drain-reverse", time, ResumeDrain);
-        _reverse = true;
-    }
-
-    private void ResumeDrain()
-    {
-        Main.LostDreams.Log("Resuming health drain");
-        _reverse = false;
     }
 
     private void PerformDrain()
@@ -66,25 +79,13 @@ internal class PE501 : Penitence
 
         Life life = Core.Logic.Penitent.Stats.Life;
         float amount = _config.DRAIN_BASE + _config.DRAIN_INCREASE * life.GetUpgrades();
-        if (_reverse)
+        if (ShouldReverseDrain)
             amount *= -1;
 
         Main.LostDreams.Log("Draining player by " + amount);
         life.Current -= amount;
         if (life.Current <= 0)
             Core.Logic.Penitent.KillInstanteneously();
-    }
-
-    /// <summary>
-    /// Adds health to the player
-    /// </summary>
-    private void HealPlayer(float amount)
-    {
-        if (!ShouldDrainHealth)
-            return;
-
-        Main.LostDreams.Log("Healing player by " + amount);
-        Core.Logic.Penitent.Stats.Life.Current += amount;
     }
 
     /// <summary>
@@ -128,6 +129,15 @@ internal class PE501 : Penitence
     {
         float amount = ApplyHealthModifier(_config.HEAL_KILL_BASE, _config.HEAL_KILL_INCREASE);
         HealPlayer(amount);
+    }
+
+    private void HealPlayer(float amount)
+    {
+        if (!ShouldDrainHealth)
+            return;
+
+        Main.LostDreams.Log("Healing player by " + amount);
+        Core.Logic.Penitent.Stats.Life.Current += amount;
     }
 
     private float ApplyHealthModifier(float baseAmount, float increaseAmount)
