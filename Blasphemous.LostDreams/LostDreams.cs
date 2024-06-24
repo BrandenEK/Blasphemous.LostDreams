@@ -13,6 +13,7 @@ using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.Framework.Penitence;
 using UnityEngine;
 using Blasphemous.LostDreams.Animation;
+using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Npc;
 
 namespace Blasphemous.LostDreams;
@@ -33,6 +34,7 @@ public class LostDreams : BlasMod
 
     // New stuff
     internal AnimationStorage AnimationStorage { get; private set; }
+    internal DialogStorage DialogStorage { get; private set; }
     internal NpcStorage NpcStorage { get; private set; }
 
     // Special effects
@@ -50,6 +52,7 @@ public class LostDreams : BlasMod
         ConfigHandler.Save(cfg);
 
         AnimationStorage = new AnimationStorage(FileHandler);
+        DialogStorage = new DialogStorage(FileHandler);
         NpcStorage = new NpcStorage(FileHandler);
 
         DamageRemoval = new DamageRemoval();
