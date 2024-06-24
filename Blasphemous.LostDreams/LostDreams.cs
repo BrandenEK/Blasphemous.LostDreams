@@ -33,7 +33,10 @@ public class LostDreams : BlasMod
     internal PenitenceHandler PenitenceHandler { get; } = new();
     internal TimeHandler TimeHandler { get; } = new();
 
-    // New stuff
+    // Item lists
+    internal BeadList BeadList { get; private set; }
+
+    // Info storages
     internal AnimationStorage AnimationStorage { get; private set; }
     internal DialogStorage DialogStorage { get; private set; }
     internal NpcStorage NpcStorage { get; private set; }
@@ -52,6 +55,10 @@ public class LostDreams : BlasMod
         Config cfg = ConfigHandler.Load<Config>();
         ConfigHandler.Save(cfg);
 
+        // Initialize item lists
+        BeadList = new BeadList(cfg);
+
+        // Initialize info storages
         AnimationStorage = new AnimationStorage(FileHandler);
         DialogStorage = new DialogStorage(FileHandler);
         NpcStorage = new NpcStorage(FileHandler);
@@ -89,7 +96,9 @@ public class LostDreams : BlasMod
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
-        provider.RegisterItem(new StandardRosaryBead("RB501", true).AddEffect(new RB501()));
+        foreach (var bead in BeadList.Items)
+            provider.RegisterItem(bead);
+        //provider.RegisterItem(new StandardRosaryBead("RB501", false).AddEffect(new RB501()));
         provider.RegisterItem(new StandardRosaryBead("RB502", true));
         provider.RegisterItem(new StandardRosaryBead("RB503", true));
 

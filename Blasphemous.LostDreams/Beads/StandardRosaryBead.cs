@@ -1,16 +1,19 @@
 ﻿using Blasphemous.Framework.Items;
-using Blasphemous.LostDreams.Items;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Beads;
 
-internal class StandardRosaryBead : ModRosaryBead
+internal class RosaryBead : ModRosaryBead
 {
-    public StandardRosaryBead(string id, bool useEffect)
+    private readonly RosaryBeadEffect _effect;
+
+    public bool IsEquipped => _effect.IsEquipped;
+
+    public RosaryBead(RosaryBeadEffect effect)
     {
-        Id = id;
-        if (useEffect)
-            AddEffect(new StandardEquipEffect(id));
+        Id = effect.GetType().Name;
+        AddEffect(effect);
+        _effect = effect;
     }
 
     protected override string Id { get; }
@@ -30,4 +33,24 @@ internal class StandardRosaryBead : ModRosaryBead
     protected override bool AddToPercentCompletion => true;
 
     protected override bool AddInventorySlot => true;
+}
+
+internal class RosaryBeadEffect : ModItemEffectOnEquip
+{
+    public bool IsEquipped { get; private set; }
+
+    public RosaryBeadEffect()
+    {
+        Main.LostDreams.EventHandler.OnExitGame += RemoveEffect;
+    }
+
+    protected override void ApplyEffect()
+    {
+        IsEquipped = true;
+    }
+
+    protected override void RemoveEffect()
+    {
+        IsEquipped = false;
+    }
 }
