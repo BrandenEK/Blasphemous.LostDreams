@@ -11,13 +11,25 @@ internal class EquipEffect : ModItemEffectOnEquip
         Main.LostDreams.EventHandler.OnExitGame += RemoveEffect;
     }
 
-    protected override void ApplyEffect()
+    protected virtual void OnEquip() { }
+    protected virtual void OnUnequip() { }
+    protected virtual void OnUpdate() { }
+
+    protected sealed override void ApplyEffect()
     {
         IsEquipped = true;
+        OnEquip();
     }
 
-    protected override void RemoveEffect()
+    protected sealed override void RemoveEffect()
     {
         IsEquipped = false;
+        OnUnequip();
+    }
+
+    protected sealed override void Update()
+    {
+        if (IsEquipped)
+            OnUpdate();
     }
 }

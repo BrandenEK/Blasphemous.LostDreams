@@ -18,19 +18,19 @@ internal class HE501 : EquipEffect
         _config = config;
     }
 
-    protected override void ApplyEffect()
+    protected override void OnEquip()
     {
         _applyNextFrame = true;
         _nextHealTime = Time.time + _config.REGEN_DELAY;
     }
 
-    protected override void RemoveEffect()
+    protected override void OnUnequip()
     {
         if (_halfHealth != null)
             Core.Logic.Penitent.Stats.Life.RemoveRawBonus(_halfHealth);
     }
 
-    protected override void Update()
+    protected override void OnUpdate()
     {
         if (_applyNextFrame)
         {
