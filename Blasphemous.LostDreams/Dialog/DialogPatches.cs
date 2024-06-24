@@ -22,8 +22,8 @@ class DialogManager_StartConversation_Patch
         DialogObject dialog = ScriptableObject.CreateInstance<DialogObject>();
         dialog.id = info.Id;
         dialog.dialogType = info.Type;
-        dialog.dialogLines = info.TextLines.Select(Main.LostDreams.LocalizationHandler.Localize).ToList();
-        dialog.answersLines = info.ResponseLines.Select(Main.LostDreams.LocalizationHandler.Localize).ToList();
+        dialog.dialogLines = info.TextLines.Select(x => Main.LostDreams.LocalizationHandler.Localize($"{info.Id}.{x}")).ToList();
+        dialog.answersLines = info.ResponseLines.Select(x => Main.LostDreams.LocalizationHandler.Localize($"{info.Id}.{x}")).ToList();
         dialog.itemType = info.Item == null ? InventoryManager.ItemType.Bead : ItemModder.GetItemTypeFromId(info.Item);
         dialog.item = info.Item;
 
