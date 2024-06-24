@@ -1,5 +1,5 @@
-﻿using Blasphemous.LostDreams.RosaryBeads;
-using Blasphemous.LostDreams.Effects;
+﻿using Blasphemous.LostDreams.Effects;
+using Blasphemous.LostDreams.Items.RosaryBeads;
 
 namespace Blasphemous.LostDreams;
 

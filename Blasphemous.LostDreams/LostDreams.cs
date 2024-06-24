@@ -4,10 +4,11 @@ using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Effects;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items;
+using Blasphemous.LostDreams.Items.RosaryBeads;
+using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
 using Blasphemous.LostDreams.Penitences;
-using Blasphemous.LostDreams.RosaryBeads;
 using Blasphemous.LostDreams.Timing;
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;
@@ -35,6 +36,7 @@ public class LostDreams : BlasMod
 
     // Item lists
     internal RosaryBeadList RosaryBeadList { get; private set; }
+    internal SwordHeartList SwordHeartList { get; private set; }
 
     // Info storages
     internal AnimationStorage AnimationStorage { get; private set; }
@@ -55,6 +57,7 @@ public class LostDreams : BlasMod
 
         // Initialize item lists
         RosaryBeadList = new RosaryBeadList(cfg);
+        SwordHeartList = new SwordHeartList(cfg);
 
         // Initialize info storages
         AnimationStorage = new AnimationStorage(FileHandler);
@@ -91,9 +94,11 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
-        // Beads
         foreach (var bead in RosaryBeadList.Items)
             provider.RegisterItem(bead);
+
+        foreach (var heart in SwordHeartList.Items)
+            provider.RegisterItem(heart);
 
         //provider.RegisterItem(new StandardRosaryBead("RB501", false).AddEffect(new RB501()));
         //provider.RegisterItem(new StandardRosaryBead("RB502", true));

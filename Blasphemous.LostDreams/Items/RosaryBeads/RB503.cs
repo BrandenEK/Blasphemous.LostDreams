@@ -1,12 +1,11 @@
-﻿using Blasphemous.LostDreams.Items;
-using Framework.Managers;
+﻿using Framework.Managers;
 using Gameplay.GameControllers.Effects.Player.Healing;
 using Gameplay.GameControllers.Entities;
 using HarmonyLib;
 using System.Collections;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.RosaryBeads;
+namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
 internal class RB503 : EquipEffect
 {

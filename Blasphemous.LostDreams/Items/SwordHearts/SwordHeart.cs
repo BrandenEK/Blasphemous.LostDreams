@@ -1,16 +1,15 @@
 ﻿using Blasphemous.Framework.Items;
-using Blasphemous.LostDreams.Items;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.RosaryBeads;
+namespace Blasphemous.LostDreams.Items.SwordHearts;
 
-internal class RosaryBead : ModRosaryBead
+internal class SwordHeart : ModSwordHeart
 {
     private readonly EquipEffect _effect;
 
     public bool IsEquipped => _effect.IsEquipped;
 
-    public RosaryBead(EquipEffect effect)
+    public SwordHeart(EquipEffect effect)
     {
         Id = effect.GetType().Name;
         AddEffect(_effect = effect);
@@ -24,7 +23,7 @@ internal class RosaryBead : ModRosaryBead
 
     protected override string Lore => Main.LostDreams.LocalizationHandler.Localize(Id + ".l");
 
-    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite($"beads/{Id}.png", out Sprite picture) ? picture : null;
+    protected override Sprite Picture => Main.LostDreams.FileHandler.LoadDataAsSprite($"swords/{Id}.png", out Sprite picture) ? picture : null;
 
     protected override bool CarryOnStart => false;
 

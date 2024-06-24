@@ -1,10 +1,9 @@
-﻿using Blasphemous.LostDreams.Items;
-using Gameplay.GameControllers.AnimationBehaviours.Player.Attack;
+﻿using Gameplay.GameControllers.AnimationBehaviours.Player.Attack;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.RosaryBeads;
+namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
 internal class RB501 : EquipEffect { }
 

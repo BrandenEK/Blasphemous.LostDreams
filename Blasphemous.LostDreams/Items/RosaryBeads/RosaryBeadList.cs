@@ -1,6 +1,5 @@
-﻿using Blasphemous.LostDreams.Items;
-
-namespace Blasphemous.LostDreams.RosaryBeads;
+﻿
+namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
 internal class RosaryBeadList(Config cfg) : ItemList<RosaryBead>
 {
