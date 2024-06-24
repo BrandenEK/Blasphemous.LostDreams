@@ -34,7 +34,7 @@ public class LostDreams : BlasMod
     internal TimeHandler TimeHandler { get; } = new();
 
     // Item lists
-    internal BeadList BeadList { get; private set; }
+    internal RosaryBeadList RosaryBeadList { get; private set; }
 
     // Info storages
     internal AnimationStorage AnimationStorage { get; private set; }
@@ -56,7 +56,7 @@ public class LostDreams : BlasMod
         ConfigHandler.Save(cfg);
 
         // Initialize item lists
-        BeadList = new BeadList(cfg);
+        RosaryBeadList = new RosaryBeadList(cfg);
 
         // Initialize info storages
         AnimationStorage = new AnimationStorage(FileHandler);
@@ -96,8 +96,9 @@ public class LostDreams : BlasMod
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
         // Beads
-        foreach (var bead in BeadList.Items)
+        foreach (var bead in RosaryBeadList.Items)
             provider.RegisterItem(bead);
+
         //provider.RegisterItem(new StandardRosaryBead("RB501", false).AddEffect(new RB501()));
         provider.RegisterItem(new StandardRosaryBead("RB502", true));
         provider.RegisterItem(new StandardRosaryBead("RB503", true));

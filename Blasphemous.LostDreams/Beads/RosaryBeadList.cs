@@ -2,13 +2,13 @@
 
 namespace Blasphemous.LostDreams.Beads;
 
-internal class BeadList
+internal class RosaryBeadList
 {
     public IEnumerable<RosaryBead> Items { get; }
 
     public RosaryBead RB501 { get; }
 
-    public BeadList(Config cfg)
+    public RosaryBeadList(Config cfg)
     {
         Items = new RosaryBead[]
         {

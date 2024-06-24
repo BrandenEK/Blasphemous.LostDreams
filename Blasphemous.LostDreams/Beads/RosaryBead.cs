@@ -12,8 +12,7 @@ internal class RosaryBead : ModRosaryBead
     public RosaryBead(RosaryBeadEffect effect)
     {
         Id = effect.GetType().Name;
-        AddEffect(effect);
-        _effect = effect;
+        AddEffect(_effect = effect);
     }
 
     protected override string Id { get; }
@@ -33,24 +32,4 @@ internal class RosaryBead : ModRosaryBead
     protected override bool AddToPercentCompletion => true;
 
     protected override bool AddInventorySlot => true;
-}
-
-internal class RosaryBeadEffect : ModItemEffectOnEquip
-{
-    public bool IsEquipped { get; private set; }
-
-    public RosaryBeadEffect()
-    {
-        Main.LostDreams.EventHandler.OnExitGame += RemoveEffect;
-    }
-
-    protected override void ApplyEffect()
-    {
-        IsEquipped = true;
-    }
-
-    protected override void RemoveEffect()
-    {
-        IsEquipped = false;
-    }
 }
