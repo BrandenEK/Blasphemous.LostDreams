@@ -1,6 +1,7 @@
 ﻿using Framework.FrameworkCore.Attributes;
 using Framework.FrameworkCore.Attributes.Logic;
 using Framework.Managers;
+using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.SwordHearts;
 
@@ -9,6 +10,8 @@ internal class HE501 : EquipEffect
     private readonly HE501Config _config;
 
     private RawBonus _halfHealth;
+    private float _nextHealTime;
+    private bool _applyNextFrame;
 
     public HE501(HE501Config config)
     {
@@ -17,16 +20,29 @@ internal class HE501 : EquipEffect
 
     protected override void ApplyEffect()
     {
-        Main.LostDreams.TimeHandler.AddCountdown("health-regen-half", 0.05f, ApplyHalfHealth);
-        Main.LostDreams.TimeHandler.AddTicker("health-regen", _config.REGEN_DELAY, false, RegenerateHealth);
+        _applyNextFrame = true;
+        _nextHealTime = Time.time + _config.REGEN_DELAY;
     }
 
     protected override void RemoveEffect()
     {
         if (_halfHealth != null)
             Core.Logic.Penitent.Stats.Life.RemoveRawBonus(_halfHealth);
+    }
 
-        Main.LostDreams.TimeHandler.RemoveTimer("health-regen");
+    protected override void Update()
+    {
+        if (_applyNextFrame)
+        {
+            _applyNextFrame = false;
+            ApplyHalfHealth();
+        }
+
+        if (Time.time >= _nextHealTime)
+        {
+            RegenerateHealth();
+            _nextHealTime = Time.time + _config.REGEN_DELAY;
+        }
     }
 
     private void ApplyHalfHealth()
