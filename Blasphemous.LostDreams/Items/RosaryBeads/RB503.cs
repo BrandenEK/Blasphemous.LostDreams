@@ -33,7 +33,7 @@ internal class RB503 : EffectOnEquip
         hit.DamageAmount = 0;
         _alreadyUsed = true;
 
-        Healing_Start_Patch.HealingFlag = true;
+        RB503_Healing_Start_Patch.HealingFlag = true;
         Object.FindObjectOfType<HealingAura>()?.StartAura(Core.Logic.Penitent.Status.Orientation);
         Core.Logic.Penitent.Audio.PrayerInvincibility();
     }
@@ -43,7 +43,7 @@ internal class RB503 : EffectOnEquip
 /// Show blue aura when damage is prevented
 /// </summary>
 [HarmonyPatch(typeof(HealingAura), "StartAura")]
-class Healing_Start_Patch
+class RB503_Healing_Start_Patch
 {
     public static void Postfix(HealingAura __instance, Animator ____auraAnimator, SpriteRenderer ____auraRenderer)
     {

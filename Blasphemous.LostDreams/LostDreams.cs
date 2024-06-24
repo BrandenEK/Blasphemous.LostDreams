@@ -105,9 +105,6 @@ public class LostDreams : BlasMod
 
         provider.RegisterItem(new StandardRosaryBead("RB551", true));
 
-        // Quest items
-        provider.RegisterItem(new StandardQuestItem("QI502", false));
-
         // Penitences
         provider.RegisterPenitence(new StandardPenitence("PE501", "RB551"));
 
