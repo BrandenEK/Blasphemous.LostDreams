@@ -59,5 +59,11 @@ public class NpcModifier : IModifier
         entity.Status.CastShadow = true;
         entity.Status.IsGrounded = true;
         body.AddComponent<EntityShadow>();
+
+        // Modify function properties (Dialog, etc)
+        GameObject function = obj.transform.GetChild(0).gameObject;
+
+        var interactable = function.GetComponent<ModInteractable>();
+        interactable.Dialogs = data.properties;
     }
 }
