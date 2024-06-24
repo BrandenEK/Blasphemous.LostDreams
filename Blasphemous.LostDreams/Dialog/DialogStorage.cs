@@ -10,6 +10,10 @@ public class DialogStorage
     public DialogInfo this[string id] => _dialogs.TryGetValue(id, out var info)
         ? info : throw new System.Exception($"Dialog {id} was never loaded");
 
+    public bool TryGetValue(string id, out DialogInfo info) => _dialogs.TryGetValue(id, out info);
+
+    public IEnumerable<DialogInfo> All => _dialogs.Values;
+
     public DialogStorage(FileHandler file)
     {
         string infoPath = "dialogs.json";
