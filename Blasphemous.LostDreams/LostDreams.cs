@@ -1,10 +1,13 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
-using Blasphemous.LostDreams.Effects;
+using Blasphemous.LostDreams.Animation;
+using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Events;
-using Blasphemous.LostDreams.Items;
+using Blasphemous.LostDreams.Items.Penitences;
+using Blasphemous.LostDreams.Items.QuestItems;
+using Blasphemous.LostDreams.Items.RosaryBeads;
+using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
-using Blasphemous.LostDreams.Penitences;
-using Blasphemous.LostDreams.Timing;
+using Blasphemous.LostDreams.Npc;
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;
 using Blasphemous.Framework.Levels;
@@ -12,9 +15,6 @@ using Blasphemous.Framework.Levels.Loaders;
 using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.Framework.Penitence;
 using UnityEngine;
-using Blasphemous.LostDreams.Animation;
-using Blasphemous.LostDreams.Dialog;
-using Blasphemous.LostDreams.Npc;
 
 namespace Blasphemous.LostDreams;
 
@@ -27,20 +27,18 @@ public class LostDreams : BlasMod
 
     // Handlers
     internal AcquisitionHandler AcquisitionHandler { get; } = new();
-    internal ItemHandler ItemHandler { get; } = new();
     internal EventHandler EventHandler { get; } = new();
-    internal PenitenceHandler PenitenceHandler { get; } = new();
-    internal TimeHandler TimeHandler { get; } = new();
 
-    // New stuff
+    // Item lists
+    internal PenitenceList PenitenceList { get; private set; }
+    internal QuestItemList QuestItemList { get; private set; }
+    internal RosaryBeadList RosaryBeadList { get; private set; }
+    internal SwordHeartList SwordHeartList { get; private set; }
+
+    // Info storages
     internal AnimationStorage AnimationStorage { get; private set; }
     internal DialogStorage DialogStorage { get; private set; }
     internal NpcStorage NpcStorage { get; private set; }
-
-    // Special effects
-    internal IToggleEffect DamageRemoval { get; private set; }
-    internal IMultiplierEffect DamageStack { get; private set; }
-    internal HealthDrain HealthDrain { get; private set; }
 
     /// <summary>
     /// Register handlers and create special effects
@@ -51,16 +49,16 @@ public class LostDreams : BlasMod
         Config cfg = ConfigHandler.Load<Config>();
         ConfigHandler.Save(cfg);
 
+        // Initialize item lists
+        PenitenceList = new PenitenceList(cfg);
+        QuestItemList = new QuestItemList(cfg);
+        RosaryBeadList = new RosaryBeadList(cfg);
+        SwordHeartList = new SwordHeartList(cfg);
+
+        // Initialize info storages
         AnimationStorage = new AnimationStorage(FileHandler);
         DialogStorage = new DialogStorage(FileHandler);
         NpcStorage = new NpcStorage(FileHandler);
-
-        DamageRemoval = new DamageRemoval();
-        DamageStack = new DamageStack(cfg.RB502);
-        HealthDrain = new HealthDrain(cfg.PE501);
-
-        // Temp !!!
-        _tempHE501 = cfg.HE501;
     }
 
     /// <summary>
@@ -68,10 +66,8 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnExitGame()
     {
-        ItemHandler.Reset();
         AcquisitionHandler.Reset();
         EventHandler.Reset();
-        TimeHandler.Reset();
     }
 
     /// <summary>
@@ -79,7 +75,11 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnUpdate()
     {
-        TimeHandler.Update();
+        if (!LoadStatus.GameSceneLoaded)
+            return;
+
+        // Temporarily update penitences until handled by framework
+        PenitenceList.PE501.Update();
     }
 
     /// <summary>
@@ -87,21 +87,17 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnRegisterServices(ModServiceProvider provider)
     {
-        // Beads
-        provider.RegisterItem(new StandardRosaryBead("RB501", true));
-        provider.RegisterItem(new StandardRosaryBead("RB502", true));
-        provider.RegisterItem(new StandardRosaryBead("RB503", true));
+        foreach (var penitence in PenitenceList.Items)
+            provider.RegisterPenitence(penitence);
 
-        provider.RegisterItem(new StandardRosaryBead("RB551", true));
+        foreach (var quest in QuestItemList.Items)
+            provider.RegisterItem(quest);
 
-        // Sword hearts
-        provider.RegisterItem(new StandardSwordHeart("HE501", false).AddEffect(new HealthRegen(_tempHE501)));
+        foreach (var bead in RosaryBeadList.Items)
+            provider.RegisterItem(bead);
 
-        // Quest items
-        provider.RegisterItem(new StandardQuestItem("QI502", false));
-
-        // Penitences
-        provider.RegisterPenitence(new StandardPenitence("PE501", "RB551"));
+        foreach (var heart in SwordHeartList.Items)
+            provider.RegisterItem(heart);
 
         // Level edits
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
@@ -117,7 +113,4 @@ public class LostDreams : BlasMod
             new NpcLoader(),
             new NpcModifier()));
     }
-
-    // Temp !!!
-    private HE501Config _tempHE501;
 }

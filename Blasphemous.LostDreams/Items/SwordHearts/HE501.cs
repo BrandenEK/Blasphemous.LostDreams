@@ -1,45 +1,48 @@
-﻿using Blasphemous.Framework.Items;
+﻿using Framework.FrameworkCore.Attributes;
 using Framework.FrameworkCore.Attributes.Logic;
-using Framework.FrameworkCore.Attributes;
 using Framework.Managers;
+using UnityEngine;
 
-namespace Blasphemous.LostDreams.Effects;
+namespace Blasphemous.LostDreams.Items.SwordHearts;
 
-/// <summary>
-/// Cuts health in half, but applies a timer for regen
-/// </summary>
-public class HealthRegen : ModItemEffectOnEquip
+internal class HE501 : EffectOnEquip
 {
     private readonly HE501Config _config;
 
     private RawBonus _halfHealth;
+    private float _nextHealTime;
+    private bool _applyNextFrame;
 
-    /// <summary>
-    /// Initializes regen parameters
-    /// </summary>
-    public HealthRegen(HE501Config config)
+    public HE501(HE501Config config)
     {
         _config = config;
     }
 
-    /// <summary>
-    /// Add timer for regen, but almost immediately half health
-    /// </summary>
-    protected override void ApplyEffect()
+    protected override void OnEquip()
     {
-        Main.LostDreams.TimeHandler.AddCountdown("health-regen-half", 0.05f, ApplyHalfHealth);
-        Main.LostDreams.TimeHandler.AddTicker("health-regen", _config.REGEN_DELAY, false, RegenerateHealth);
+        _applyNextFrame = true;
+        _nextHealTime = Time.time + _config.REGEN_DELAY;
     }
 
-    /// <summary>
-    /// Remove half health and stop timer for regen
-    /// </summary>
-    protected override void RemoveEffect()
+    protected override void OnUnequip()
     {
         if (_halfHealth != null)
             Core.Logic.Penitent.Stats.Life.RemoveRawBonus(_halfHealth);
+    }
 
-        Main.LostDreams.TimeHandler.RemoveTimer("health-regen");
+    protected override void OnUpdate()
+    {
+        if (_applyNextFrame)
+        {
+            _applyNextFrame = false;
+            ApplyHalfHealth();
+        }
+
+        if (Time.time >= _nextHealTime)
+        {
+            RegenerateHealth();
+            _nextHealTime = Time.time + _config.REGEN_DELAY;
+        }
     }
 
     private void ApplyHalfHealth()

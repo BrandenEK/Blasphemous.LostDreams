@@ -1,17 +1,27 @@
 ﻿using Blasphemous.Framework.Penitence;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Penitences;
+namespace Blasphemous.LostDreams.Items.Penitences;
 
-internal class StandardPenitence(string id, string item) : ModPenitenceWithBead
+internal class Penitence : ModPenitenceWithBead
 {
-    protected override string Id { get; } = id;
+    public bool IsActive { get; private set; }
+
+    public Penitence()
+    {
+        Id = GetType().Name;
+        BeadId = $"RB{int.Parse(Id.Substring(2)) + 50}";
+
+        Main.LostDreams.EventHandler.OnExitGame += Deactivate;
+    }
+
+    protected override string Id { get; }
 
     protected override string Name => Main.LostDreams.LocalizationHandler.Localize(Id + ".n");
 
     protected override string Description => Main.LostDreams.LocalizationHandler.Localize(Id + ".d");
 
-    protected override string BeadId { get; } = item;
+    protected override string BeadId { get; }
 
     protected override PenitenceImageCollection Images
     {
@@ -41,7 +51,26 @@ internal class StandardPenitence(string id, string item) : ModPenitenceWithBead
             };
         }
     }
-    protected override void Activate() => Main.LostDreams.PenitenceHandler.Activate(Id);
 
-    protected override void Deactivate() => Main.LostDreams.PenitenceHandler.Deactivate(Id);
+    protected virtual void OnActivate() { }
+    protected virtual void OnDeactivate() { }
+    protected virtual void OnUpdate() { }
+
+    protected sealed override void Activate()
+    {
+        IsActive = true;
+        OnActivate();
+    }
+
+    protected sealed override void Deactivate()
+    {
+        IsActive = false;
+        OnDeactivate();
+    }
+
+    public void Update()
+    {
+        if (IsActive)
+            OnUpdate();
+    }
 }
