@@ -57,15 +57,13 @@ class Item_Dog_Patch
 /// <summary>
 /// When finishing Nacimiento dialog, give one of the items
 /// </summary>
-[HarmonyPatch(typeof(DialogStart), nameof(DialogStart.DialogEnded))]
-class DialogStart_End_Patch
+[HarmonyPatch(typeof(ShowMessage), nameof(ShowMessage.OnEnter))]
+class ShowMessage_Enter_Patch
 {
-    public static void Prefix(string id)
+    public static bool Prefix(ShowMessage __instance)
     {
-        Main.LostDreams.Log("Finished: " + id);
-
-        if (id != "DLG_10104")
-            return;
+        if (__instance.textId == null || __instance.textId.Value != "MSG_10101")
+            return true;
 
         string item = Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades() switch
         {
@@ -78,8 +76,17 @@ class DialogStart_End_Patch
         };
 
         if (item == null)
-            return;
+            return true;
 
         ItemModder.AddAndDisplayItem(item);
+        return false;
     }
 }
+
+//[HarmonyPatch(typeof(DialogStart), nameof(DialogStart.DialogEnded))]
+//class DialogStart_End_Patch
+//{
+//    public static void Prefix(string id)
+//    {
+//    }
+//}
