@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.ModdingAPI;
+using Framework.Managers;
 using Gameplay.UI.Widgets;
 using HarmonyLib;
 using Tools.Playmaker2.Action;
@@ -50,5 +51,35 @@ class Item_Dog_Patch
     {
         if (name == "dog_block")
             Core.Events.SetFlag("PET_DOG", true);
+    }
+}
+
+/// <summary>
+/// When finishing Nacimiento dialog, give one of the items
+/// </summary>
+[HarmonyPatch(typeof(DialogStart), nameof(DialogStart.DialogEnded))]
+class DialogStart_End_Patch
+{
+    public static void Prefix(string id)
+    {
+        Main.LostDreams.Log("Finished: " + id);
+
+        if (id != "DLG_10104")
+            return;
+
+        string item = Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades() switch
+        {
+            1 => "RB510",
+            2 => "RB511",
+            3 => "RB512",
+            4 => "RB513",
+            5 => "RB514",
+            _ => null
+        };
+
+        if (item == null)
+            return;
+
+        ItemModder.AddAndDisplayItem(item);
     }
 }
