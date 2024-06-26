@@ -16,20 +16,20 @@ RB510.n: Chip of Cinnabar
 RB510.d: Piece of stone containing quicksilver. Beginning of the alchemical process. Slightly improves the amount of health restored by bile flasks.
 RB510.l: lore
 
-RB511.n: Nacimiento 2
-RB511.d: desc
+RB511.n: Ampoule of Purified Quicksilver
+RB511.d: Small flask containing purified quicksilver. Part of the alchemical process. Adds an additional charge to bile flasks.
 RB511.l: lore
 
-RB512.n: Nacimiento 3
-RB512.d: desc
+RB512.n: Unstable Orb of Quicksilver
+RB512.d: Solid piece of undulating quicksilver. Shows trouble in the alchemical process. Causes an explosion around the player when using a bile flask.
 RB512.l: lore
 
-RB513.n: Nacimiento 4
-RB513.d: desc
+RB513.n: Solution of Combined Quicksilver
+RB513.d: Quicksilver blended with other materials to stabilize it. It's reddish color shows promise but is not perfected. Drastically raises defense for a short time after drinking a bile flask.
 RB513.l: lore
 
-RB514.n: Nacimiento 5
-RB514.d: desc
+RB514.n: Philosopher's Quicksilver
+RB514.d: Red crystal of quicksilver. The true magnum opus and achievement of a master alchemist. However it is not without cost... Causes random wondrous effects when drinking from a bile flask. 
 RB514.l: lore
 
 RB551.n: Reliquary of Writhing Thorns
