@@ -12,24 +12,24 @@ RB503.n: Socorro's Ribbon
 RB503.d: Bloody length of soft cord used to bind the holy Lady Soccoro. It gives off a soothing warmth still. Completely negates the first instance of damage taken but will no longer work until resting at a Prie Dieu.
 RB503.l: "Father, why is it that so many must suffer like this?"\n"Because dear child," his voice rasping from pain still, "It is what makes us holy. To cleanse our souls our bodies must feel pain. Not only does blood flow from it, but also our sins..."\nThat is what was preached to them, she thought, as she gingerly cleaned the deep, bloody furrows in his oft scarred back. He suppressed another cry of pain from the touch. All around her in this plain wooden room were dozens of other grieving, pained people, crying out for help, for healing, and for forgiveness. She had seen it too much.\n"Father, I wish I could take away the pain of others," she insisted. "All I see every day are people crying, begging for help and I can do nothing to truly help them. I do not suffer, I feel no pain! I would gladly feel some for them, so those who suffer their whole lives can feel some respite!"\n"No, no, my daughter," he said, turning to her, "Be careful, such thoughts are dangerous!"\nBut as he turned, he began to feel different. His back no longer pained him. Blood welled upon her shoulders, and when he turned her around, her dress was stained with blossoms of crimson, as if she had been brutally whipped. He cried in new grief, and confusion, even though deep down he knew what was happening.\nThe strange cry brought others over to see what the matter was, and they felt wonder and amazement. For their pain left them, their wounds closed, and at the same time blossomed in new ruin across the young, untouched girls' body like new crimson flowers in the springtime. They rejoiced, and prostrated before her, such a miraculous sight, of the girl who took the pain of others unto herself.\nThey chanted psalms and praises, they carried her like an idol from their midst, drowning out the protests of the grieving father. She turned towards him one last time, and then shed one, single tear.\nHer wounds and torment grew ever greater from then on, countless came to see her for relief, and so much pain she took upon herself that she was eternally wracked with such agony that she could only spasm and cry as countless invisible afflictions were wrought upon her aching body.\nThus, was she considered amongst the holiest of the holy, for this great blessing.
 
-RB510.n: Nacimiento 1
-RB510.d: desc
+RB510.n: Chip of Cinnabar
+RB510.d: Piece of stone containing quicksilver. Beginning of the alchemical process. Slightly improves the amount of health restored by bile flasks.
 RB510.l: lore
 
-RB511.n: Nacimiento 2
-RB511.d: desc
+RB511.n: Ampoule of Purified Quicksilver
+RB511.d: Small flask containing purified quicksilver. Part of the alchemical process. Adds an additional charge to bile flasks.
 RB511.l: lore
 
-RB512.n: Nacimiento 3
-RB512.d: desc
+RB512.n: Unstable Orb of Quicksilver
+RB512.d: Solid piece of undulating quicksilver. Shows trouble in the alchemical process. Causes an explosion around the player when using a bile flask.
 RB512.l: lore
 
-RB513.n: Nacimiento 4
-RB513.d: desc
+RB513.n: Solution of Combined Quicksilver
+RB513.d: Quicksilver blended with other materials to stabilize it. It's reddish color shows promise but is not perfected. Drastically raises defense for a short time after drinking a bile flask.
 RB513.l: lore
 
-RB514.n: Nacimiento 5
-RB514.d: desc
+RB514.n: Philosopher's Quicksilver
+RB514.d: Red crystal of quicksilver. The true magnum opus and achievement of a master alchemist. However it is not without cost... Causes random wondrous effects when drinking from a bile flask. 
 RB514.l: lore
 
 RB551.n: Reliquary of Writhing Thorns
