@@ -11,6 +11,11 @@ public class Config
 {
     /// <summary> Properties for RB502 </summary>
     public RB502Config RB502 { get; set; } = new();
+    public RB510Config RB510 { get; set; } = new();
+    public RB511Config RB511 { get; set; } = new();
+    public RB512Config RB512 { get; set; } = new();
+    public RB513Config RB513 { get; set; } = new();
+    public RB514Config RB514 { get; set; } = new();
 
     /// <summary> Properties for HE501 </summary>
     public HE501Config HE501 { get; set; } = new();
