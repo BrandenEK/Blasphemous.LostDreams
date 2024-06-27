@@ -98,12 +98,6 @@ public class RB512ExplosionAttack
     {
         _config = config;
 
-        _hit = new Hit
-        {
-            DamageAmount = _config.DAMAGE,
-            DamageType = _config.DAMAGE_TYPE,
-            DamageElement = _config.DAMAGE_ELEMENT
-        };
     }
 
     /// <summary>
@@ -113,6 +107,7 @@ public class RB512ExplosionAttack
     {
         Vector3 centerPosition = Core.Logic.Penitent.transform.position;
         _damageableEntities = GetDamageableEntitiesWithinCircleArea(centerPosition, _config.ATTACK_RADIUS);
+        _hit = CreateHit();
         AttackDamageableEntities(_hit, _damageableEntities);
         if (_damageableEntities.Count > 0)
         {
@@ -175,6 +170,19 @@ public class RB512ExplosionAttack
         {
             targets[i].Damage(hit);
         }
+    }
+
+    private Hit CreateHit()
+    {
+        Hit hit = new Hit
+        {
+            DamageAmount = _config.DAMAGE,
+            DamageType = _config.DAMAGE_TYPE,
+            DamageElement = _config.DAMAGE_ELEMENT,
+            AttackingEntity = Core.Logic.Penitent.gameObject
+        };
+
+        return hit;
     }
 }
 
