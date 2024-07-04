@@ -21,8 +21,8 @@ RB511.d: Small flask containing purified quicksilver. Part of the alchemical pro
 RB511.l: Research Notes, Cvstodia\n\n"I have managed to extract an ampoule of the purified quicksilver. It was not particularly difficult, as crushing the stone into fragments, melting said fragments, and then distilling them proved extremely effective. This is an important development, and I am yet another step closer to unlocking the secrets of quicksilver."
 
 RB512.n: Unstable Orb of Quicksilver
-RB512.d: Solid piece of undulating quicksilver. Shows trouble in the alchemical process. Causes an explosion around the player when using a bile flask.
-RB512.l: lore
+RB512.d: Solid piece of undulating quicksilver. Shows trouble in the alchemical process. Causes an explosion around the penitent one when using a bile flask.
+RB512.l: Research Notes, Cvstodia\n\n"Progress has halted. I've experimented much with the quicksilver, but nothing of worth has come of my efforts. Recently I mixed it with alcohol and some acid, which created a substance that violently exploded when disturbed, shattering the ampoule and puncturing my hand. I cannot continue in this way or I fear I will cross out of this dream before my success is known. My beard grows ever longer and my time grows ever shorter."
 
 RB513.n: Solution of Combined Quicksilver
 RB513.d: Quicksilver blended with other materials to stabilize it. It's reddish color shows promise but is not perfected. Drastically raises defense for a short time after drinking a bile flask.
