@@ -18,7 +18,7 @@ RB510.l: Research Notes, Cvstodia\n\n"I was able to procure a small fragment of 
 
 RB511.n: Ampoule of Purified Quicksilver
 RB511.d: Small flask containing purified quicksilver. Part of the alchemical process. Adds an additional charge to bile flasks.
-RB511.l: lore
+RB511.l: Research Notes, Cvstodia\n\n"I have managed to extract an ampoule of the purified quicksilver. It was not particularly difficult, as crushing the stone into fragments, melting said fragments, and then distilling them proved extremely effective. This is an important development, and I am yet another step closer to unlocking the secrets of quicksilver."
 
 RB512.n: Unstable Orb of Quicksilver
 RB512.d: Solid piece of undulating quicksilver. Shows trouble in the alchemical process. Causes an explosion around the player when using a bile flask.
