@@ -30,7 +30,7 @@ RB513.l: Research Notes, Cvstodia\n\n"Finally, another step has been taken. I mi
 
 RB514.n: Philosopher's Quicksilver
 RB514.d: Red crystal of quicksilver. The true magnum opus and achievement of a master alchemist. However it is not without cost... Causes random wondrous effects when drinking from a bile flask. 
-RB514.l: lore
+RB514.l: Research Notes, Cvstodia\n\n"By the Miracle... I have done it. I have created true immortality, and it tastes so sweet. My wrinkles have begun to disappear, as though my very age were crawling back through time... Of all the names of the alchemists of our world, mine will be the one uttered from the lips of the grateful. For I have liberated us from the utter brevity of our fleeting lives."
 
 RB551.n: Reliquary of Writhing Thorns
 RB551.d: It retains in its bosom the mark of a fulfilled penance. It pierces the heart of its wearer with the scars of twisting pain, causing enemies to take damage upon striking you.
