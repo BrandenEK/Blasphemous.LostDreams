@@ -26,7 +26,7 @@ RB512.l: Research Notes, Cvstodia\n\n"Progress has halted. I've experimented muc
 
 RB513.n: Solution of Combined Quicksilver
 RB513.d: Quicksilver blended with other materials to stabilize it. It's reddish color shows promise but is not perfected. Drastically raises defense for a short time after drinking a bile flask.
-RB513.l: lore
+RB513.l: Research Notes, Cvstodia\n\n"Finally, another step has been taken. I mixed the quicksilver with blood and yellow bile in hopes that those humours would bring out the quicksilver's healing properties. Having done this, I have managed to produce a rudimentary healing elixir. It is far from a concoction of immortality, but I am getting closer by the minute. It cannot be long now, soon I will taste the sweet nectar of eternal life..."
 
 RB514.n: Philosopher's Quicksilver
 RB514.d: Red crystal of quicksilver. The true magnum opus and achievement of a master alchemist. However it is not without cost... Causes random wondrous effects when drinking from a bile flask. 
