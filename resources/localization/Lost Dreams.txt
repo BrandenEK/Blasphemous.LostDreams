@@ -14,7 +14,7 @@ RB503.l: "Father, why is it that so many must suffer like this?"\n"Because dear 
 
 RB510.n: Chip of Cinnabar
 RB510.d: Piece of stone containing quicksilver. Beginning of the alchemical process. Slightly improves the amount of health restored by bile flasks.
-RB510.l: lore
+RB510.l: Research Notes, Cvstodia\n\n"I was able to procure a small fragment of reddish stone said to contain quicksilver. On its own, this vermilion is not very alchemically useful, but should I find a way to purify the quicksilver from it, then direct experimentation will be possible."
 
 RB511.n: Ampoule of Purified Quicksilver
 RB511.d: Small flask containing purified quicksilver. Part of the alchemical process. Adds an additional charge to bile flasks.
