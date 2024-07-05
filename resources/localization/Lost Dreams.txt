@@ -14,23 +14,23 @@ RB503.l: "Father, why is it that so many must suffer like this?"\n"Because dear 
 
 RB510.n: Chip of Cinnabar
 RB510.d: Piece of stone containing quicksilver. Beginning of the alchemical process. Slightly improves the amount of health restored by bile flasks.
-RB510.l: lore
+RB510.l: Research Notes, Cvstodia\n\n"I was able to procure a small fragment of reddish stone said to contain quicksilver. On its own, this vermilion is not very alchemically useful, but should I find a way to purify the quicksilver from it, then direct experimentation will be possible."
 
 RB511.n: Ampoule of Purified Quicksilver
 RB511.d: Small flask containing purified quicksilver. Part of the alchemical process. Adds an additional charge to bile flasks.
-RB511.l: lore
+RB511.l: Research Notes, Cvstodia\n\n"I have managed to extract an ampoule of the purified quicksilver. It was not particularly difficult, as crushing the stone into fragments, melting said fragments, and then distilling them proved extremely effective. This is an important development, and I am yet another step closer to unlocking the secrets of quicksilver."
 
 RB512.n: Unstable Orb of Quicksilver
-RB512.d: Solid piece of undulating quicksilver. Shows trouble in the alchemical process. Causes an explosion around the player when using a bile flask.
-RB512.l: lore
+RB512.d: Solid piece of undulating quicksilver. Shows trouble in the alchemical process. Causes an explosion around the penitent one when using a bile flask.
+RB512.l: Research Notes, Cvstodia\n\n"Progress has halted. I've experimented much with the quicksilver, but nothing of worth has come of my efforts. Recently I mixed it with alcohol and some acid, which created a substance that violently exploded when disturbed, shattering the ampoule and puncturing my hand. I cannot continue in this way or I fear I will cross out of this dream before my success is known. My beard grows ever longer and my time grows ever shorter."
 
 RB513.n: Solution of Combined Quicksilver
 RB513.d: Quicksilver blended with other materials to stabilize it. It's reddish color shows promise but is not perfected. Drastically raises defense for a short time after drinking a bile flask.
-RB513.l: lore
+RB513.l: Research Notes, Cvstodia\n\n"Finally, another step has been taken. I mixed the quicksilver with blood and yellow bile in hopes that those humours would bring out the quicksilver's healing properties. Having done this, I have managed to produce a rudimentary healing elixir. It is far from a concoction of immortality, but I am getting closer by the minute. It cannot be long now, soon I will taste the sweet nectar of eternal life..."
 
 RB514.n: Philosopher's Quicksilver
 RB514.d: Red crystal of quicksilver. The true magnum opus and achievement of a master alchemist. However it is not without cost... Causes random wondrous effects when drinking from a bile flask. 
-RB514.l: lore
+RB514.l: Research Notes, Cvstodia\n\n"By the Miracle... I have done it. I have created true immortality, and it tastes so sweet. My wrinkles have begun to disappear, as though my very age were crawling back through time... Of all the names of the alchemists of our world, mine will be the one uttered from the lips of the grateful. For I have liberated us from the utter brevity of our fleeting lives."
 
 RB551.n: Reliquary of Writhing Thorns
 RB551.d: It retains in its bosom the mark of a fulfilled penance. It pierces the heart of its wearer with the scars of twisting pain, causing enemies to take damage upon striking you.
