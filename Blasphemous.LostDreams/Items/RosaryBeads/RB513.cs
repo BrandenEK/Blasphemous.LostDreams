@@ -25,7 +25,10 @@ internal class RB513 : EffectOnEquip
 
     private void ApplyBonus(ref bool cancel)
     {
-        if (!IsEquipped) { return; }
+        if (!IsEquipped)
+        {
+            return;
+        }
 
         Core.Logic.Penitent.Stats.NormalDmgReduction.AddRawBonus(_damageReductionBonus);
         Core.Logic.Penitent.Stats.MagicDmgReduction.AddRawBonus(_damageReductionBonus);
@@ -57,7 +60,10 @@ internal class RB513 : EffectOnEquip
 
     protected override void OnUpdate()
     {
-        if (!_isActive) { return; }
+        if (!_isActive)
+        {
+            return;
+        }
 
         _currentTimer += Time.deltaTime;
         if (_currentTimer >= _effectDuration)

@@ -29,7 +29,9 @@ internal class RB512 : EffectOnEquip
     private void CreateExplosion(ref bool cancel)
     {
         if (!IsEquipped)
-        { return; }
+        {
+            return;
+        }
 
         _currentTimer = 0f;
         _isActive = true;
@@ -41,7 +43,9 @@ internal class RB512 : EffectOnEquip
     protected override void OnUpdate()
     {
         if (!_isActive)
-        { return; }
+        {
+            return;
+        }
 
         _currentTimer += Time.deltaTime;
         if ( _currentTimer >= _explosionDelay 
@@ -83,7 +87,7 @@ public class RB512Config
 }
 
 
-public class RB512ExplosionAttack
+internal class RB512ExplosionAttack
 {
     private Hit _hit;
 
