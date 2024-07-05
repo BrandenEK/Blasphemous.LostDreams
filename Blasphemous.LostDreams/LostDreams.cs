@@ -112,5 +112,8 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("npc", new ObjectCreator(
             new NpcLoader(),
             new NpcModifier()));
+        provider.RegisterObjectCreator("door", new ObjectCreator(
+            new SceneLoader("D17Z01S10_LOGIC", "DOORS/{0}"),
+            new DoorModifier()));
     }
 }

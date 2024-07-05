@@ -2,7 +2,9 @@
 using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.LostDreams.Components;
 using Blasphemous.LostDreams.Npc;
+using Framework.FrameworkCore;
 using Gameplay.GameControllers.Entities;
+using Tools.Level.Interactables;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Levels;
@@ -65,5 +67,29 @@ public class NpcModifier : IModifier
 
         var interactable = function.GetComponent<ModInteractable>();
         interactable.Dialogs = data.properties;
+    }
+}
+
+public class DoorModifier : IModifier
+{
+    public void Apply(GameObject obj, ObjectData data)
+    {
+        obj.name = $"Door[{data.id}]";
+
+        Door door = obj.GetComponent<Door>();
+        door.identificativeName = data.id;
+        door.targetScene = data.properties[0];
+        door.targetDoor = data.properties[1];
+        door.exitOrientation = data.properties[2] switch
+        {
+            "left" => EntityOrientation.Left,
+            "right" => EntityOrientation.Right,
+            _ => throw new System.Exception("Invalid door orientation")
+        };
+        door.spawnPoint.transform.position = new()
+        {
+            x = float.Parse(data.properties[3]),
+            y = float.Parse(data.properties[4]),
+        };
     }
 }
