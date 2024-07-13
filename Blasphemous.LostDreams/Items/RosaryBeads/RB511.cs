@@ -1,16 +1,11 @@
 ﻿using Framework.FrameworkCore.Attributes.Logic;
 using Framework.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
 internal class RB511 : EffectOnEquip
 {
-
-    private RawBonus _flaskCountBonus;
+    private readonly RawBonus _flaskCountBonus;
 
     public RB511(RB511Config config)
     {
@@ -32,5 +27,6 @@ internal class RB511 : EffectOnEquip
 /// </summary>
 public class RB511Config
 {
+    /// <summary> How many extra flasks you should be given </summary>
     public int FLASK_AMOUNT_BUFF = 1;
 }

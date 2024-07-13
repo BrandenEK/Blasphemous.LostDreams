@@ -1,9 +1,5 @@
 ﻿using Framework.FrameworkCore.Attributes.Logic;
 using Framework.Managers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
@@ -13,8 +9,9 @@ internal class RB513 : EffectOnEquip
     private bool _isActive = false;
     private float _currentTimer = 0f;
 
-    private RawBonus _damageReductionBonus;
-    private float _effectDuration;
+    private readonly RawBonus _damageReductionBonus;
+    private readonly float _effectDuration;
+
     public RB513(RB513Config config)
     {
         _damageReductionBonus = new(config.DAMAGE_REDUCTION_BUFF);
@@ -26,9 +23,7 @@ internal class RB513 : EffectOnEquip
     private void ApplyBonus(ref bool cancel)
     {
         if (!IsEquipped)
-        {
             return;
-        }
 
         Core.Logic.Penitent.Stats.NormalDmgReduction.AddRawBonus(_damageReductionBonus);
         Core.Logic.Penitent.Stats.MagicDmgReduction.AddRawBonus(_damageReductionBonus);
@@ -61,9 +56,7 @@ internal class RB513 : EffectOnEquip
     protected override void OnUpdate()
     {
         if (!_isActive)
-        {
             return;
-        }
 
         _currentTimer += Time.deltaTime;
         if (_currentTimer >= _effectDuration)
@@ -79,6 +72,8 @@ internal class RB513 : EffectOnEquip
 /// </summary>
 public class RB513Config
 {
+    /// <summary> Percent that every damage type should be reduced by </summary>
     public float DAMAGE_REDUCTION_BUFF = 0.4f;
+    /// <summary> How many seconds should the effect last after using a flask </summary>
     public float DURATION = 10f;
 }

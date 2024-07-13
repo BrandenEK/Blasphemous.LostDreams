@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
 internal class RB514 : EffectOnEquip
 {
-    private RB514Config _config;
+    private readonly RB514Config _config;
+
     public RB514(RB514Config config)
     {
         _config = config;

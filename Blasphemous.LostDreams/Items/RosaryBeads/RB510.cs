@@ -1,12 +1,11 @@
-﻿
-using Framework.FrameworkCore.Attributes.Logic;
+﻿using Framework.FrameworkCore.Attributes.Logic;
 using Framework.Managers;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
 internal class RB510 : EffectOnEquip 
 {
-    private RawBonus _flaskHealBonus;
+    private readonly RawBonus _flaskHealBonus;
 
     public RB510(RB510Config config)
     {
@@ -29,5 +28,6 @@ internal class RB510 : EffectOnEquip
 /// </summary>
 public class RB510Config
 {
+    /// <summary> How much extra should you be healed when using a flask </summary>
     public float FLASK_HEAL_BUFF = 20f;
 }
