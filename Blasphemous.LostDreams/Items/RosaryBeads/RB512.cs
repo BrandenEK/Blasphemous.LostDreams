@@ -8,15 +8,12 @@ namespace Blasphemous.LostDreams.Items.RosaryBeads;
 internal class RB512 : EffectOnEquip
 {
     private float _currentTimer;
-    float _explosionDelay = 0.5f;
-    float _shockwaveDuration = 0.5f;
     private Vector3 _shockwavePosition;
 
     private bool _isActive = false;
 
-    private RB512ExplosionAttack _explosionAttack;
-    private RB512Config _config;
-
+    private readonly RB512ExplosionAttack _explosionAttack;
+    private readonly RB512Config _config;
 
     public RB512(RB512Config config)
     {
@@ -29,49 +26,44 @@ internal class RB512 : EffectOnEquip
     private void CreateExplosion(ref bool cancel)
     {
         if (!IsEquipped)
-        {
             return;
-        }
 
         _currentTimer = 0f;
         _isActive = true;
         
         Core.Logic.Penitent.Audio.PlayVerticalAttackLanding();
-
     }
 
     protected override void OnUpdate()
     {
         if (!_isActive)
-        {
             return;
-        }
 
         _currentTimer += Time.deltaTime;
-        if ( _currentTimer >= _explosionDelay 
-            && _currentTimer < _explosionDelay + Time.deltaTime )
+        if (_currentTimer >= EXPLOSION_DELAY && _currentTimer < EXPLOSION_DELAY + Time.deltaTime)
         { 
             _explosionAttack.StartAttack();
             _shockwavePosition = Core.Logic.Penitent.GetPosition();
             Core.Logic.CameraManager.ShockwaveManager.Shockwave(
-                _shockwavePosition, 
-                _shockwaveDuration * 0.5f,
+                _shockwavePosition,
+                SHOCKWAVE_DURATION * 0.5f,
                 0.05f, 
                 _config.ATTACK_RADIUS * 0.1f);
         }
-        else if (_currentTimer >= _explosionDelay + _shockwaveDuration * 0.5f
-            && _currentTimer < _explosionDelay + _shockwaveDuration * 0.5f + Time.deltaTime)
+        else if (_currentTimer >= EXPLOSION_DELAY + SHOCKWAVE_DURATION * 0.5f && _currentTimer < EXPLOSION_DELAY + SHOCKWAVE_DURATION * 0.5f + Time.deltaTime)
         {
             _isActive = false;
             Core.Logic.CameraManager.ShockwaveManager.Shockwave(
                 _shockwavePosition,
-                _shockwaveDuration * 0.5f,
+                SHOCKWAVE_DURATION * 0.5f,
                 _config.ATTACK_RADIUS * 0.1f,
                 1.5f) ;
         }
         
     }
 
+    private const float EXPLOSION_DELAY = 0.5f;
+    private const float SHOCKWAVE_DURATION = 0.5f;
 }
 
 /// <summary> 
@@ -79,30 +71,25 @@ internal class RB512 : EffectOnEquip
 /// </summary>
 public class RB512Config
 {
+    /// <summary> The damage amount of the explosion </summary>
     public float DAMAGE = 100f;
+    /// <summary> The damage element of the explosion </summary>
     public DamageArea.DamageElement DAMAGE_ELEMENT = DamageArea.DamageElement.Normal;
+    /// <summary> The damage type of the explosion </summary>
     public DamageArea.DamageType DAMAGE_TYPE = DamageArea.DamageType.Normal;
-
+    /// <summary> The radius from the player that the explosion should effect </summary>
     public float ATTACK_RADIUS = 3f;
 }
 
-
-internal class RB512ExplosionAttack
+/// <summary>
+/// Constructor for RB512's explosion attack
+/// </summary>
+internal class RB512ExplosionAttack(RB512Config config)
 {
+    private readonly RB512Config _config = config;
+
     private Hit _hit;
-
-    private RB512Config _config;
-
     private List<IDamageable> _damageableEntities;
-
-    /// <summary>
-    /// Constructor for RB512's explosion attack
-    /// </summary>
-    public RB512ExplosionAttack(RB512Config config)
-    {
-        _config = config;
-
-    }
 
     /// <summary>
     /// Initiate a RB512 explosion attack
@@ -126,15 +113,12 @@ internal class RB512ExplosionAttack
     {
         Core.Logic.ScreenFreeze.Freeze(0.05f, 0.05f);
         Core.Logic.CameraManager.ProCamera2DShake.Shake(
-            0.35f, Vector3.down * 0.5f, 12, 0.2f, 0.01f, default(Vector3), 0.01f, true);
-        
+            0.35f, Vector3.down * 0.5f, 12, 0.2f, 0.01f, default(Vector3), 0.01f, true);        
     }
+
     /// <summary>
     /// Return a list of enemies within a circular area
     /// </summary>
-    /// <param name="centerPos">The center of the circle</param>
-    /// <param name="radius">The radius of the circle</param>
-    /// <returns></returns>
     public List<IDamageable> GetDamageableEntitiesWithinCircleArea(Vector3 centerPos, float radius)
     {
         Collider2D[] allCollidersInRange = Physics2D.OverlapCircleAll(centerPos, radius);
@@ -156,11 +140,8 @@ internal class RB512ExplosionAttack
         {
             IDamageable damageableComponent = allObjectsInRange[j].GetComponentInParent<IDamageable>();
 
-            if (damageableComponent != null)
+            if (damageableComponent != null && damageableComponent is Enemy)
             {
-                if (damageableComponent is not Enemy)
-                { continue; }
-
                 allDamageablesInRange.Add(damageableComponent);
             }
         }
@@ -178,15 +159,13 @@ internal class RB512ExplosionAttack
 
     private Hit CreateHit()
     {
-        Hit hit = new Hit
+        return new Hit
         {
             DamageAmount = _config.DAMAGE,
             DamageType = _config.DAMAGE_TYPE,
             DamageElement = _config.DAMAGE_ELEMENT,
             AttackingEntity = Core.Logic.Penitent.gameObject
         };
-
-        return hit;
     }
 }
 
