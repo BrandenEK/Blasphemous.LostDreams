@@ -5,16 +5,16 @@ public class AnimationImportInfo
 {
     public string Name { get; }
     public string FilePath { get; }
-    public int Width { get; }
-    public int Height { get; }
+    public Vector Size { get; }
+    public Vector Pivot { get; }
     public float SecondsPerFrame { get; }
 
-    public AnimationImportInfo(string name, string filePath, int width, int height, float secondsPerFrame)
+    public AnimationImportInfo(string name, string filePath, Vector size, Vector pivot, float secondsPerFrame)
     {
         Name = Main.Validate(name, x => !string.IsNullOrEmpty(x));
         FilePath = Main.Validate(filePath, x => !string.IsNullOrEmpty(x));
-        Width = Main.Validate(width, x => x > 0);
-        Height = Main.Validate(height, x => x > 0);
+        Size = Main.Validate(size, x => x.X > 0 && x.Y > 0);
+        Pivot = Main.Validate(pivot, x => x.X >= 0 && x.X <= 1 && x.Y >= 0 && x.Y <= 1);
         SecondsPerFrame = Main.Validate(secondsPerFrame, x => x > 0);
     }
 }

@@ -20,14 +20,14 @@ public class AnimationStorage
             return;
         }
 
-        var options = new SpriteImportOptions()
-        {
-            Pivot = new Vector2(0.5f, 0)
-        };
-
         foreach (var import in imports)
         {
-            if (!file.LoadDataAsFixedSpritesheet(import.FilePath, new Vector2(import.Width, import.Height), out Sprite[] spritesheet, options))
+            var options = new SpriteImportOptions()
+            {
+                Pivot = import.Pivot
+            };
+
+            if (!file.LoadDataAsFixedSpritesheet(import.FilePath, import.Size, out Sprite[] spritesheet, options))
             {
                 Main.LostDreams.LogError($"Failed to load {import.Name} from {import.FilePath}");
                 continue;
