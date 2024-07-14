@@ -2,8 +2,14 @@
     {
         "name": "explosion_mercury",
         "filePath": "effects/explosion_mercury.png",
-        "width": 210,
-        "height": 210,
+        "size": {
+            "x": 210,
+            "y": 210
+        },
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
         "secondsPerFrame": 0.2
     }
 ]
