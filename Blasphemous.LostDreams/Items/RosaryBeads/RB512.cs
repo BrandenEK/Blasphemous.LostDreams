@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.LostDreams.Components;
+using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -100,6 +101,7 @@ internal class RB512ExplosionAttack(RB512Config config)
         _damageableEntities = GetDamageableEntitiesWithinCircleArea(centerPosition, _config.ATTACK_RADIUS);
         _hit = CreateHit();
         AttackDamageableEntities(_hit, _damageableEntities);
+        DisplayExplosionVfx();
         if (_damageableEntities.Count > 0)
         {
             OnHit();
@@ -155,6 +157,23 @@ internal class RB512ExplosionAttack(RB512Config config)
         {
             targets[i].Damage(hit);
         }
+    }
+
+    private void DisplayExplosionVfx()
+    {
+        var obj = new GameObject("RB512 Explosion");
+        obj.transform.position = Core.Logic.Penitent.GetPosition() + Vector3.up;
+
+        var sr = obj.AddComponent<SpriteRenderer>();
+        sr.sortingLayerName = "Player";
+        sr.sortingOrder = 1000;
+
+        var anim = obj.AddComponent<ModAnimator>();
+        anim.Animation = Main.LostDreams.AnimationStorage["explosion_mercury"];
+        anim.Loop = false;
+
+        obj.AddComponent<ModVanisher>();
+
     }
 
     private Hit CreateHit()

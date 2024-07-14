@@ -128,17 +128,5 @@ public class LostDreams : BlasMod
     /// </summary>
     private void TestMechanic()
     {
-        var obj = new GameObject("Test");
-        obj.transform.position = Core.Logic.Penitent.GetPosition() + Vector3.up;
-
-        var sr = obj.AddComponent<SpriteRenderer>();
-        sr.sortingLayerName = "Player";
-        sr.sortingOrder = 1000;
-
-        var anim = obj.AddComponent<ModAnimator>();
-        anim.Animation = AnimationStorage["explosion_mercury"];
-        anim.Loop = false;
-
-        obj.AddComponent<ModVanisher>();
     }
 }
