@@ -1,5 +1,6 @@
 ﻿using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Animation;
+using Blasphemous.LostDreams.Components;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items.Penitences;
@@ -14,6 +15,7 @@ using Blasphemous.Framework.Levels;
 using Blasphemous.Framework.Levels.Loaders;
 using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.Framework.Penitence;
+using Framework.Managers;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
@@ -78,6 +80,13 @@ public class LostDreams : BlasMod
         if (!LoadStatus.GameSceneLoaded)
             return;
 
+#if DEBUG
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            TestMechanic();
+        }
+#endif
+
         // Temporarily update penitences until handled by framework
         PenitenceList.PE501.Update();
     }
@@ -112,5 +121,21 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("npc", new ObjectCreator(
             new NpcLoader(),
             new NpcModifier()));
+    }
+
+    /// <summary>
+    /// Debug testing
+    /// </summary>
+    private void TestMechanic()
+    {
+        var obj = new GameObject("Test");
+        obj.transform.position = Core.Logic.Penitent.GetPosition() + Vector3.up;
+
+        var sr = obj.AddComponent<SpriteRenderer>();
+        sr.sortingLayerName = "Player";
+        sr.sortingOrder = 1000;
+
+        var anim = obj.AddComponent<ModAnimator>();
+        anim.Animation = AnimationStorage["explosion_mercury"];
     }
 }
