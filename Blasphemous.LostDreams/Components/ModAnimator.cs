@@ -3,13 +3,18 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Components;
 
+/// <summary>
+/// Component that plays animations on a SpriteRenderer
+/// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class ModAnimator : MonoBehaviour
 {
-    private AnimationInfo _animation;
     private float _nextUpdateTime;
     private int _currentIdx;
 
+    /// <summary>
+    /// The animation to play
+    /// </summary>
     public AnimationInfo Animation
     {
         get => _animation;
@@ -22,6 +27,29 @@ public class ModAnimator : MonoBehaviour
                 _nextUpdateTime = Time.time + _animation.SecondsPerFrame;
                 _currentIdx = 0;
             }
+        }
+    }
+    private AnimationInfo _animation;
+
+    /// <summary>
+    /// Whether the animation should start over once it reaches the end
+    /// </summary>
+    public bool Loop
+    {
+        get => _loop;
+        set => _loop = value;
+    }
+    private bool _loop;
+
+    /// <summary>
+    /// The percent of the way through the animation
+    /// </summary>
+    public float NormalizedTime
+    {
+        get => 0;
+        set
+        {
+
         }
     }
 
