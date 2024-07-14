@@ -1,30 +1,13 @@
-﻿using Framework.FrameworkCore.Attributes.Logic;
-using Framework.Managers;
+﻿using Gameplay.GameControllers.Entities;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
-internal class RB510 : EffectOnEquip 
+internal class RB510(RB510Config config) : EffectOnEquipStat(EntityStats.StatsTypes.FlaskHealth, config.FLASK_HEAL_BUFF)
 {
-    private readonly RawBonus _flaskHealBonus;
-
-    public RB510(RB510Config config)
-    {
-        _flaskHealBonus = new(config.FLASK_HEAL_BUFF);
-    }
-
-    protected override void OnEquip()
-    {
-        Core.Logic.Penitent.Stats.FlaskHealth.AddRawBonus(_flaskHealBonus);
-    }
-
-    protected override void OnUnequip()
-    {
-        Core.Logic.Penitent.Stats.FlaskHealth.RemoveRawBonus(_flaskHealBonus);
-    }
 }
 
-/// <summary> 
-/// Properties for RB510 
+/// <summary>
+/// Properties for RB510
 /// </summary>
 public class RB510Config
 {
