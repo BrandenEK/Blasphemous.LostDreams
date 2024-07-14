@@ -46,10 +46,14 @@ public class ModAnimator : MonoBehaviour
     /// </summary>
     public float NormalizedTime
     {
-        get => 0;
-        set
+        get
         {
+            if (_animation == null)
+                return 0;
 
+            float total = _animation.Sprites.Length * _animation.SecondsPerFrame;
+            float current = _currentIdx * _animation.SecondsPerFrame + (_animation.SecondsPerFrame - (_nextUpdateTime - Time.time));
+            return Mathf.Clamp01(current / total);
         }
     }
 
