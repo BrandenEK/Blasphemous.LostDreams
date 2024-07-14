@@ -29,7 +29,7 @@ public class ModAnimator : MonoBehaviour
             }
         }
     }
-    private AnimationInfo _animation;
+    private AnimationInfo _animation = null;
 
     /// <summary>
     /// Whether the animation should start over once it reaches the end
@@ -39,7 +39,7 @@ public class ModAnimator : MonoBehaviour
         get => _loop;
         set => _loop = value;
     }
-    private bool _loop;
+    private bool _loop = true;
 
     /// <summary>
     /// The percent of the way through the animation
@@ -63,7 +63,10 @@ public class ModAnimator : MonoBehaviour
         if (_animation == null || Time.time < _nextUpdateTime)
             return;
 
-        if (++_currentIdx >= _animation.Sprites.Length - 1)
+        if (!_loop && _currentIdx == _animation.Sprites.Length - 1)
+            return;
+
+        if (++_currentIdx > _animation.Sprites.Length - 1)
             _currentIdx = 0;
 
         sr.sprite = _animation.Sprites[_currentIdx];

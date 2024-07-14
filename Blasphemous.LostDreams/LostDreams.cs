@@ -137,5 +137,6 @@ public class LostDreams : BlasMod
 
         var anim = obj.AddComponent<ModAnimator>();
         anim.Animation = AnimationStorage["explosion_mercury"];
+        anim.Loop = false;
     }
 }
