@@ -5,7 +5,7 @@ using Gameplay.GameControllers.Entities;
 using System.Linq;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Prayers;
+namespace Blasphemous.LostDreams.Items.Prayers;
 
 public class PR501(PR501.Config _config) : ModItemEffectOnPrayerUse
 {

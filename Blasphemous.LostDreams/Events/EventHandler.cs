@@ -10,6 +10,7 @@ internal class EventHandler
     public delegate void StandardEvent();
     public delegate void HitEvent(ref Hit hit);
     public delegate void EntityEvent(Entity entity);
+    public delegate void CancellableEvent(ref bool cancel);
 
     public event StandardEvent OnUsePrieDieu;
     public event StandardEvent OnExitGame;
@@ -19,6 +20,8 @@ internal class EventHandler
 
     public event StandardEvent OnPlayerKilled;
     public event StandardEvent OnEnemyKilled;
+
+    public event CancellableEvent OnUseFlask;
 
     public void KillEntity(Entity entity)
     {
@@ -46,5 +49,12 @@ internal class EventHandler
     public void Reset()
     {
         OnExitGame?.Invoke();
+    }
+
+    public bool UseFlask()
+    {
+        bool cancel = false;
+        OnUseFlask?.Invoke(ref cancel);
+        return cancel;
     }
 }
