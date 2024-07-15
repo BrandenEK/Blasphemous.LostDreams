@@ -99,8 +99,6 @@ public class LostDreams : BlasMod
         foreach (var prayer in PrayerList.Items)
             provider.RegisterItem(prayer);
 
-        //provider.RegisterItem(new StandardPrayer("PR501", _config.PR501.FERVOUR_COST).AddEffect(new PR501(_config.PR501)));
-
         foreach (var bead in RosaryBeadList.Items)
             provider.RegisterItem(bead);
 

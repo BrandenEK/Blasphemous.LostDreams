@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.Prayers;
 
-internal class PR501(PR501Config _config) : Prayer
+internal class PR501(PR501Config _config) : EffectOnPrayerUse
 {
     protected override float EffectTime { get; } = 0;
 

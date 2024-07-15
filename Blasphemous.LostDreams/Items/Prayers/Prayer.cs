@@ -1,19 +1,16 @@
-﻿
-using Blasphemous.Framework.Items;
+﻿using Blasphemous.Framework.Items;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.Prayers;
 
-public class Prayer
+internal class Prayer : ModPrayer
 {
-}
+    private readonly EffectOnPrayerUse _effect;
 
-internal class StandardPrayer : ModPrayer
-{
-    public StandardPrayer(string id, int fervour)
+    public Prayer(EffectOnPrayerUse effect)
     {
-        Id = id;
-        FervourCost = fervour;
+        Id = effect.GetType().Name;
+        AddEffect(_effect = effect);
     }
 
     protected override string Id { get; }
@@ -34,5 +31,5 @@ internal class StandardPrayer : ModPrayer
 
     protected override bool AddInventorySlot => true;
 
-    protected override int FervourCost { get; }
+    protected override int FervourCost => _effect.FervourCost;
 }
