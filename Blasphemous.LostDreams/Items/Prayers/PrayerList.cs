@@ -1,6 +1,7 @@
 ﻿
 namespace Blasphemous.LostDreams.Items.Prayers;
 
-public class PrayerList
+internal class PrayerList(Config cfg) : ItemList<Prayer>
 {
+    public Prayer PR501 { get; } = new Prayer(new PR501(cfg));
 }

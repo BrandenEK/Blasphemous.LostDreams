@@ -1,4 +1,5 @@
 ﻿using Blasphemous.LostDreams.Items.Penitences;
+using Blasphemous.LostDreams.Items.Prayers;
 using Blasphemous.LostDreams.Items.RosaryBeads;
 using Blasphemous.LostDreams.Items.SwordHearts;
 
@@ -9,15 +10,15 @@ namespace Blasphemous.LostDreams;
 /// </summary>
 public class Config
 {
-    /// <summary> Properties for RB502 </summary>
-    public RB502Config RB502 { get; set; } = new();
-
-    /// <summary> Properties for PR501 </summary>
-    public PR501.Config PR501 { get; set; } = new();
-
     /// <summary> Properties for HE501 </summary>
     public HE501Config HE501 { get; set; } = new();
 
     /// <summary> Properties for PE501 </summary>
     public PE501Config PE501 { get; set; } = new();
+
+    /// <summary> Properties for PR501 </summary>
+    public PR501Config PR501 { get; set; } = new();
+
+    /// <summary> Properties for RB502 </summary>
+    public RB502Config RB502 { get; set; } = new();
 }

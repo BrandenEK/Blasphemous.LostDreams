@@ -1,5 +1,4 @@
-﻿using Blasphemous.Framework.Items;
-using CreativeSpore.SmartColliders;
+﻿using CreativeSpore.SmartColliders;
 using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using System.Linq;
@@ -7,7 +6,7 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.Prayers;
 
-public class PR501(PR501.Config _config) : ModItemEffectOnPrayerUse
+internal class PR501(PR501Config _config) : Prayer
 {
     protected override float EffectTime { get; } = 0;
 
@@ -63,15 +62,18 @@ public class PR501(PR501.Config _config) : ModItemEffectOnPrayerUse
             .FirstOrDefault()?.Enemy;
     }
 
-    public class Config
-    {
-        public int FERVOUR_COST = 25;
-        public float MAX_RANGE = 10;
-    }
-
-    private class EnemyDistance(Enemy e, float d)
+    class EnemyDistance(Enemy e, float d)
     {
         public Enemy Enemy { get; } = e;
         public float Distance { get; } = d;
     }
+}
+
+/// <summary> Properties for PR501 </summary>
+public class PR501Config
+{
+    /// <summary> Fervour cost to use this prayer </summary>
+    public int FERVOUR_COST = 25;
+    /// <summary> Maximum range for enemies that you can swap with </summary>
+    public float MAX_RANGE = 10;
 }

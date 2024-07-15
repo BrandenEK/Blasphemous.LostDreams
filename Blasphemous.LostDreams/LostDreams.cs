@@ -3,12 +3,12 @@ using Blasphemous.LostDreams.Animation;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Events;
 using Blasphemous.LostDreams.Items.Penitences;
+using Blasphemous.LostDreams.Items.Prayers;
 using Blasphemous.LostDreams.Items.QuestItems;
 using Blasphemous.LostDreams.Items.RosaryBeads;
 using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
-using Blasphemous.LostDreams.Prayers; // change
 using Blasphemous.ModdingAPI;
 using Blasphemous.Framework.Items;
 using Blasphemous.Framework.Levels;
@@ -32,6 +32,7 @@ public class LostDreams : BlasMod
 
     // Item lists
     internal PenitenceList PenitenceList { get; private set; }
+    internal PrayerList PrayerList { get; private set; }
     internal QuestItemList QuestItemList { get; private set; }
     internal RosaryBeadList RosaryBeadList { get; private set; }
     internal SwordHeartList SwordHeartList { get; private set; }
@@ -52,6 +53,7 @@ public class LostDreams : BlasMod
 
         // Initialize item lists
         PenitenceList = new PenitenceList(cfg);
+        PrayerList = new PrayerList(cfg);
         QuestItemList = new QuestItemList(cfg);
         RosaryBeadList = new RosaryBeadList(cfg);
         SwordHeartList = new SwordHeartList(cfg);
@@ -94,8 +96,10 @@ public class LostDreams : BlasMod
         foreach (var quest in QuestItemList.Items)
             provider.RegisterItem(quest);
 
-        // Prayers - change
-        provider.RegisterItem(new StandardPrayer("PR501", _config.PR501.FERVOUR_COST).AddEffect(new PR501(_config.PR501)));
+        foreach (var prayer in PrayerList.Items)
+            provider.RegisterItem(prayer);
+
+        //provider.RegisterItem(new StandardPrayer("PR501", _config.PR501.FERVOUR_COST).AddEffect(new PR501(_config.PR501)));
 
         foreach (var bead in RosaryBeadList.Items)
             provider.RegisterItem(bead);
