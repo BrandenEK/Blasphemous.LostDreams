@@ -8,14 +8,9 @@ namespace Blasphemous.LostDreams.Items.Prayers;
 
 internal class PR501 : EffectOnPrayerUse
 {
-    // Do somthing here
-    protected override float EffectTime { get; } = 0;
-
-    protected override bool UsePrayerDurationModifier { get; } = false;
-
     private readonly PR501Config _config;
 
-    public PR501(PR501Config cfg)
+    public PR501(PR501Config cfg) : base(cfg)
     {
         _config = cfg;
     }
@@ -81,10 +76,14 @@ internal class PR501 : EffectOnPrayerUse
 }
 
 /// <summary> Properties for PR501 </summary>
-public class PR501Config
+public class PR501Config : IPrayerConfig
 {
-    /// <summary> Fervour cost to use this prayer </summary>
-    public int FERVOUR_COST = 25;
     /// <summary> Maximum range for enemies that you can swap with </summary>
     public float MAX_RANGE = 10;
+    /// <inheritdoc/>
+    public int FervourCost { get; set; } = 20;
+    /// <inheritdoc/>
+    public float EffectTime { get; set; } = 0;
+    /// <inheritdoc/>
+    public bool UsePrayerDurationModifier { get; set; } = false;
 }

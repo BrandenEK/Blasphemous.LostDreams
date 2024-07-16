@@ -1,4 +1,5 @@
 ﻿using Blasphemous.Framework.Items;
+using Blasphemous.LostDreams.Items.Prayers;
 
 namespace Blasphemous.LostDreams.Items;
 
@@ -6,14 +7,15 @@ internal class EffectOnPrayerUse : ModItemEffectOnPrayerUse
 {
     public bool IsActive { get; private set; }
 
-    public int FervourCost { get; } = 20; // these need custom
+    public int FervourCost { get; }
+    protected sealed override float EffectTime { get; }
+    protected sealed override bool UsePrayerDurationModifier { get; }
 
-    protected override float EffectTime { get; } = 3; // these need custom
-
-    protected override bool UsePrayerDurationModifier { get; } = true; // these need custom
-
-    public EffectOnPrayerUse()
+    public EffectOnPrayerUse(IPrayerConfig cfg)
     {
+        FervourCost = cfg.FervourCost;
+        EffectTime = cfg.EffectTime;
+        UsePrayerDurationModifier = cfg.UsePrayerDurationModifier;
         Main.LostDreams.EventHandler.OnExitGame += RemoveEffect;
     }
 
