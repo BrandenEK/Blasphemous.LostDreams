@@ -12,12 +12,21 @@ internal class PR501(PR501Config _config) : EffectOnPrayerUse
 
     protected override bool UsePrayerDurationModifier { get; } = false;
 
-    protected override void ApplyEffect()
+    protected override void OnActivate()
     {
-        PerformSwap();
+        Main.LostDreams.LogWarning("Activate pr501");
+        //PerformSwap();
     }
 
-    protected override void RemoveEffect() { }
+    protected override void OnDeactivate()
+    {
+        Main.LostDreams.LogWarning("Deactivate pr501");
+    }
+
+    protected override void OnUpdate()
+    {
+        Main.LostDreams.LogWarning("Update pr501");
+    }
 
     private void PerformSwap()
     {

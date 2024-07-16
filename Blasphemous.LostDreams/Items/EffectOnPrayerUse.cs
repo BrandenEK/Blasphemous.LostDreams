@@ -23,7 +23,8 @@ internal class EffectOnPrayerUse : ModItemEffectOnPrayerUse
 
     protected sealed override void ApplyEffect()
     {
-        IsActive = true;
+        if (EffectTime > 0)
+            IsActive = true;
         OnActivate();
     }
 
