@@ -6,26 +6,23 @@ using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.Prayers;
 
-internal class PR501(PR501Config _config) : EffectOnPrayerUse
+internal class PR501 : EffectOnPrayerUse
 {
+    // Do somthing here
     protected override float EffectTime { get; } = 0;
 
     protected override bool UsePrayerDurationModifier { get; } = false;
 
+    private readonly PR501Config _config;
+
+    public PR501(PR501Config cfg)
+    {
+        _config = cfg;
+    }
+
     protected override void OnActivate()
     {
-        Main.LostDreams.LogWarning("Activate pr501");
-        //PerformSwap();
-    }
-
-    protected override void OnDeactivate()
-    {
-        Main.LostDreams.LogWarning("Deactivate pr501");
-    }
-
-    protected override void OnUpdate()
-    {
-        Main.LostDreams.LogWarning("Update pr501");
+        PerformSwap();
     }
 
     private void PerformSwap()
@@ -66,7 +63,7 @@ internal class PR501(PR501Config _config) : EffectOnPrayerUse
 
         return Object.FindObjectsOfType<Enemy>()
             .Select(e => new EnemyDistance(e, Vector3.Distance(playerPosition, e.transform.position)))
-            .Where(x => x.Distance <= _config.MAX_RANGE)
+            .Where(x => x.Distance <= _config.MAX_RANGE && !_bannedEnemyIds.Contains(x.Enemy.Id))
             .OrderBy(x => x.Distance)
             .FirstOrDefault()?.Enemy;
     }
@@ -76,6 +73,11 @@ internal class PR501(PR501Config _config) : EffectOnPrayerUse
         public Enemy Enemy { get; } = e;
         public float Distance { get; } = d;
     }
+
+    private readonly string[] _bannedEnemyIds =
+    {
+        "BS16"
+    };
 }
 
 /// <summary> Properties for PR501 </summary>
