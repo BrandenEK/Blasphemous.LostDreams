@@ -1,4 +1,4 @@
-﻿using Blasphemous.ModdingAPI;
+﻿using Blasphemous.ModdingAPI.Helpers;
 using Framework.Inventory;
 using Framework.Managers;
 using Gameplay.UI;
@@ -38,7 +38,7 @@ internal class AcquisitionHandler
 
     private BaseInventoryObject GetObjectFromId(string item)
     {
-        InventoryManager.ItemType type = ItemModder.GetItemTypeFromId(item);
+        InventoryManager.ItemType type = ItemHelper.GetItemTypeFromId(item);
         return Core.InventoryManager.GetBaseObject(item, type);
     }
 

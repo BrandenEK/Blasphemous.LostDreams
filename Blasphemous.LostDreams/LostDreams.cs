@@ -1,4 +1,9 @@
-﻿using Blasphemous.LostDreams.Acquisition;
+﻿using Blasphemous.Framework.Items;
+using Blasphemous.Framework.Levels;
+using Blasphemous.Framework.Levels.Loaders;
+using Blasphemous.Framework.Levels.Modifiers;
+using Blasphemous.Framework.Penitence;
+using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Animation;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Events;
@@ -9,11 +14,7 @@ using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
 using Blasphemous.ModdingAPI;
-using Blasphemous.Framework.Items;
-using Blasphemous.Framework.Levels;
-using Blasphemous.Framework.Levels.Loaders;
-using Blasphemous.Framework.Levels.Modifiers;
-using Blasphemous.Framework.Penitence;
+using Blasphemous.ModdingAPI.Helpers;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
@@ -75,7 +76,7 @@ public class LostDreams : BlasMod
     /// </summary>
     protected override void OnUpdate()
     {
-        if (!LoadStatus.GameSceneLoaded)
+        if (!SceneHelper.GameSceneLoaded)
             return;
 
         // Temporarily update penitences until handled by framework
