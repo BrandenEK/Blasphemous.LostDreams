@@ -14,7 +14,6 @@ using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
 using Blasphemous.ModdingAPI;
-using Blasphemous.ModdingAPI.Helpers;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
@@ -69,18 +68,6 @@ public class LostDreams : BlasMod
     {
         AcquisitionHandler.Reset();
         EventHandler.Reset();
-    }
-
-    /// <summary>
-    /// Update handlers every frame
-    /// </summary>
-    protected override void OnUpdate()
-    {
-        if (!SceneHelper.GameSceneLoaded)
-            return;
-
-        // Temporarily update penitences until handled by framework
-        PenitenceList.PE501.Update();
     }
 
     /// <summary>

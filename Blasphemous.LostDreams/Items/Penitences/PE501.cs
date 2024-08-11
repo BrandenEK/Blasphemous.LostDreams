@@ -49,7 +49,6 @@ internal class PE501 : Penitence
 
     protected override void OnUpdate()
     {
-        ModLog.Error("Update penitence");
         if (Time.time >= _nextDrainTime)
         {
             PerformDrain();
