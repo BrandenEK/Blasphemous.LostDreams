@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.ModdingAPI;
+using Framework.Managers;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ public class ModInteractable : MonoBehaviour
 
     public void Interact()
     {
-        Main.LostDreams.Log("Using interactable");
+        ModLog.Info("Using interactable");
         Core.Logic.Penitent.Animator.SetBool("IS_DIALOGUE_MODE", true);
 
         if (Core.Dialog.StartConversation(GetDialogToUse(), true, false))

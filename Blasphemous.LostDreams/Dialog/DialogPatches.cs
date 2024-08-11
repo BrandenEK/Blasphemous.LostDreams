@@ -1,4 +1,4 @@
-﻿using Blasphemous.ModdingAPI;
+﻿using Blasphemous.ModdingAPI.Helpers;
 using Framework.Dialog;
 using Framework.Managers;
 using HarmonyLib;
@@ -24,7 +24,7 @@ class DialogManager_StartConversation_Patch
         dialog.dialogType = info.Type;
         dialog.dialogLines = info.TextLines.Select(x => Main.LostDreams.LocalizationHandler.Localize($"{info.Id}.{x}")).ToList();
         dialog.answersLines = info.ResponseLines.Select(x => Main.LostDreams.LocalizationHandler.Localize($"{info.Id}.{x}")).ToList();
-        dialog.itemType = info.Item == null ? InventoryManager.ItemType.Bead : ItemModder.GetItemTypeFromId(info.Item);
+        dialog.itemType = info.Item == null ? InventoryManager.ItemType.Bead : ItemHelper.GetItemTypeFromId(info.Item);
         dialog.item = info.Item;
 
         ___allDialogs.Add(conversiationId, dialog);

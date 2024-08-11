@@ -1,4 +1,5 @@
-﻿using Blasphemous.ModdingAPI.Files;
+﻿using Blasphemous.ModdingAPI;
+using Blasphemous.ModdingAPI.Files;
 using System.Collections.Generic;
 
 namespace Blasphemous.LostDreams.Npc;
@@ -15,7 +16,7 @@ public class NpcStorage
         string infoPath = "npcs.json";
         if (!file.LoadDataAsJson(infoPath, out NpcInfo[] imports))
         {
-            Main.LostDreams.LogError("Failed to load npc list");
+            ModLog.Error("Failed to load npc list");
             return;
         }
 
@@ -24,6 +25,6 @@ public class NpcStorage
             _npcs.Add(import.Id, import);
         }
 
-        Main.LostDreams.Log($"Loaded {_npcs.Count} npcs");
+        ModLog.Info($"Loaded {_npcs.Count} npcs");
     }
 }
