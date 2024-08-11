@@ -58,7 +58,7 @@ internal class HE501 : EffectOnEquip
         if (life.Current >= life.CurrentMax)
             return;
 
-        //Main.LostDreams.Log("HE501: Regenerating small health");
+        //ModLog.Info("HE501: Regenerating small health");
         float amount = life.CurrentMax * _config.REGEN_PERCENT;
         life.Current += amount;
     }

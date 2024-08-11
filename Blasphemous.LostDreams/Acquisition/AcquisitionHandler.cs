@@ -1,4 +1,5 @@
-﻿using Blasphemous.ModdingAPI.Helpers;
+﻿using Blasphemous.ModdingAPI;
+using Blasphemous.ModdingAPI.Helpers;
 using Framework.Inventory;
 using Framework.Managers;
 using Gameplay.UI;
@@ -15,7 +16,7 @@ internal class AcquisitionHandler
         if (obj == null)
             return;
 
-        Main.LostDreams.Log("Acquiring item: " + item);
+        ModLog.Info("Acquiring item: " + item);
         if (skipIfOwned && Core.InventoryManager.IsBaseObjectEquipped(obj))
             return;
 

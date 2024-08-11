@@ -1,4 +1,5 @@
-﻿using Gameplay.GameControllers.AnimationBehaviours.Player.Attack;
+﻿using Blasphemous.ModdingAPI;
+using Gameplay.GameControllers.AnimationBehaviours.Player.Attack;
 using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using UnityEngine;
@@ -18,7 +19,7 @@ class RB501_ChargedAttack_SetTimer_Patch
         // tier 1 = 1.5, tier 2 = 0.75
         if (Main.LostDreams.RosaryBeadList.RB501.IsEquipped)
         {
-            Main.LostDreams.Log("RB501: Reducing charge time");
+            ModLog.Info("RB501: Reducing charge time");
             ____currentChargingTime = 0.05f;
         }
     }
