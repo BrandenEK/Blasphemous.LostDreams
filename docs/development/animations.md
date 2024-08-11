@@ -26,7 +26,7 @@
 ---
 
 ### Example animations.json:
-```
+```json
 [
     {
         "name": "ANIM_NAME",
