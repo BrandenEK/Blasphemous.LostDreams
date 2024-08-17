@@ -1,12 +1,3 @@
-{
-    "additions": [
-        {
-            "type": "npc01",
-            "id": "NPC01_idle",
-            "position": {
-                "x": -543.13,
-                "y": 9
-            }
-        }
-    ]
-}
+[
+
+]
