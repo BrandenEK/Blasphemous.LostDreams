@@ -1,3 +1,14 @@
 [
-
+    {
+        "id": "NPC01_meet",
+        "type": "Lines"
+    },
+    {
+        "id": "NPC01_meet2",
+        "type": "Lines"
+    },
+    {
+        "id": "NPC01_meet3",
+        "type": "Lines"
+    }
 ]
