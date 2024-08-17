@@ -1,3 +1,9 @@
 [
-
+    {
+        "name": "NPC01_idle",
+        "filePath": "npcs/NPC01_idle.png",
+        "width": 60,
+        "height": 68,
+        "secondsPerFrame": 0.1
+    }
 ]
