@@ -130,5 +130,8 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("wasteland-tree", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Props/Trees/churches-field-spritesheet-improved_41"),
             new NoModifier("Wasteland Tree")));
+        provider.RegisterObjectCreator("wasteland-rock_1", new ObjectCreator(
+            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Props/Rocks/churches-field-spritesheet-improved_14"),
+            new NoModifier("Wasteland Rock 1")));
     }
 }
