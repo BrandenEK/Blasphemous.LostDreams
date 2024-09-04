@@ -121,5 +121,11 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("wasteland-stone-diagonal", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Walls/churches-field-spritesheet-improved_20"),
             new NoModifier("Diagonal Stone")));
+        provider.RegisterObjectCreator("wasteland-stone-vertical", new ObjectCreator(
+            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Walls/churches-field-spritesheet-improved_25"),
+            new NoModifier("Vertical Stone")));
+        provider.RegisterObjectCreator("wasteland-platform-rock", new ObjectCreator(
+            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Floor/churches-field-spritesheet-improved_0"),
+            new ColliderModifier()));
     }
 }
