@@ -115,5 +115,8 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("door", new ObjectCreator(
             new SceneLoader("D17Z01S10_LOGIC", "DOORS/{0}"),
             new DoorModifier()));
+        provider.RegisterObjectCreator("wasteland-wall", new ObjectCreator(
+            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73")
+            new ColliderModifier()));
     }
 }
