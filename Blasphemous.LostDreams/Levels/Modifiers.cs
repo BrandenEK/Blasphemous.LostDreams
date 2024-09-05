@@ -14,28 +14,44 @@ namespace Blasphemous.LostDreams.Levels;
 /// </summary>
 public class ColliderModifier : IModifier
 {
-    private readonly string _name;
     private readonly Vector2 _size;
+    private readonly Vector2 _offset;
 
     /// <summary>
-    /// Specify the name and size of the collider
+    /// The layer of the collider. 
+    /// For solid collider, choose layer "Floor". 
+    /// For droppable platforms, choose layer "OneWayDown"
     /// </summary>
-    public ColliderModifier(string name, Vector2 size)
+    private readonly string _layer;
+
+    /// <summary>
+    /// Specify the layer, size, and offset of of the collider
+    /// </summary>
+    public ColliderModifier(string layer, Vector2 size, Vector2 offset)
     {
-        _name = name;
+        _layer = layer;
         _size = size;
+        _offset = offset;
     }
 
     /// <summary>
-    /// Adds a collider component and sets the layer to floor
+    /// Specify the layer and size of of the collider, 
+    /// with its offset set to (0, 0)
+    /// </summary>
+    public ColliderModifier(string layer, Vector2 size)
+        : this(layer, size, new Vector2(0, 0)) { }
+
+    /// <summary>
+    /// Adds a collider component and sets the layer
     /// </summary>
     public void Apply(GameObject obj, ObjectData data)
     {
-        obj.name = _name;
-        obj.layer = LayerMask.NameToLayer("Floor");
+        obj.name = $"Collider[{data.id}]";
+        obj.layer = LayerMask.NameToLayer(_layer);
 
         var collider = obj.AddComponent<BoxCollider2D>();
         collider.size = _size;
+        collider.offset = _offset;
     }
 }
 
