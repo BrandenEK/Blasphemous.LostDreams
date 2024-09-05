@@ -106,27 +106,18 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("patio-bricks", new ObjectCreator(
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Arcs/garden-spritesheet_41 (6)"),
             new NoModifier("Bricks")));
-        provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
-            new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
-            new ColliderModifier("Floor", new Vector2(2.7f, 0.4f))));
         provider.RegisterObjectCreator("npc", new ObjectCreator(
             new NpcLoader(),
             new NpcModifier()));
         provider.RegisterObjectCreator("door", new ObjectCreator(
             new SceneLoader("D17Z01S10_LOGIC", "DOORS/{0}"),
             new DoorModifier()));
-        provider.RegisterObjectCreator("wasteland-wall", new ObjectCreator(
-            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73")
-            new ColliderModifier()));
         provider.RegisterObjectCreator("wasteland-stone-diagonal", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Walls/churches-field-spritesheet-improved_20"),
             new NoModifier("Diagonal Stone")));
         provider.RegisterObjectCreator("wasteland-stone-vertical", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Walls/churches-field-spritesheet-improved_25"),
             new NoModifier("Vertical Stone")));
-        provider.RegisterObjectCreator("wasteland-platform-rock", new ObjectCreator(
-            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Floor/churches-field-spritesheet-improved_0"),
-            new ColliderModifier()));
         provider.RegisterObjectCreator("wasteland-tree", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Props/Trees/churches-field-spritesheet-improved_41"),
             new NoModifier("Wasteland Tree")));
@@ -136,5 +127,20 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("wasteland-rock_2", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Props/Rocks/churches-field-spritesheet-improved_48"),
             new NoModifier("Wasteland Rock 2")));
+
+        provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
+            new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
+            new ColliderModifier("Floor",
+                                 new Vector2(2.9f, 0.9f),
+                                 new Vector2(0, -0.3f))));
+        provider.RegisterObjectCreator("wasteland-platform-rock", new ObjectCreator(
+            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Floor/churches-field-spritesheet-improved_0"),
+            new ColliderModifier("Floor",
+                                 new Vector2(4f, 1.4f),
+                                 new Vector2(0, -0.3f))));
+        provider.RegisterObjectCreator("wasteland-wall", new ObjectCreator(
+            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73"),
+            new ColliderModifier("Floor",
+                                 new Vector2(2f, 2f))));
     }
 }
