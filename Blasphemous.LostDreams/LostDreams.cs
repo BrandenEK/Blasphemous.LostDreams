@@ -130,6 +130,9 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("wasteland-grass_1", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/AnimatedProps/MovingGrassChurchesField_1"),
             new NoModifier("Grass 1")));
+        provider.RegisterObjectCreator("wasteland-grass_2", new ObjectCreator(
+            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/AnimatedProps/churches-field-spritesheet-improved_37"),
+            new NoModifier("Grass 2")));
 
         provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
