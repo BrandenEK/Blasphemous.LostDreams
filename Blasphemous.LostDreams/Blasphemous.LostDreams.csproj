@@ -14,7 +14,7 @@
     <TargetName>LostDreams</TargetName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>bin\Release\$(TargetName).xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetName).xml</DocumentationFile>
     <RepositoryUrl>https://github.com/BrandenEK/Blasphemous.LostDreams</RepositoryUrl>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
@@ -29,34 +29,29 @@
 
   <Target Name="Development" AfterTargets="PostBuildEvent">
 
-    <!-- Get dev and export folders -->
-    <PropertyGroup>
-      <DevFolder>C:\Program Files (x86)\Steam\steamapps\common\Blasphemous\Modding\</DevFolder>
-      <ExportFolder>$(SolutionDir)\publish\$(TargetName)</ExportFolder>
-    </PropertyGroup>
-    
     <!-- Get plugin & resources -->
     <ItemGroup>
       <PluginDll Include="$(TargetPath)" />
       <Resources Include="$(SolutionDir)\resources\**\*.*" />
     </ItemGroup>
-    
-    <!-- Clear export folder -->
-    <RemoveDir Directories="$(ExportFolder)" />
-    
-    <!-- Copy plugin & resources to dev folder -->
-    <Copy SourceFiles="@(Resources)" DestinationFolder="$(ExportFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(PluginDll)" DestinationFolder="$(ExportFolder)\plugins" SkipUnchangedFiles="true" />
-    
-    <!-- Copy plugin & resources to export folder -->
+
+    <!-- Get export directories -->
+    <PropertyGroup>
+      <DevFolder>C:\Program Files (x86)\Steam\steamapps\common\Blasphemous\Modding\</DevFolder>
+      <PublishFolder>$(SolutionDir)\publish\$(TargetName)</PublishFolder>
+    </PropertyGroup>
+
+    <!-- Export to dev folder -->
     <Copy SourceFiles="@(Resources)" DestinationFolder="$(DevFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(PluginDll)" DestinationFolder="$(DevFolder)\plugins" SkipUnchangedFiles="true" />
-    
-    <!-- Zip export folder -->
-    <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)\..\$(TargetName).zip" Overwrite="true" />
+
+    <!-- Export to publish folder -->
+    <RemoveDir Directories="$(PublishFolder)" />
+    <Copy SourceFiles="@(Resources)" DestinationFolder="$(PublishFolder)\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PluginDll)" DestinationFolder="$(PublishFolder)\plugins" SkipUnchangedFiles="true" />
+    <ZipDirectory SourceDirectory="$(PublishFolder)" DestinationFile="$(PublishFolder)\..\$(TargetName).zip" Overwrite="true" />
 
   </Target>
-
   <Target Name="AddGeneratedFile" BeforeTargets="BeforeCompile;CoreCompile" Inputs="$(MSBuildAllProjects)" Outputs="$(IntermediateOutputPath)GeneratedFile.cs">
 
     <!-- Create ModInfo class from relevant data -->
