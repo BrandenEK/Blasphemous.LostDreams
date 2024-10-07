@@ -1,4 +1,5 @@
-﻿using CreativeSpore.SmartColliders;
+﻿using Blasphemous.ModdingAPI;
+using CreativeSpore.SmartColliders;
 using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using System.Linq;
@@ -26,11 +27,11 @@ internal class PR501 : EffectOnPrayerUse
 
         if (enemy == null)
         {
-            Main.LostDreams.LogWarning("PR501: No enemy was in range");
+            ModLog.Warn("PR501: No enemy was in range");
             return;
         }
 
-        Main.LostDreams.Log($"PR501: Swapping places with {enemy.name}");
+        ModLog.Info($"PR501: Swapping places with {enemy.name} ({enemy.Id})");
         Vector3 playerPosition = Core.Logic.Penitent.transform.position;
         Vector3 enemyPosition = enemy.transform.position;
 

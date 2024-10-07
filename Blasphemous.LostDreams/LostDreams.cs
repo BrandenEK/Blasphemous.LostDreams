@@ -81,11 +81,11 @@ public class LostDreams : BlasMod
         foreach (var penitence in PenitenceList.Items)
             provider.RegisterPenitence(penitence);
 
-        foreach (var quest in QuestItemList.Items)
-            provider.RegisterItem(quest);
-
         foreach (var prayer in PrayerList.Items)
             provider.RegisterItem(prayer);
+
+        foreach (var quest in QuestItemList.Items)
+            provider.RegisterItem(quest);
 
         foreach (var bead in RosaryBeadList.Items)
             provider.RegisterItem(bead);
