@@ -1,22 +1,18 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.ModdingAPI;
+using Framework.Managers;
 using Gameplay.GameControllers.Effects.Player.Healing;
 using Gameplay.GameControllers.Entities;
 using HarmonyLib;
 using System.Collections;
 using UnityEngine;
 
-namespace Blasphemous.LostDreams.Effects;
+namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
-/// <summary>
-/// Lose it when getting hit, regain it when dead or prie dieu
-/// </summary>
-internal class DamageRemoval : IToggleEffect
+internal class RB503 : EffectOnEquip
 {
     private bool _alreadyUsed = false;
 
-    public bool IsActive => !_alreadyUsed && Main.LostDreams.ItemHandler.IsEquipped("RB503");
-
-    public DamageRemoval()
+    public RB503()
     {
         Main.LostDreams.EventHandler.OnPlayerKilled += RegainDamageRemoval;
         Main.LostDreams.EventHandler.OnUsePrieDieu += RegainDamageRemoval;
@@ -31,22 +27,24 @@ internal class DamageRemoval : IToggleEffect
 
     private void PlayerTakeDamage(ref Hit hit)
     {
-        if (!Main.LostDreams.DamageRemoval.IsActive)
+        if (_alreadyUsed || !IsEquipped)
             return;
 
-        Main.LostDreams.Log("RB503: Preventing damage");
+        ModLog.Info("RB503: Preventing damage");
         hit.DamageAmount = 0;
         _alreadyUsed = true;
 
-        Healing_Start_Patch.HealingFlag = true;
+        RB503_Healing_Start_Patch.HealingFlag = true;
         Object.FindObjectOfType<HealingAura>()?.StartAura(Core.Logic.Penitent.Status.Orientation);
         Core.Logic.Penitent.Audio.PrayerInvincibility();
     }
 }
 
-// Show blue aura when damage is prevented
+/// <summary>
+/// Show blue aura when damage is prevented
+/// </summary>
 [HarmonyPatch(typeof(HealingAura), "StartAura")]
-class Healing_Start_Patch
+class RB503_Healing_Start_Patch
 {
     public static void Postfix(HealingAura __instance, Animator ____auraAnimator, SpriteRenderer ____auraRenderer)
     {

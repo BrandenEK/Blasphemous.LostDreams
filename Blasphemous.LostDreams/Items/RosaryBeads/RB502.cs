@@ -1,20 +1,17 @@
-﻿using Gameplay.GameControllers.Entities;
+﻿using Blasphemous.ModdingAPI;
+using Gameplay.GameControllers.Entities;
 using System;
 
-namespace Blasphemous.LostDreams.Effects;
+namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
-/// <summary>
-/// Reset when getting hit, increase charges when killing
-/// </summary>
-internal class DamageStack : IMultiplierEffect
+internal class RB502 : EffectOnEquip
 {
     private readonly RB502Config _config;
 
     private int _currentCharges;
+    private float DamageMultiplier => 1 + (_config.MAX_MULTIPLIER - 1) * ((float)_currentCharges / _config.MAX_CHARGES);
 
-    public float Multiplier => 1 + (_config.MAX_MULTIPLIER - 1) * ((float)_currentCharges / _config.MAX_CHARGES);
-
-    public DamageStack(RB502Config config)
+    public RB502(RB502Config config)
     {
         _config = config;
 
@@ -26,34 +23,34 @@ internal class DamageStack : IMultiplierEffect
 
     private void IncreaseCharges()
     {
-        if (!Main.LostDreams.ItemHandler.IsEquipped("RB502"))
+        if (!IsEquipped)
             return;
 
         _currentCharges = Math.Min(_currentCharges + 1, _config.MAX_CHARGES);
-        Main.LostDreams.Log($"RB502: Increasing damage stack to {_currentCharges}");
+        ModLog.Info($"RB502: Increasing damage stack to {_currentCharges}");
     }
 
     private void ResetCharges()
     {
         _currentCharges = 0;
-        Main.LostDreams.Log("RB502: Resetting damage stack");
+        ModLog.Info("RB502: Resetting damage stack");
     }
 
     private void PlayerTakeDamage(ref Hit hit)
     {
-        if (!Main.LostDreams.ItemHandler.IsEquipped("RB502"))
+        if (!IsEquipped)
             return;
 
-        hit.DamageAmount *= Main.LostDreams.DamageStack.Multiplier;
+        hit.DamageAmount *= DamageMultiplier;
         ResetCharges();
     }
 
     private void EnemyTakeDamage(ref Hit hit)
     {
-        if (!Main.LostDreams.ItemHandler.IsEquipped("RB502"))
+        if (!IsEquipped)
             return;
 
-        hit.DamageAmount *= Main.LostDreams.DamageStack.Multiplier;
+        hit.DamageAmount *= DamageMultiplier;
     }
 }
 
