@@ -1,5 +1,6 @@
 ﻿using Gameplay.GameControllers.Enemies.Framework.Damage;
 using Gameplay.GameControllers.Entities;
+using Gameplay.GameControllers.Penitent.Abilities;
 using Gameplay.GameControllers.Penitent.Damage;
 using HarmonyLib;
 using Tools.Level.Interactables;
@@ -28,4 +29,10 @@ class Penitent_Damage_Patch
 class Enemy_Damage_Patch
 {
     public static void Prefix(ref Hit hit) => Main.LostDreams.EventHandler.DamageEnemy(ref hit);
+}
+
+[HarmonyPatch(typeof(Healing), "Heal")]
+class Heal_Start_Patch
+{
+    public static bool Prefix() => !Main.LostDreams.EventHandler.UseFlask();
 }

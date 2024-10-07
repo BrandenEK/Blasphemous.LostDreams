@@ -1,61 +1,75 @@
-﻿using Framework.FrameworkCore.Attributes;
+﻿using Blasphemous.ModdingAPI;
+using Framework.FrameworkCore.Attributes;
 using Framework.Managers;
 using Gameplay.GameControllers.Entities;
-using Gameplay.GameControllers.Penitent.Abilities;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
-namespace Blasphemous.LostDreams.Effects;
+namespace Blasphemous.LostDreams.Items.Penitences;
 
-/// <summary>
-/// Handles PE501
-/// </summary>
-public class HealthDrain
+internal class PE501 : Penitence
 {
     private readonly PE501Config _config;
 
-    private bool _reverse = false;
+    private float _nextDrainTime;
+    private float _timeToResumeDrain;
 
     /// <summary>
     /// Should drain health if penitence is active and not resting at prie dieu or other input blocks
     /// </summary>
-    public bool ShouldDrainHealth => Main.LostDreams.PenitenceHandler.IsActive("PE501")
-        && !Core.Input.HasBlocker("LD01") && !BLOCKED_SCENES.Contains(Core.LevelManager.currentLevel?.LevelName);
+    public bool ShouldDrainHealth => IsActive && !ShouldPreventDrain();
 
     /// <summary>
     /// Should apply thorns if penitence is active or bead is equipped
     /// </summary>
-    public bool ShouldApplyThorns => Main.LostDreams.PenitenceHandler.IsActive("PE501")
-        || Main.LostDreams.ItemHandler.IsEquipped("RB551");
+    public bool ShouldApplyThorns => IsActive || Main.LostDreams.RosaryBeadList.RB551.IsEquipped;
 
-    internal HealthDrain(PE501Config config)
+    /// <summary>
+    /// Should reverse drain if the current time has not passed the reverse cutoff yet
+    /// </summary>
+    public bool ShouldReverseDrain => Time.time < _timeToResumeDrain;
+
+    internal PE501(PE501Config config)
     {
         _config = config;
 
         Main.LostDreams.EventHandler.OnEnemyDamaged += HitEnemy;
         Main.LostDreams.EventHandler.OnEnemyKilled += KillEnemy;
         Main.LostDreams.EventHandler.OnPlayerDamaged += PlayerTakeDamage;
-        Main.LostDreams.EventHandler.OnExitGame += ResumeDrain;
+        Main.LostDreams.EventHandler.OnUseFlask += OnDrinkFlask;
+    }
 
-        Main.LostDreams.TimeHandler.AddTicker("drain-tick", _config.DRAIN_DELAY, true, PerformDrain);
+    protected override void OnActivate()
+    {
+        _nextDrainTime = Time.time + _config.DRAIN_DELAY;
+        _timeToResumeDrain = 0;
+    }
+
+    protected override void OnUpdate()
+    {
+        if (Time.time >= _nextDrainTime)
+        {
+            PerformDrain();
+            _nextDrainTime = Time.time + _config.DRAIN_DELAY;
+        }
     }
 
     /// <summary>
     /// Start a timer based on flask health and reverse drain until then
     /// </summary>
-    public void OnDrinkFlask()
+    public void OnDrinkFlask(ref bool cancel)
     {
-        float time = _config.FLASK_BASE + _config.FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
-        Main.LostDreams.Log($"Reversing health drain for {time} seconds");
-        Main.LostDreams.TimeHandler.AddCountdown("drain-reverse", time, ResumeDrain);
-        _reverse = true;
-    }
+        if (!ShouldDrainHealth)
+            return;
 
-    private void ResumeDrain()
-    {
-        Main.LostDreams.Log("Resuming health drain");
-        _reverse = false;
+        Core.Logic.Penitent.Stats.Flask.Current--;
+        cancel = true;
+
+        float time = _config.FLASK_BASE + _config.FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
+        _timeToResumeDrain = Time.time + time;
+        ModLog.Info($"Reversing health drain for {time} seconds");
     }
 
     private void PerformDrain()
@@ -65,25 +79,13 @@ public class HealthDrain
 
         Life life = Core.Logic.Penitent.Stats.Life;
         float amount = _config.DRAIN_BASE + _config.DRAIN_INCREASE * life.GetUpgrades();
-        if (_reverse)
+        if (ShouldReverseDrain)
             amount *= -1;
 
-        Main.LostDreams.Log("Draining player by " + amount);
+        ModLog.Info("Draining player by " + amount);
         life.Current -= amount;
         if (life.Current <= 0)
             Core.Logic.Penitent.KillInstanteneously();
-    }
-
-    /// <summary>
-    /// Adds health to the player
-    /// </summary>
-    private void HealPlayer(float amount)
-    {
-        if (!ShouldDrainHealth)
-            return;
-
-        Main.LostDreams.Log("Healing player by " + amount);
-        Core.Logic.Penitent.Stats.Life.Current += amount;
     }
 
     /// <summary>
@@ -91,14 +93,14 @@ public class HealthDrain
     /// </summary>
     private void PlayerTakeDamage(ref Hit hit)
     {
-        if (!Main.LostDreams.HealthDrain.ShouldApplyThorns)
+        if (!ShouldApplyThorns)
             return;
 
         IDamageable enemy = hit.AttackingEntity?.GetComponentInChildren<IDamageable>();
         if (enemy == null)
             return;
 
-        Main.LostDreams.Log("Applying thorns damage");
+        ModLog.Info("Applying thorns damage");
         enemy.Damage(new Hit()
         {
             DamageAmount = _config.THORNS_AMOUNT,
@@ -109,7 +111,7 @@ public class HealthDrain
 
         if (hit.DamageElement == DamageArea.DamageElement.Contact)
         {
-            Main.LostDreams.Log("Reducing contact damage");
+            ModLog.Info("Reducing contact damage");
             hit.DamageAmount = _config.CONTACT_AMOUNT;
         }
     }
@@ -129,15 +131,47 @@ public class HealthDrain
         HealPlayer(amount);
     }
 
+    private void HealPlayer(float amount)
+    {
+        if (!ShouldDrainHealth)
+            return;
+
+        ModLog.Info("Healing player by " + amount);
+        Core.Logic.Penitent.Stats.Life.Current += amount;
+    }
+
     private float ApplyHealthModifier(float baseAmount, float increaseAmount)
     {
         return baseAmount + increaseAmount * (Core.Logic.Penitent?.Stats.Life.GetUpgrades() ?? 0);
     }
 
+    private bool ShouldPreventDrain()
+    {
+        return Core.Input.HasBlocker("ANY") || BLOCKED_SCENES.Contains(Core.LevelManager.currentLevel?.LevelName);
+    }
+
     private static readonly string[] BLOCKED_SCENES =
     [
-        "D07Z01S03", "D14Z01S01", "D14Z02S01", "D14Z03S01",
+        "D07Z01S03",
+        "D14Z01S01",
+        "D14Z02S01",
+        "D14Z03S01",
     ];
+}
+
+/// <summary>
+/// When checking for ANY input, block everything unless only player logic
+/// </summary>
+[HarmonyPatch(typeof(InputManager), nameof(InputManager.HasBlocker))]
+class Input_Block_Patch
+{
+    public static void Postfix(string name, List<string> ___inputBlockers, ref bool __result)
+    {
+        if (name != "ANY")
+            return;
+
+        __result = ___inputBlockers.Count > 1 || ___inputBlockers.Count == 1 && ___inputBlockers[0] != "PLAYER_LOGIC";
+    }
 }
 
 /// <summary> Properties for PE501 </summary>
@@ -174,32 +208,4 @@ public class PE501Config
     public float THORNS_AMOUNT = 40f;
     /// <summary> Damage applied to the player in place of contact damage </summary>
     public float CONTACT_AMOUNT = 3f;
-}
-
-// When using a flask, perform special action instead of heal
-[HarmonyPatch(typeof(Healing), "Heal")]
-class Heal_Start_Patch
-{
-    public static bool Prefix()
-    {
-        if (!Main.LostDreams.HealthDrain.ShouldDrainHealth)
-            return true;
-
-        Core.Logic.Penitent.Stats.Flask.Current--;
-        Main.LostDreams.HealthDrain.OnDrinkFlask();
-        return false;
-    }
-}
-
-// When checking for LD01 input, block everything unless only player logic
-[HarmonyPatch(typeof(InputManager), nameof(InputManager.HasBlocker))]
-class Input_Block_Patch
-{
-    public static void Postfix(string name, List<string> ___inputBlockers, ref bool __result)
-    {
-        if (name != "LD01")
-            return;
-
-        __result = ___inputBlockers.Count > 1 || ___inputBlockers.Count == 1 && ___inputBlockers[0] != "PLAYER_LOGIC";
-    }
 }
