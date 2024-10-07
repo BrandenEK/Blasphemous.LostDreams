@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.ModdingAPI;
+using Framework.Managers;
 using Gameplay.GameControllers.Effects.Player.Healing;
 using Gameplay.GameControllers.Entities;
 using HarmonyLib;
@@ -29,7 +30,7 @@ internal class RB503 : EffectOnEquip
         if (_alreadyUsed || !IsEquipped)
             return;
 
-        Main.LostDreams.Log("RB503: Preventing damage");
+        ModLog.Info("RB503: Preventing damage");
         hit.DamageAmount = 0;
         _alreadyUsed = true;
 

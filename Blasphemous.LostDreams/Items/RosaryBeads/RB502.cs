@@ -1,4 +1,5 @@
-﻿using Gameplay.GameControllers.Entities;
+﻿using Blasphemous.ModdingAPI;
+using Gameplay.GameControllers.Entities;
 using System;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
@@ -26,13 +27,13 @@ internal class RB502 : EffectOnEquip
             return;
 
         _currentCharges = Math.Min(_currentCharges + 1, _config.MAX_CHARGES);
-        Main.LostDreams.Log($"RB502: Increasing damage stack to {_currentCharges}");
+        ModLog.Info($"RB502: Increasing damage stack to {_currentCharges}");
     }
 
     private void ResetCharges()
     {
         _currentCharges = 0;
-        Main.LostDreams.Log("RB502: Resetting damage stack");
+        ModLog.Info("RB502: Resetting damage stack");
     }
 
     private void PlayerTakeDamage(ref Hit hit)
