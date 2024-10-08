@@ -1,12 +1,13 @@
 {
-	"AddedObjects":
-	[
-		{
-			"Type": "CollectibleItem",
-			"Id": "RB504",
-			"XPos": -1023.3,
-			"YPos": 41,
-			"Condition": "flag:ESDRAS_CHAPEL"
-		}
-	]
+    "additions": [
+        {
+            "type": "item-ground",
+            "id": "RB504",
+            "position": {
+                "x": -1023.3,
+                "y": 41
+            },
+            "condition": "flag:ESDRAS_CHAPEL"
+        }
+    ]
 }
