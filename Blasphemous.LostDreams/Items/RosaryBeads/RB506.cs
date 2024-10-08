@@ -4,6 +4,7 @@ using Gameplay.GameControllers.Entities;
 using Rewired;
 using UnityEngine;
 using Framework.FrameworkCore;
+using Gameplay.GameControllers.Penitent.Attack;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
@@ -36,6 +37,13 @@ internal class RB506 : EffectOnEquip
     {
         _timer = 0f;
         isBeamReady = false;
+        Main.LostDreams.EventHandler.OnSwordAttack += OnSwordAttack;
+    }
+
+    protected override void OnUnequip()
+    {
+        isBeamReady = false;
+        Main.LostDreams.EventHandler.OnSwordAttack -= OnSwordAttack;
     }
 
     protected override void OnUpdate()
@@ -50,12 +58,114 @@ internal class RB506 : EffectOnEquip
             isBeamReady = IsAtFullHealth;
         }
     }
+
+    internal void OnSwordAttack(PenitentSword.AttackType attackType)
+    {
+        _projectileAttack.StartAttack(attackType);
+    }
 }
 
-internal class RB506Config
+
+internal class RB506ProjectileAttack
+{
+    private readonly RB506Config _config;
+    private Hit _hit;
+
+
+
+    internal RB506ProjectileAttack(RB506Config cfg)
+    {
+        _config = cfg;
+    }
+
+    internal Hit CreateHit()
+    {
+        return new Hit()
+        {
+            AttackingEntity = Core.Logic.Penitent.gameObject,
+            DamageAmount = _config.BASE_DAMAGE + Core.Logic.Penitent.Stats.Strength.Final * _config.DAMAGE_STRENGTH_MULTIPLIER,
+            DamageType = _config.DAMAGE_TYPE,
+            DamageElement = _config.DAMAGE_ELEMENT
+        };
+    }
+
+    /// <summary>
+    /// Returns a normalized direction of the projectile, 
+    /// according to the attack direction of TPO (front / up / crouch)
+    /// </summary>
+    internal Vector2 GetProjectileDirection(PenitentSword.AttackType attackType)
+    {
+        Vector2 result = new();
+        var penitent = Core.Logic.Penitent;
+        if (attackType == PenitentSword.AttackType.Crouch || penitent.IsCrouched || penitent.IsCrouchAttacking)
+        {
+            result = new Vector2(1, -0.5f); // angled at -30 degrees downwards
+        }
+        else if (attackType == PenitentSword.AttackType.AirUpward || attackType == PenitentSword.AttackType.GroundUpward)
+        {
+            result = new Vector2(0, 1);
+        }
+        else
+        {
+            result = new Vector2(1, 0);
+        }
+
+        if (penitent.Status.Orientation == EntityOrientation.Left)
+        {
+            // if facing left, make `x` coordinate negative
+            result.x = -result.x;
+        }
+        return result.normalized;
+    }
+
+    /// <summary>
+    /// Initiate an attack by creating a projectile and send it flying
+    /// </summary>
+    internal void StartAttack(PenitentSword.AttackType attackType)
+    {
+        // construct projectile GameObject
+        GameObject obj = new("RB506_Projectile");
+        obj.AddComponent<SpriteRenderer>();
+        var sr = obj.GetComponent<SpriteRenderer>();
+        obj.AddComponent<Rigidbody2D>();
+        var rb = obj.GetComponent<Rigidbody2D>();
+        obj.AddComponent<BoxCollider2D>();
+        var collider = obj.GetComponent<BoxCollider2D>();
+        collider.size = new Vector2(2.8f, 1f);
+
+        // set projectile starting position
+        // give the projectile a forward offset according to facing direction of TPO
+        Vector2 startingOffset = new(1.8f, 0f);
+        obj.transform.position = Core.Logic.Penitent.Status.Orientation == EntityOrientation.Right
+            ? (Vector2)Core.Logic.Penitent.transform.position + startingOffset
+            : (Vector2)Core.Logic.Penitent.transform.position - startingOffset;
+
+        // send projectile flying
+        collider.attachedRigidbody.velocity = GetProjectileDirection(attackType) * _config.PROJECTILE_SPEED;
+
+        // trigger damage hitbox
+        _hit = CreateHit();
+
+        // terminate the projectile when reaching max distance or hit a wall
+
+    }
+
+    /// <summary>
+    /// Triggered when hitting an enemy
+    /// </summary>
+    internal void OnHit()
+    {
+
+    }
+}
+
+/// <summary>
+/// Config for RB506
+/// </summary>
+public class RB506Config
 {
     /// <summary>
-    /// Cooldown before next beam can be fired
+    /// Cooldown before next beam can be fired (in seconds)
     /// </summary>
     internal float COOLDOWN = 3f;
 
@@ -74,100 +184,9 @@ internal class RB506Config
     internal DamageArea.DamageElement DAMAGE_ELEMENT = DamageArea.DamageElement.Lightning;
 
     internal float PROJECTILE_SPEED = 100f;
-}
-
-internal class RB506ProjectileAttack
-{
-    private readonly RB506Config _config;
-    private Hit _hit;
-
-    internal Hit CreateHit
-    {
-        get
-        {
-            return new Hit()
-            {
-                AttackingEntity = Core.Logic.Penitent.gameObject,
-                DamageAmount = _config.BASE_DAMAGE + Core.Logic.Penitent.Stats.Strength.Final * _config.DAMAGE_STRENGTH_MULTIPLIER,
-                DamageType = _config.DAMAGE_TYPE,
-                DamageElement = _config.DAMAGE_ELEMENT
-            };
-        }
-    }
 
     /// <summary>
-    /// Returns a normalized direction of the projectile, 
-    /// according to the attack direction of TPO (front / up / crouch)
+    /// Max distance accross which the projectile can travel (in units of Unity)
     /// </summary>
-    internal Vector2 ProjectileDirection
-    {
-        get
-        {
-            Vector2 result = new();
-            var penitent = Core.Logic.Penitent;
-            if (penitent.IsCrouched || penitent.IsCrouchAttacking)
-            {
-                result = new Vector2(1, -0.5f); // angled at -30 degrees downwards
-            }
-            else if () // is upward attacking
-            {
-                result = new Vector2(0, 1);
-            }
-            else // is forward attacking
-            {
-                result = new Vector2(1, 0);
-            }
-
-            if (penitent.Status.Orientation == EntityOrientation.Left)
-            {
-                // if facing left, make `x` coordinate negative
-                result.x = -result.x;
-            }
-            return result.normalized;
-        }
-    }
-
-    internal RB506ProjectileAttack(RB506Config cfg)
-    {
-        _config = cfg;
-    }
-
-
-    /// <summary>
-    /// Initiate an attack by creating a projectile and send it flying
-    /// </summary>
-    internal void StartAttack()
-    {
-        // construct projectile GameObject
-        GameObject obj = new("RB506_Projectile");
-        obj.AddComponent<SpriteRenderer>();
-        var sr = obj.GetComponent<SpriteRenderer>();
-        obj.AddComponent<Rigidbody2D>();
-        var rb = obj.GetComponent<Rigidbody2D>();
-        obj.AddComponent<BoxCollider2D>();
-        var collider = obj.GetComponent<BoxCollider2D>();
-        collider.size = new Vector2(2.8f, 1f);
-
-        // set projectile starting position
-        Vector2 startingOffset = new(1.8f, 0f);
-        obj.transform.position = Core.Logic.Penitent.Status.Orientation == EntityOrientation.Right
-            ? (Vector2)Core.Logic.Penitent.transform.position + startingOffset
-            : (Vector2)Core.Logic.Penitent.transform.position - startingOffset;
-
-        // send projectile flying
-        collider.attachedRigidbody.velocity = ProjectileDirection * _config.PROJECTILE_SPEED;
-
-        // trigger damage hitbox
-
-        // terminate the projectile when reaching max distance or hit a wall
-
-    }
-
-    /// <summary>
-    /// Triggered when hitting an enemy
-    /// </summary>
-    internal void OnHit()
-    {
-
-    }
+    internal float PROJECTILE_RANGE = 5f;
 }

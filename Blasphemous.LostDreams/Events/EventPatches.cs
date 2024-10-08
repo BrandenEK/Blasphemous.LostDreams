@@ -1,6 +1,8 @@
 ﻿using Gameplay.GameControllers.Enemies.Framework.Damage;
 using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent.Abilities;
+using Gameplay.GameControllers.Penitent.Animator;
+using Gameplay.GameControllers.Penitent.Attack;
 using Gameplay.GameControllers.Penitent.Damage;
 using HarmonyLib;
 using Tools.Level.Interactables;
@@ -35,4 +37,13 @@ class Enemy_Damage_Patch
 class Heal_Start_Patch
 {
     public static bool Prefix() => !Main.LostDreams.EventHandler.UseFlask();
+}
+
+[HarmonyPatch(typeof(PenitentAttackAnimations), "SetSwordSlash")]
+class PenitentAttackAnimations_SetSwordSlash_AttackStart_Patch
+{
+    public static void Prefix(PenitentSword.AttackType type)
+    {
+        Main.LostDreams.EventHandler.SwordAttack(type);
+    }
 }

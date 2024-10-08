@@ -14,6 +14,7 @@ using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
 using Blasphemous.ModdingAPI;
+using Gameplay.GameControllers.Penitent.Attack;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
@@ -100,5 +101,17 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("npc", new ObjectCreator(
             new NpcLoader(),
             new NpcModifier()));
+
+#if DEBUG
+        Main.LostDreams.EventHandler.OnSwordAttack += SwordAttackEventTest;
+#endif
     }
+
+#if DEBUG
+    internal void SwordAttackEventTest(PenitentSword.AttackType attackType)
+    {
+        ModLog.Info($"SwordAttackEvent with attack type {attackType} has been raised.");
+    }
+#endif
+
 }
