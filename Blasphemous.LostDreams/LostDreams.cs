@@ -102,16 +102,6 @@ public class LostDreams : BlasMod
             new NpcLoader(),
             new NpcModifier()));
 
-#if DEBUG
-        Main.LostDreams.EventHandler.OnSwordAttack += SwordAttackEventTest;
-#endif
     }
-
-#if DEBUG
-    internal void SwordAttackEventTest(PenitentSword.AttackType attackType)
-    {
-        ModLog.Info($"SwordAttackEvent with attack type {attackType} has been raised.");
-    }
-#endif
 
 }

@@ -5,6 +5,11 @@ using Rewired;
 using UnityEngine;
 using Framework.FrameworkCore;
 using Gameplay.GameControllers.Penitent.Attack;
+using Gameplay.GameControllers.Enemies.Projectiles;
+using System.Runtime.Remoting.Messaging;
+using System.Collections.Generic;
+using System.Linq;
+using Gameplay.GameControllers.Penitent;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
@@ -27,6 +32,8 @@ internal class RB506 : EffectOnEquip
         }
     }
 
+
+
     internal RB506(RB506Config cfg)
     {
         _config = cfg;
@@ -37,21 +44,32 @@ internal class RB506 : EffectOnEquip
     {
         _timer = 0f;
         isBeamReady = false;
+        _projectileAttack.InstantiateProjectileGameObjects();
+
         Main.LostDreams.EventHandler.OnSwordAttack += OnSwordAttack;
+        Main.LostDreams.EventHandler.OnPlayerDamaged += OnPlayerDamaged;
     }
 
     protected override void OnUnequip()
     {
         isBeamReady = false;
+        _projectileAttack.KillAllProjectiles();
+
         Main.LostDreams.EventHandler.OnSwordAttack -= OnSwordAttack;
+        Main.LostDreams.EventHandler.OnPlayerDamaged -= OnPlayerDamaged;
+
     }
 
     protected override void OnUpdate()
     {
-        if (isBeamReady || !IsEquipped)
+        if (!IsEquipped)
             return;
 
-        _timer += Time.deltaTime;
+        _projectileAttack.OnUpdate();
+
+        if (!isBeamReady)
+            _timer += Time.deltaTime;
+
         if (_timer >= _config.COOLDOWN)
         {
             _timer = 0f;
@@ -61,7 +79,20 @@ internal class RB506 : EffectOnEquip
 
     internal void OnSwordAttack(PenitentSword.AttackType attackType)
     {
-        _projectileAttack.StartAttack(attackType);
+        if (isBeamReady)
+        {
+            _projectileAttack.StartAttack(attackType);
+            isBeamReady = false;
+            _timer = 0f;
+        }
+    }
+
+    internal void OnPlayerDamaged(ref Hit hit)
+    {
+        if (hit.DamageAmount > Mathf.Epsilon)
+        {
+            isBeamReady = false;
+        }
     }
 }
 
@@ -69,13 +100,39 @@ internal class RB506 : EffectOnEquip
 internal class RB506ProjectileAttack
 {
     private readonly RB506Config _config;
-    private Hit _hit;
+    private int _activeProjectileCount = 0;
+    private const int MAX_PROJECTILE_COUNT = 5;
+    private RB506Projectile[] _projectiles = new RB506Projectile[MAX_PROJECTILE_COUNT];
 
+
+    internal bool HasAnyActiveProjectile
+    {
+        get => _activeProjectileCount > 0;
+    }
+
+    internal float ProjectileMaxExistTime
+    {
+        get => _config.PROJECTILE_RANGE / _config.PROJECTILE_SPEED;
+    }
 
 
     internal RB506ProjectileAttack(RB506Config cfg)
     {
         _config = cfg;
+    }
+
+    internal void InstantiateProjectileGameObjects()
+    {
+        for (int i = 0; i < _projectiles.Length; i++)
+        {
+            // set default objects to inactive
+            _projectiles[i] = new()
+            {
+                gameObject = new($"{i}")
+            };
+
+            _projectiles[i].gameObject.SetActive(false);
+        }
     }
 
     internal Hit CreateHit()
@@ -90,72 +147,219 @@ internal class RB506ProjectileAttack
     }
 
     /// <summary>
-    /// Returns a normalized direction of the projectile, 
-    /// according to the attack direction of TPO (front / up / crouch)
-    /// </summary>
-    internal Vector2 GetProjectileDirection(PenitentSword.AttackType attackType)
-    {
-        Vector2 result = new();
-        var penitent = Core.Logic.Penitent;
-        if (attackType == PenitentSword.AttackType.Crouch || penitent.IsCrouched || penitent.IsCrouchAttacking)
-        {
-            result = new Vector2(1, -0.5f); // angled at -30 degrees downwards
-        }
-        else if (attackType == PenitentSword.AttackType.AirUpward || attackType == PenitentSword.AttackType.GroundUpward)
-        {
-            result = new Vector2(0, 1);
-        }
-        else
-        {
-            result = new Vector2(1, 0);
-        }
-
-        if (penitent.Status.Orientation == EntityOrientation.Left)
-        {
-            // if facing left, make `x` coordinate negative
-            result.x = -result.x;
-        }
-        return result.normalized;
-    }
-
-    /// <summary>
     /// Initiate an attack by creating a projectile and send it flying
     /// </summary>
     internal void StartAttack(PenitentSword.AttackType attackType)
     {
+
         // construct projectile GameObject
-        GameObject obj = new("RB506_Projectile");
-        obj.AddComponent<SpriteRenderer>();
-        var sr = obj.GetComponent<SpriteRenderer>();
-        obj.AddComponent<Rigidbody2D>();
-        var rb = obj.GetComponent<Rigidbody2D>();
-        obj.AddComponent<BoxCollider2D>();
-        var collider = obj.GetComponent<BoxCollider2D>();
+        _activeProjectileCount++;
+        int currentProjectileIndex = _activeProjectileCount;
+
+        _projectiles[currentProjectileIndex].gameObject = new GameObject($"RB506_Projectile_{currentProjectileIndex}");
+
+        _projectiles[currentProjectileIndex].gameObject.AddComponent<Rigidbody2D>();
+        _projectiles[currentProjectileIndex].gameObject.AddComponent<BoxCollider2D>();
+        GameObject spriteObject = new($"RB506_Projectile_{currentProjectileIndex}_sprite");
+        spriteObject.transform.SetParent(_projectiles[currentProjectileIndex].gameObject.transform);
+        spriteObject.AddComponent<SpriteRenderer>();
+
+        var rb = _projectiles[currentProjectileIndex].gameObject.GetComponent<Rigidbody2D>();
+        var collider = _projectiles[currentProjectileIndex].gameObject.GetComponent<BoxCollider2D>();
+        var sr = _projectiles[currentProjectileIndex].gameObject.GetComponentInChildren<SpriteRenderer>();
+
         collider.size = new Vector2(2.8f, 1f);
 
-        // set projectile starting position
-        // give the projectile a forward offset according to facing direction of TPO
-        Vector2 startingOffset = new(1.8f, 0f);
-        obj.transform.position = Core.Logic.Penitent.Status.Orientation == EntityOrientation.Right
-            ? (Vector2)Core.Logic.Penitent.transform.position + startingOffset
-            : (Vector2)Core.Logic.Penitent.transform.position - startingOffset;
+        Main.LostDreams.FileHandler.LoadDataAsSprite($"effects/Holy_Water_Projectile_Attack.png", out Sprite sprite);
+        sr.sprite = sprite;
+        sr.sortingOrder = 100000;
+        int pixelsPerUnit = 32;
+        spriteObject.transform.localScale = new Vector3(
+            collider.size.x * pixelsPerUnit / sprite.rect.size.x,
+            collider.size.y * pixelsPerUnit / sprite.rect.size.y,
+            1);
 
+        rb.isKinematic = true;
+        collider.isTrigger = true;
+
+        // set projectile starting position, offset, and rotation
+        _projectiles[currentProjectileIndex].SetProjectileDirection(attackType);
+        _projectiles[currentProjectileIndex].SetProjectileInitialPosition();
+        
         // send projectile flying
-        collider.attachedRigidbody.velocity = GetProjectileDirection(attackType) * _config.PROJECTILE_SPEED;
+        collider.attachedRigidbody.velocity = _projectiles[currentProjectileIndex].direction * _config.PROJECTILE_SPEED;
+        collider.attachedRigidbody.gravityScale = 0;
 
         // trigger damage hitbox
-        _hit = CreateHit();
+        _projectiles[currentProjectileIndex].hit = CreateHit();
+        _projectiles[currentProjectileIndex].attackedEntities.Clear();
+        _projectiles[currentProjectileIndex].gameObject.SetActive(true);
+        // collision check is done by OnUpdate()
 
-        // terminate the projectile when reaching max distance or hit a wall
-
+        // terminate the projectile when reaching max distance or hitting a wall
+        // termination is handled via OnUpdate()
     }
 
     /// <summary>
     /// Triggered when hitting an enemy
     /// </summary>
-    internal void OnHit()
+    internal void OnHit() { }
+
+    /// <summary>
+    /// Checks damage collision of each active projectile. 
+    /// Triggered by <see cref="RB506.OnUpdate"/>. 
+    /// </summary>
+    internal void OnUpdate()
+    {
+        if (HasAnyActiveProjectile)
+        {
+            foreach (RB506Projectile projectile in _projectiles.Where(x => x.gameObject.activeSelf == true))
+            {
+                // collision detection and damage inflicting
+
+                var collider = projectile.gameObject.GetComponent<BoxCollider2D>();
+                List<IDamageable> damageableEntities = projectile.GetObjectsOfGivenTypeWithinCollider<IDamageable>(collider);
+                foreach (IDamageable entity in damageableEntities.Where(x => !projectile.attackedEntities.Contains(x)))
+                {
+                    if (entity is Penitent)
+                        return;
+
+                    entity.Damage(projectile.hit);
+                    OnHit();
+                    projectile.attackedEntities.Add(entity);
+                }
+
+                // terminate projectiles reaching max distance
+                projectile.timer += Time.deltaTime;
+                if (projectile.timer >= ProjectileMaxExistTime)
+                {
+                    projectile.timer = 0;
+                    projectile.gameObject.SetActive(false);
+                    _activeProjectileCount--;
+                }
+            }
+        }
+
+    }
+
+    internal void KillProjectile(int id)
+    {
+        if (_projectiles[id].gameObject == null)
+            return;
+
+        _projectiles[id]?.gameObject?.SetActive(false);
+    }
+
+    internal void KillAllProjectiles()
+    {
+        if (_projectiles.Length <= 0)
+            return;
+        for (int i = 0; i < _projectiles.Length; i++)
+        {
+            KillProjectile(i);
+        }
+    }
+}
+
+internal class RB506Projectile
+{
+    internal Hit hit;
+    internal Vector2 direction;
+    internal Vector2 offset;
+    internal Quaternion rotation;
+    internal GameObject gameObject;
+    internal List<IDamageable> attackedEntities = new();
+    internal float timer = 0f;
+
+    internal RB506Projectile() { }
+
+    /// <summary>
+    /// Set the normalized direction, offset, and rotation of the projectile 
+    /// according to the attack direction of TPO (front / up / crouch)
+    /// </summary>
+    internal void SetProjectileDirection(PenitentSword.AttackType attackType)
+    {
+        Vector2 direction = new();
+        Vector2 offset = new();
+        Vector3 rotation = new();
+        var penitent = Core.Logic.Penitent;
+
+        if (attackType == PenitentSword.AttackType.Crouch || penitent.IsCrouched || penitent.IsCrouchAttacking)
+        {
+            direction = new Vector2(1, -0.33f);
+            offset = new Vector2(2f, -0.33f);
+            rotation = new Vector3(0f, 0f, -30f);
+        }
+        else if (attackType == PenitentSword.AttackType.AirUpward || attackType == PenitentSword.AttackType.GroundUpward)
+        {
+            direction = new Vector2(0, 1);
+            offset = new Vector2(0.3f, 2.5f);
+            rotation = new Vector3(0f, 180f, -90f);
+        }
+        else
+        {
+            direction = new Vector2(1, 0);
+            offset = new Vector2(1.8f, 1.2f);
+            rotation = new Vector3(0, 0, 0);
+        }
+
+        if (penitent.Status.Orientation == EntityOrientation.Left)
+        {
+            direction.x = -direction.x;
+            offset.x = -offset.x;
+            rotation.z = -rotation.z;
+        }
+
+        this.direction = direction.normalized;
+        this.offset = offset;
+
+        Quaternion rotationQ = default(Quaternion);
+        rotationQ.eulerAngles = rotation;
+        this.rotation = rotationQ;
+    }
+
+    internal void SetProjectileInitialPosition()
+    {
+        this.gameObject.transform.position =
+            (Vector2)Core.Logic.Penitent.transform.position
+            + this.offset;
+        this.gameObject.transform.rotation = this.rotation;
+    }
+
+    internal List<T> GetObjectsOfGivenTypeWithinCollider<T>(Collider2D collider)
+    {
+        Collider2D[] allCollidersInRange = Physics2D.OverlapAreaAll(collider.bounds.min, collider.bounds.max);
+        return GetParentsOfGivenTypeFromColliders<T>(allCollidersInRange);
+    }
+
+    internal List<T> GetParentsOfGivenTypeFromColliders<T>(Collider2D[] colliders)
     {
 
+        GameObject[] parentGameObjects = new GameObject[colliders.Length];
+        List<T> parentsOfType = new();
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            GameObject gameObject = colliders[i].gameObject;
+            parentGameObjects.SetValue(gameObject, i);
+        }
+
+        if (parentGameObjects.Length < 0)
+        {
+            return parentsOfType;
+        }
+
+        for (int j = 0; j < parentGameObjects.Length; j++)
+        {
+            T ComponentOfType = parentGameObjects[j].GetComponentInParent<T>();
+
+            if (ComponentOfType != null && ComponentOfType is T) // can only damage enemies
+            {
+                parentsOfType.Add(ComponentOfType);
+            }
+        }
+
+        return parentsOfType;
     }
 }
 
@@ -183,10 +387,15 @@ public class RB506Config
 
     internal DamageArea.DamageElement DAMAGE_ELEMENT = DamageArea.DamageElement.Lightning;
 
-    internal float PROJECTILE_SPEED = 100f;
+    /// <summary>
+    /// Speed at which the projectile travels (in units/second)
+    /// </summary>
+    internal float PROJECTILE_SPEED = 10f;
 
     /// <summary>
     /// Max distance accross which the projectile can travel (in units of Unity)
     /// </summary>
     internal float PROJECTILE_RANGE = 5f;
+
 }
+
