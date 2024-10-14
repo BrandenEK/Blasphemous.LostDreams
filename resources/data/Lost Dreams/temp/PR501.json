@@ -1,0 +1,10 @@
+[
+    {
+        "id": "Example1",
+        "banned": true
+    },
+    {
+        "id": "Example2",
+        "offset": 0.5
+    }
+]
