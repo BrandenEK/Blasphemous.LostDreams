@@ -1,15 +1,11 @@
-﻿using Blasphemous.ModdingAPI;
+﻿using Framework.FrameworkCore;
 using Framework.Managers;
 using Gameplay.GameControllers.Entities;
-using Rewired;
-using UnityEngine;
-using Framework.FrameworkCore;
+using Gameplay.GameControllers.Penitent;
 using Gameplay.GameControllers.Penitent.Attack;
-using Gameplay.GameControllers.Enemies.Projectiles;
-using System.Runtime.Remoting.Messaging;
 using System.Collections.Generic;
 using System.Linq;
-using Gameplay.GameControllers.Penitent;
+using UnityEngine;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
@@ -31,7 +27,6 @@ internal class RB506 : EffectOnEquip
             return penitentStats.Life.Current + Mathf.Epsilon >= penitentStats.Life.CurrentMax;
         }
     }
-
 
 
     internal RB506(RB506Config cfg)
@@ -102,8 +97,7 @@ internal class RB506ProjectileAttack
     private readonly RB506Config _config;
     private int _activeProjectileCount = 0;
     private const int MAX_PROJECTILE_COUNT = 5;
-    private RB506Projectile[] _projectiles = new RB506Projectile[MAX_PROJECTILE_COUNT];
-
+    private RB506Projectile[] _projectiles = new RB506Projectile[MAX_PROJECTILE_COUNT + 1];
 
     internal bool HasAnyActiveProjectile
     {
@@ -158,6 +152,7 @@ internal class RB506ProjectileAttack
 
         _projectiles[currentProjectileIndex].gameObject = new GameObject($"RB506_Projectile_{currentProjectileIndex}");
 
+        // adding and getting required components for GameObject
         _projectiles[currentProjectileIndex].gameObject.AddComponent<Rigidbody2D>();
         _projectiles[currentProjectileIndex].gameObject.AddComponent<BoxCollider2D>();
         GameObject spriteObject = new($"RB506_Projectile_{currentProjectileIndex}_sprite");
@@ -168,9 +163,8 @@ internal class RB506ProjectileAttack
         var collider = _projectiles[currentProjectileIndex].gameObject.GetComponent<BoxCollider2D>();
         var sr = _projectiles[currentProjectileIndex].gameObject.GetComponentInChildren<SpriteRenderer>();
 
-        collider.size = new Vector2(2.8f, 1f);
-
-        Main.LostDreams.FileHandler.LoadDataAsSprite($"effects/Holy_Water_Projectile_Attack.png", out Sprite sprite);
+        // importing sprite for projectile GameObject
+        Main.LostDreams.FileHandler.LoadDataAsSprite($"effects/holy_water_projectile.png", out Sprite sprite);
         sr.sprite = sprite;
         sr.sortingOrder = 100000;
         int pixelsPerUnit = 32;
@@ -179,13 +173,15 @@ internal class RB506ProjectileAttack
             collider.size.y * pixelsPerUnit / sprite.rect.size.y,
             1);
 
+        // configurating collider and rigidBody
+        collider.size = new Vector2(2.8f, 1f);
         rb.isKinematic = true;
         collider.isTrigger = true;
 
         // set projectile starting position, offset, and rotation
         _projectiles[currentProjectileIndex].SetProjectileDirection(attackType);
         _projectiles[currentProjectileIndex].SetProjectileInitialPosition();
-        
+
         // send projectile flying
         collider.attachedRigidbody.velocity = _projectiles[currentProjectileIndex].direction * _config.PROJECTILE_SPEED;
         collider.attachedRigidbody.gravityScale = 0;
@@ -203,7 +199,10 @@ internal class RB506ProjectileAttack
     /// <summary>
     /// Triggered when hitting an enemy
     /// </summary>
-    internal void OnHit() { }
+    internal void OnHit()
+    {
+        // misc. vfx code can be put here (e.g. camera shake, particle spawn)
+    }
 
     /// <summary>
     /// Checks damage collision of each active projectile. 
@@ -239,7 +238,6 @@ internal class RB506ProjectileAttack
                 }
             }
         }
-
     }
 
     internal void KillProjectile(int id)
@@ -396,6 +394,5 @@ public class RB506Config
     /// Max distance accross which the projectile can travel (in units of Unity)
     /// </summary>
     internal float PROJECTILE_RANGE = 5f;
-
 }
 

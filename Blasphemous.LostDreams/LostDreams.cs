@@ -14,7 +14,6 @@ using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
 using Blasphemous.ModdingAPI;
-using Gameplay.GameControllers.Penitent.Attack;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
@@ -101,7 +100,5 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("npc", new ObjectCreator(
             new NpcLoader(),
             new NpcModifier()));
-
     }
-
 }
