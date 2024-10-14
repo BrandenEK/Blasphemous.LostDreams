@@ -10,10 +10,14 @@ namespace Blasphemous.LostDreams.Items.Prayers;
 internal class PR501 : EffectOnPrayerUse
 {
     private readonly PR501Config _config;
+    private readonly EnemySwapInfo[] _enemyInfo;
 
     public PR501(PR501Config cfg) : base(cfg)
     {
         _config = cfg;
+
+        Main.LostDreams.FileHandler.LoadDataAsJson("temp/PR501.json", out _enemyInfo);
+        ModLog.Info($"PR501: Loaded swap info for {_enemyInfo.Length} enemies");
     }
 
     protected override void OnActivate()
@@ -87,4 +91,25 @@ public class PR501Config : IPrayerConfig
     public float EffectTime { get; set; } = 0;
     /// <inheritdoc/>
     public bool UsePrayerDurationModifier { get; set; } = false;
+}
+
+/// <summary>
+/// Enemy swap info
+/// </summary>
+public class EnemySwapInfo(string id, bool banned, float offest)
+{
+    /// <summary>
+    /// The enemy id
+    /// </summary>
+    public string Id { get; } = id;
+
+    /// <summary>
+    /// Is the enemy banned from swapping
+    /// </summary>
+    public bool Banned { get; } = banned;
+
+    /// <summary>
+    /// The y offest to be applied to TPO and the enemy
+    /// </summary>
+    public float Offest { get; } = offest;
 }
