@@ -1,5 +1,6 @@
 ﻿using Gameplay.GameControllers.Entities;
 using Gameplay.GameControllers.Penitent;
+using Gameplay.GameControllers.Penitent.Attack;
 
 namespace Blasphemous.LostDreams.Events;
 
@@ -11,6 +12,7 @@ internal class EventHandler
     public delegate void HitEvent(ref Hit hit);
     public delegate void EntityEvent(Entity entity);
     public delegate void CancellableEvent(ref bool cancel);
+    public delegate void PenitentSwordAttackEvent(PenitentSword.AttackType attackType);
 
     public event StandardEvent OnUsePrieDieu;
     public event StandardEvent OnExitGame;
@@ -22,6 +24,8 @@ internal class EventHandler
     public event StandardEvent OnEnemyKilled;
 
     public event CancellableEvent OnUseFlask;
+
+    public event PenitentSwordAttackEvent OnSwordAttack;
 
     public void KillEntity(Entity entity)
     {
@@ -56,5 +60,10 @@ internal class EventHandler
         bool cancel = false;
         OnUseFlask?.Invoke(ref cancel);
         return cancel;
+    }
+
+    public void SwordAttack(PenitentSword.AttackType attackType)
+    {
+        OnSwordAttack?.Invoke(attackType);
     }
 }
