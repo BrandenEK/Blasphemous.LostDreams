@@ -12,6 +12,7 @@ namespace Blasphemous.LostDreams.Items.RosaryBeads;
 internal class RB506 : EffectOnEquip
 {
     private readonly RB506Config _config;
+
     private RB506ProjectileAttack _projectileAttack;
     private float _timer = 0f;
     internal bool isBeamReady = false;
@@ -95,6 +96,8 @@ internal class RB506 : EffectOnEquip
 internal class RB506ProjectileAttack
 {
     private readonly RB506Config _config;
+    private readonly Sprite _projectileSprite;
+
     private int _activeProjectileCount = 0;
     private const int MAX_PROJECTILE_COUNT = 5;
     private RB506Projectile[] _projectiles = new RB506Projectile[MAX_PROJECTILE_COUNT + 1];
@@ -113,6 +116,8 @@ internal class RB506ProjectileAttack
     internal RB506ProjectileAttack(RB506Config cfg)
     {
         _config = cfg;
+        Main.LostDreams.FileHandler.LoadDataAsSprite($"effects/holy_water_projectile.png", out Sprite sprite);
+        _projectileSprite = sprite;
     }
 
     internal void InstantiateProjectileGameObjects()
@@ -163,14 +168,13 @@ internal class RB506ProjectileAttack
         var collider = _projectiles[currentProjectileIndex].gameObject.GetComponent<BoxCollider2D>();
         var sr = _projectiles[currentProjectileIndex].gameObject.GetComponentInChildren<SpriteRenderer>();
 
-        // importing sprite for projectile GameObject
-        Main.LostDreams.FileHandler.LoadDataAsSprite($"effects/holy_water_projectile.png", out Sprite sprite);
-        sr.sprite = sprite;
+        // getting sprite for projectile GameObject
+        sr.sprite = _projectileSprite;
         sr.sortingOrder = 100000;
         int pixelsPerUnit = 32;
         spriteObject.transform.localScale = new Vector3(
-            collider.size.x * pixelsPerUnit / sprite.rect.size.x,
-            collider.size.y * pixelsPerUnit / sprite.rect.size.y,
+            collider.size.x * pixelsPerUnit / sr.sprite.rect.size.x,
+            collider.size.y * pixelsPerUnit / sr.sprite.rect.size.y,
             1);
 
         // configurating collider and rigidBody
