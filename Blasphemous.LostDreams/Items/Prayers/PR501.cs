@@ -36,8 +36,10 @@ internal class PR501 : EffectOnPrayerUse
         }
 
         ModLog.Info($"PR501: Swapping places with {enemy.name} ({enemy.Id})");
-        Vector3 playerPosition = Core.Logic.Penitent.transform.position;
-        Vector3 enemyPosition = enemy.transform.position;
+
+        float offest = _enemyInfo.First(x => x.Id == enemy.Id).Offest;
+        Vector3 playerPosition = Core.Logic.Penitent.transform.position + Vector3.up * offest;
+        Vector3 enemyPosition = enemy.transform.position + Vector3.down * offest;
 
         MoveEntity(enemy, Vector3.zero);
         MoveEntity(Core.Logic.Penitent, enemyPosition);
@@ -110,7 +112,7 @@ public class EnemySwapInfo(string id, bool banned, float offest)
     public bool Banned { get; } = banned;
 
     /// <summary>
-    /// The y offest to be applied to TPO and the enemy
+    /// The y offest to be applied to TPO upwards and the enemy downwards
     /// </summary>
     public float Offest { get; } = offest;
 }
