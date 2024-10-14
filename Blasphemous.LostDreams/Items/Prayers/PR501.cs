@@ -63,9 +63,15 @@ internal class PR501 : EffectOnPrayerUse
 
         return Object.FindObjectsOfType<Enemy>()
             .Select(e => new EnemyDistance(e, Vector3.Distance(playerPosition, e.transform.position)))
-            .Where(x => x.Distance <= _config.MAX_RANGE && !_bannedEnemyIds.Contains(x.Enemy.Id))
+            .Where(x => x.Distance <= _config.MAX_RANGE && !IsEnemyBanned(x.Enemy))
             .OrderBy(x => x.Distance)
             .FirstOrDefault()?.Enemy;
+    }
+
+    private bool IsEnemyBanned(Enemy enemy)
+    {
+        var info = _enemyInfo.FirstOrDefault(x => x.Id == enemy.Id);
+        return info?.Banned ?? true;
     }
 
     class EnemyDistance(Enemy e, float d)
@@ -73,11 +79,6 @@ internal class PR501 : EffectOnPrayerUse
         public Enemy Enemy { get; } = e;
         public float Distance { get; } = d;
     }
-
-    private readonly string[] _bannedEnemyIds =
-    {
-        "BS16"
-    };
 }
 
 /// <summary> Properties for PR501 </summary>
