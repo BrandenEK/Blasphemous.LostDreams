@@ -24,7 +24,7 @@ internal class RB514 : EffectOnEquip
     /// Key: functions that return a bool indicating whether the flask heal is cancelled. 
     /// Value: probability of corresponding function to be chosen at random. 
     /// </summary>
-    private readonly Dictionary<RB514RandomEffect, float> _EffectsToProbabilities;
+    private readonly Dictionary<RB514RandomEffect, float> _effectsToProbabilities;
 
     private RawBonus _movementSpeedBonus;
     private RawBonus _fervourRegenMovementSpeedReduction;
@@ -37,7 +37,7 @@ internal class RB514 : EffectOnEquip
     {
         get
         {
-            foreach (var effect in _EffectsToProbabilities.Keys)
+            foreach (var effect in _effectsToProbabilities.Keys)
             {
                 if (effect.isActive == true)
                     return true;
@@ -51,7 +51,7 @@ internal class RB514 : EffectOnEquip
     {
         _config = config;
 
-        _EffectsToProbabilities = new()
+        _effectsToProbabilities = new()
         {
             { new RB514RandomEffect(
                 "Gain lifesteal instead",
@@ -111,14 +111,14 @@ internal class RB514 : EffectOnEquip
                         Core.Logic.Penitent.Stats.Fervour.Current += fervourIncreaseEachTick;
                     }), 
               1f/7f },
-            { new RB514RandomEffect(  // WIP
+            { new RB514RandomEffect(
                 "Unstoppable stance", 
                 false, 
                 _config.UNSTOPPABLE_STANCE_DURATION, 
-                () => { },
-                () => { }, 
+                () => RB514_TrueUnstoppableStance_Patch.IsActive = true,
+                () => RB514_TrueUnstoppableStance_Patch.IsActive = false, 
                 () => { }), 
-              1f/7f}
+              1f/7f }
         };
     }
 
@@ -126,7 +126,7 @@ internal class RB514 : EffectOnEquip
     {
         Main.LostDreams.EventHandler.OnUseFlask += OnUseFlask;
 
-        foreach (RB514RandomEffect effect in _EffectsToProbabilities.Keys)
+        foreach (RB514RandomEffect effect in _effectsToProbabilities.Keys)
         {
             OnUpdateRB514 += effect.OnUpdate;
         }
@@ -139,7 +139,7 @@ internal class RB514 : EffectOnEquip
     {
         Main.LostDreams.EventHandler.OnUseFlask -= OnUseFlask;
 
-        foreach (RB514RandomEffect effect in _EffectsToProbabilities.Keys)
+        foreach (RB514RandomEffect effect in _effectsToProbabilities.Keys)
         {
             effect.DeactivateEffect();
             OnUpdateRB514 -= effect.OnUpdate;
@@ -156,7 +156,7 @@ internal class RB514 : EffectOnEquip
         // choose an effect based on probability of each effect
         List<float> cumulativeProbabilities = new();
         float cumulProb = 0f;
-        foreach (float probability in _EffectsToProbabilities.Values.ToList())
+        foreach (float probability in _effectsToProbabilities.Values.ToList())
         {
             cumulProb += probability;
             cumulativeProbabilities.Add(cumulProb);
@@ -172,10 +172,10 @@ internal class RB514 : EffectOnEquip
             if (randomValue <= cumulativeProbabilities[i])
             {
 #if DEBUG
-                Main.LostDreams.Log($"Triggered RB514 effect: {_EffectsToProbabilities.Keys.ToList()[i].name}!");
+                Main.LostDreams.Log($"Triggered RB514 effect: {_effectsToProbabilities.Keys.ToList()[i].name}!");
 #endif
-                _EffectsToProbabilities.Keys.ToList()[i].ActivateEffect();
-                cancel = _EffectsToProbabilities.Keys.ToList()[i].isFlaskHealCancelled;
+                _effectsToProbabilities.Keys.ToList()[i].ActivateEffect();
+                cancel = _effectsToProbabilities.Keys.ToList()[i].isFlaskHealCancelled;
                 break;
             }
         }
@@ -197,7 +197,7 @@ internal class RB514 : EffectOnEquip
             return;
 
         hit.DamageAmount = 0;
-        _EffectsToProbabilities.Keys.First(x => x.name == "Nullify next hit").DeactivateEffect();
+        _effectsToProbabilities.Keys.First(x => x.name == "Nullify next hit").DeactivateEffect();
 
         RB503_Healing_Start_Patch.HealingFlag = true;
         Object.FindObjectOfType<HealingAura>()?.StartAura(Core.Logic.Penitent.Status.Orientation);
@@ -325,6 +325,9 @@ internal class RB514RandomInstantaneousEffect : RB514RandomEffect
     { }
 }
 
+/// <summary>
+/// Effect triggered by RB514 that has an effect on fixed intervals.
+/// </summary>
 internal class RB514RandomTickingEffect : RB514RandomEffect
 {
     private readonly float _tickInterval;
@@ -431,3 +434,17 @@ public class RB514Config
     public float UNSTOPPABLE_STANCE_DURATION = 7.5f;
 }
 
+/// <summary>
+/// Gives true unstoppable stance when "Unstoppable stance" effect of <see cref="RB514"/> is triggered. 
+/// True unstoppable stance ignores knockback effect of all DamageTypes (including heavy attacks)
+/// </summary>
+[HarmonyPatch(typeof(PenitentDamageArea), "SetDamageAnimation")]
+class RB514_TrueUnstoppableStance_Patch
+{
+    public static bool IsActive { get; set; }
+
+    public static bool Prefix()
+    {
+        return !IsActive;
+    }
+}
