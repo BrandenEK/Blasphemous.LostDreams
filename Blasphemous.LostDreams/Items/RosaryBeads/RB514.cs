@@ -26,8 +26,8 @@ internal class RB514 : EffectOnEquip
     /// </summary>
     private readonly Dictionary<RB514RandomEffect, float> _effectsToProbabilities;
 
-    private RawBonus _movementSpeedBonus;
-    private RawBonus _fervourRegenMovementSpeedReduction;
+    private readonly float _movementSpeedBonus;
+    private readonly float _fervourRegenMovementSpeedReduction;
 
     private delegate void RB514OnUpdateEvent();
 
@@ -51,6 +51,10 @@ internal class RB514 : EffectOnEquip
     {
         _config = config;
 
+        float baseMovementSpeed = 5;
+        _movementSpeedBonus = _config.MOVEMENT_SPEED_INCREASE_RATIO * baseMovementSpeed;
+        _fervourRegenMovementSpeedReduction = _config.FERVOUR_REGEN_MOVEMENT_SPEED_REDUCTION_RATIO * baseMovementSpeed;
+
         _effectsToProbabilities = new()
         {
             { new RB514RandomEffect(
@@ -73,8 +77,8 @@ internal class RB514 : EffectOnEquip
                 "Boost movement speed", 
                 false, 
                 _config.MOVEMENT_SPEED_INCREASE_DURATION, 
-                () => Core.Logic.Penitent.Stats.Speed.AddRawBonus(_movementSpeedBonus),
-                () => Core.Logic.Penitent.Stats.Speed.RemoveRawBonus(_movementSpeedBonus), 
+                () => Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed += _movementSpeedBonus,
+                () => Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed -= _movementSpeedBonus, 
                 () => { }) ,
               1f/7f },
             { new RB514RandomTickingEffect(
@@ -101,8 +105,8 @@ internal class RB514 : EffectOnEquip
                 "Fervour regen", 
                 false, 
                 _config.FERVOUR_REGEN_DURATION, 
-                () => Core.Logic.Penitent.Stats.Speed.AddRawBonus(_fervourRegenMovementSpeedReduction), 
-                () => Core.Logic.Penitent.Stats.Speed.RemoveRawBonus(_fervourRegenMovementSpeedReduction), 
+                () => Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed += _fervourRegenMovementSpeedReduction, 
+                () => Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed -= _fervourRegenMovementSpeedReduction, 
                 () => { }, 
                 _config.FERVOUR_REGEN_TICK_INTERVAL,
                 () =>
@@ -130,9 +134,6 @@ internal class RB514 : EffectOnEquip
         {
             OnUpdateRB514 += effect.OnUpdate;
         }
-
-        _movementSpeedBonus = new(Core.Logic.Penitent.Stats.Speed.Base * _config.MOVEMENT_SPEED_INCREASE_RATIO);
-        _fervourRegenMovementSpeedReduction = new(Core.Logic.Penitent.Stats.Speed.Base * _config.FERVOUR_REGEN_MOVEMENT_SPEED_REDUCTION_RATIO);
     }
 
     protected override void OnUnequip()
@@ -149,6 +150,13 @@ internal class RB514 : EffectOnEquip
     protected override void OnUpdate()
     {
         OnUpdateRB514?.Invoke();
+#if DEBUG
+        /*
+        Main.LostDreams.Log($"Penitent current speed: {Core.Logic.Penitent.Stats.Speed.Final} \n" +
+            $"Penitent current velocity: {Core.Logic.Penitent.PlatformCharacterController.InstantVelocity}" +
+            $"Penitent current max speed: {Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed}");
+        */
+#endif
     }
 
     private void OnUseFlask(ref bool cancel)
@@ -287,7 +295,10 @@ internal class RB514RandomEffect
     internal virtual void ActivateEffect()
     {
         if (isActive)
-            Main.LostDreams.LogWarning($"Attempting to re-activate an already-active effect `{name}` for RB514.");
+        {
+            Main.LostDreams.LogWarning($"Attempting to re-activate an already-active effect `{name}` for RB514. Deactivating it first");
+            DeactivateEffect();
+        }
 
         isActive = true;
         OnActivateEffect();
@@ -413,7 +424,6 @@ public class RB514Config
     /// Each tick heals (AURA_TOTAL_HEAL_RATIO * base_heal / (AURA_HEAL_DURATION / AURA_HEAL_TICK_INTERVAL) )
     /// </summary>
     public float AURA_HEAL_TICK_INTERVAL = 0.5f;
-
 
     public float FERVOUR_REGEN_TOTAL_AMOUNT = 75f;
 
