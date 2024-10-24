@@ -6,9 +6,12 @@ using Framework.Managers;
 using Gameplay.GameControllers.Effects.Player.Healing;
 using Gameplay.GameControllers.Entities;
 using Steamworks;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using HarmonyLib;
+using Gameplay.GameControllers.Penitent.Damage;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
@@ -24,6 +27,7 @@ internal class RB514 : EffectOnEquip
     private readonly Dictionary<RB514RandomEffect, float> _EffectsToProbabilities;
 
     private RawBonus _movementSpeedBonus;
+    private RawBonus _fervourRegenMovementSpeedReduction;
 
     private delegate void RB514OnUpdateEvent();
 
@@ -53,10 +57,10 @@ internal class RB514 : EffectOnEquip
                 "Gain lifesteal instead",
                 true,
                 _config.LIFESTEAL_DURATION,
-                () => Main.LostDreams.EventHandler.OnUseFlask += OnUseFlask,
-                () => Main.LostDreams.EventHandler.OnUseFlask -= OnUseFlask,
+                () => Main.LostDreams.EventHandler.OnEnemyDamaged += LifestealEffectOnHit,
+                () => Main.LostDreams.EventHandler.OnEnemyDamaged -= LifestealEffectOnHit,
                 () => { }), 
-              1/7 },
+              1f/7f },
             { new RB514RandomEffect(
                 "Nullify next hit", 
                 false, 
@@ -64,7 +68,7 @@ internal class RB514 : EffectOnEquip
                 () => Main.LostDreams.EventHandler.OnPlayerDamaged += NullifyDamageOnBeingHit,
                 () => Main.LostDreams.EventHandler.OnPlayerDamaged -= NullifyDamageOnBeingHit, 
                 () => { }), 
-              1/7 },
+              1f/7f },
             { new RB514RandomEffect(
                 "Boost movement speed", 
                 false, 
@@ -72,15 +76,55 @@ internal class RB514 : EffectOnEquip
                 () => Core.Logic.Penitent.Stats.Speed.AddRawBonus(_movementSpeedBonus),
                 () => Core.Logic.Penitent.Stats.Speed.RemoveRawBonus(_movementSpeedBonus), 
                 () => { }) ,
-              1/7}
+              1f/7f },
+            { new RB514RandomTickingEffect(
+                "Emit mist", 
+                false, 
+                _config.MIST_DURATION, 
+                () => { }, 
+                () => { },
+                () => { }, 
+                _config.MIST_TICK_INTERVAL, 
+                MistEffectOnTick) ,
+              1f/7f },
+            { new RB514RandomTickingEffect(
+                "Healing aura instead", 
+                true, 
+                _config.AURA_HEAL_DURATION, 
+                AuraHealEffectOnActivate,
+                AuraHealEffectOnDeactivate, 
+                () => { }, 
+                _config.AURA_HEAL_TICK_INTERVAL, 
+                AuraHealEffectOnTick), 
+              1f/7f },
+            { new RB514RandomTickingEffect(
+                "Fervour regen", 
+                false, 
+                _config.FERVOUR_REGEN_DURATION, 
+                () => Core.Logic.Penitent.Stats.Speed.AddRawBonus(_fervourRegenMovementSpeedReduction), 
+                () => Core.Logic.Penitent.Stats.Speed.RemoveRawBonus(_fervourRegenMovementSpeedReduction), 
+                () => { }, 
+                _config.FERVOUR_REGEN_TICK_INTERVAL,
+                () =>
+                    {
+                        float fervourIncreaseEachTick = _config.FERVOUR_REGEN_TOTAL_AMOUNT / (_config.FERVOUR_REGEN_DURATION / _config.FERVOUR_REGEN_TICK_INTERVAL);
+                        Core.Logic.Penitent.Stats.Fervour.Current += fervourIncreaseEachTick;
+                    }), 
+              1f/7f },
+            { new RB514RandomEffect(  // WIP
+                "Unstoppable stance", 
+                false, 
+                _config.UNSTOPPABLE_STANCE_DURATION, 
+                () => { },
+                () => { }, 
+                () => { }), 
+              1f/7f}
         };
     }
 
     protected override void OnEquip()
     {
-        Main.LostDreams.EventHandler.OnEnemyDamaged += LifestealEffectOnHit;
-        Main.LostDreams.EventHandler.OnPlayerDamaged += NullifyDamageOnBeingHit;
-
+        Main.LostDreams.EventHandler.OnUseFlask += OnUseFlask;
 
         foreach (RB514RandomEffect effect in _EffectsToProbabilities.Keys)
         {
@@ -88,13 +132,12 @@ internal class RB514 : EffectOnEquip
         }
 
         _movementSpeedBonus = new(Core.Logic.Penitent.Stats.Speed.Base * _config.MOVEMENT_SPEED_INCREASE_RATIO);
+        _fervourRegenMovementSpeedReduction = new(Core.Logic.Penitent.Stats.Speed.Base * _config.FERVOUR_REGEN_MOVEMENT_SPEED_REDUCTION_RATIO);
     }
 
     protected override void OnUnequip()
     {
         Main.LostDreams.EventHandler.OnUseFlask -= OnUseFlask;
-        Main.LostDreams.EventHandler.OnEnemyDamaged -= LifestealEffectOnHit;
-        Main.LostDreams.EventHandler.OnPlayerDamaged -= NullifyDamageOnBeingHit;
 
         foreach (RB514RandomEffect effect in _EffectsToProbabilities.Keys)
         {
@@ -120,14 +163,23 @@ internal class RB514 : EffectOnEquip
         }
 
         float randomValue = UnityEngine.Random.value;
+#if DEBUG
+        Main.LostDreams.Log($"Start rolling random effect for RB514");
+        Main.LostDreams.Log($"Current random value for rolling: {randomValue}");
+#endif
         for (int i = 0; i < cumulativeProbabilities.Count; i++)
         {
             if (randomValue <= cumulativeProbabilities[i])
             {
+#if DEBUG
+                Main.LostDreams.Log($"Triggered RB514 effect: {_EffectsToProbabilities.Keys.ToList()[i].name}!");
+#endif
                 _EffectsToProbabilities.Keys.ToList()[i].ActivateEffect();
+                cancel = _EffectsToProbabilities.Keys.ToList()[i].isFlaskHealCancelled;
                 break;
             }
         }
+
     }
 
 
@@ -151,6 +203,26 @@ internal class RB514 : EffectOnEquip
         Object.FindObjectOfType<HealingAura>()?.StartAura(Core.Logic.Penitent.Status.Orientation);
         Core.Logic.Penitent.Audio.PrayerInvincibility();
     }
+
+    private void MistEffectOnTick()
+    {
+        // WIP: spawn the mist object
+    }
+
+    private void AuraHealEffectOnActivate()
+    {
+        // WIP
+    }
+
+    private void AuraHealEffectOnDeactivate()
+    {
+        // WIP
+    }
+
+    private void AuraHealEffectOnTick()
+    {
+        // WIP
+    }
 }
 
 /// <summary>
@@ -158,7 +230,6 @@ internal class RB514 : EffectOnEquip
 /// </summary>
 internal class RB514RandomEffect
 {
-    private protected float _timer = 0f;
     private protected readonly float _duration;
     private protected readonly System.Action _effectOnActivate;
     private protected readonly System.Action _effectOnDeactivate;
@@ -167,6 +238,7 @@ internal class RB514RandomEffect
     internal readonly bool isFlaskHealCancelled;
     internal readonly string name;
     internal bool isActive = false;
+    internal float timer = 0f;
 
     internal RB514RandomEffect(
         string name, 
@@ -202,13 +274,13 @@ internal class RB514RandomEffect
         if (!isActive)
             return;
 
-        _timer += Time.deltaTime;
+        timer += Time.deltaTime;
         _effectOnEachUpdate();
 
-        if (_timer >= _duration)
+        if (timer >= _duration)
         {
             DeactivateEffect();
-            _timer = 0;
+            timer = 0;
         }
     }
 
@@ -225,7 +297,6 @@ internal class RB514RandomEffect
     {
         if (!isActive)
         {
-            Main.LostDreams.LogError($"Aborted attempt to re-deactivate an already-deactive effect `{name}` for RB514.");
             return;
         }
 
@@ -244,14 +315,59 @@ internal class RB514RandomInstantaneousEffect : RB514RandomEffect
         string name,
         bool isFlaskHealCancelled,
         System.Action effectOnActivate)
-        : base(
-            name,
-            isFlaskHealCancelled,
-            -1f,
-            effectOnActivate,
-            () => { },
-            () => { })
+    : base(
+        name,
+        isFlaskHealCancelled,
+        -1f,
+        effectOnActivate,
+        () => { },
+        () => { })
     { }
+}
+
+internal class RB514RandomTickingEffect : RB514RandomEffect
+{
+    private readonly float _tickInterval;
+    private readonly System.Action _effectOnTick;
+    private float _nextTick;
+
+    internal RB514RandomTickingEffect(
+        string name,
+        bool isFlaskHealCancelled,
+        float duration,
+        System.Action effectOnActivate,
+        System.Action effectOnDeactivate,
+        System.Action effectOnEachUpdate, 
+        float tickInterval, 
+        System.Action effectOnTick)
+    : base(
+        name, 
+        isFlaskHealCancelled,
+        duration, 
+        effectOnActivate, 
+        effectOnDeactivate, 
+        effectOnEachUpdate)
+    {
+        this._tickInterval = tickInterval;
+        this._effectOnTick = effectOnTick;
+    }
+
+    private protected override void OnActivateEffect()
+    {
+        base.OnActivateEffect();
+        _nextTick = 0f;
+    }
+
+    internal override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if (timer >= _nextTick)
+        {
+            _effectOnTick();
+            _nextTick += _tickInterval;
+        }
+    }
 }
 
 
@@ -275,7 +391,9 @@ public class RB514Config
 
     public float MOVEMENT_SPEED_INCREASE_DURATION = 7.5f;
 
-    public float MIST_DURATION = 7.5f;
+    public float MIST_DURATION = 8f;
+
+    public float MIST_TICK_INTERVAL = 1f;
 
     public float MIST_DAMAGE = 20f;
 
@@ -312,3 +430,4 @@ public class RB514Config
 
     public float UNSTOPPABLE_STANCE_DURATION = 7.5f;
 }
+
