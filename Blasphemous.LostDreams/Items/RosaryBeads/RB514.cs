@@ -110,13 +110,24 @@ internal class RB514 : EffectOnEquip
 
     private void OnUseFlask(ref bool cancel)
     {
-        // WIP: choose an effect based on probability of each effect
-        int index = UnityEngine.Random.Range(0, _EffectsToProbabilities.Count);
-        System.Func<bool> selectedEffect = _EffectsToProbabilities[index];
+        // choose an effect based on probability of each effect
+        List<float> cumulativeProbabilities = new();
+        float cumulProb = 0f;
+        foreach (float probability in _EffectsToProbabilities.Values.ToList())
+        {
+            cumulProb += probability;
+            cumulativeProbabilities.Add(cumulProb);
+        }
 
-        // WIP: make the selected effect's OnUpdate() subscribe to RB514OnUpdate event.
-
-        cancel = selectedEffect();
+        float randomValue = UnityEngine.Random.value;
+        for (int i = 0; i < cumulativeProbabilities.Count; i++)
+        {
+            if (randomValue <= cumulativeProbabilities[i])
+            {
+                _EffectsToProbabilities.Keys.ToList()[i].ActivateEffect();
+                break;
+            }
+        }
     }
 
 
@@ -139,20 +150,6 @@ internal class RB514 : EffectOnEquip
         RB503_Healing_Start_Patch.HealingFlag = true;
         Object.FindObjectOfType<HealingAura>()?.StartAura(Core.Logic.Penitent.Status.Orientation);
         Core.Logic.Penitent.Audio.PrayerInvincibility();
-    }
-
-    private bool EmitMist()
-    {
-        bool cancel = false;
-        // WIP
-        return cancel;
-    }
-
-    private bool CreateHealingAura()
-    {
-        bool cancel = true;
-        // WIP
-        return cancel;
     }
 }
 
