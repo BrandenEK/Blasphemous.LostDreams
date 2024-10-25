@@ -12,6 +12,7 @@ using System.Linq;
 using UnityEngine;
 using HarmonyLib;
 using Gameplay.GameControllers.Penitent.Damage;
+using Gameplay.GameControllers.Penitent;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
@@ -28,6 +29,8 @@ internal class RB514 : EffectOnEquip
 
     private readonly float _movementSpeedBonus;
     private readonly float _fervourRegenMovementSpeedReduction;
+    private readonly Sprite _healingAuraSprite;
+    private GameObject _healingAuraGameObject;
 
     private delegate void RB514OnUpdateEvent();
 
@@ -55,6 +58,10 @@ internal class RB514 : EffectOnEquip
         _movementSpeedBonus = _config.MOVEMENT_SPEED_INCREASE_RATIO * baseMovementSpeed;
         _fervourRegenMovementSpeedReduction = _config.FERVOUR_REGEN_MOVEMENT_SPEED_REDUCTION_RATIO * baseMovementSpeed;
 
+        Main.LostDreams.FileHandler.LoadDataAsSprite("effects/RB514_healing_aura.png", out Sprite tempSprite);
+        _healingAuraSprite = tempSprite;
+
+        // initialize all random effects and their probability of being selected
         _effectsToProbabilities = new()
         {
             { new RB514RandomEffect(
@@ -184,6 +191,11 @@ internal class RB514 : EffectOnEquip
 #endif
                 _effectsToProbabilities.Keys.ToList()[i].ActivateEffect();
                 cancel = _effectsToProbabilities.Keys.ToList()[i].isFlaskHealCancelled;
+                if (cancel == true)
+                {
+                    // flask should still be consumed when healing is cancelled
+                    Core.Logic.Penitent.Stats.Flask.Current -= 1;
+                }
                 break;
             }
         }
@@ -219,17 +231,90 @@ internal class RB514 : EffectOnEquip
 
     private void AuraHealEffectOnActivate()
     {
-        // WIP
+        // construct aura GameObject and the children sprite GameObject
+        _healingAuraGameObject = new("RB514_healing_aura");
+        _healingAuraGameObject.SetActive(false);
+        GameObject spriteObject = new("sprite");
+        spriteObject.transform.SetParent(_healingAuraGameObject.transform);
+        spriteObject.transform.position = _healingAuraGameObject.transform.position;
+        spriteObject.AddComponent<SpriteRenderer>();
+        var sr = _healingAuraGameObject.GetComponentInChildren<SpriteRenderer>();
+        _healingAuraGameObject.AddComponent<CircleCollider2D>();
+        var collider = _healingAuraGameObject.GetComponent<CircleCollider2D>();
+
+        // initialize collider
+        _healingAuraGameObject.transform.position = Core.Logic.Penitent.GetPosition();
+        collider.radius = _config.AURA_RADIUS;
+
+        // initialize sprite
+        sr.sprite = _healingAuraSprite;
+        sr.sortingOrder = 100000;
+        int pixelsPerUnit = 32;
+        spriteObject.transform.localScale = new Vector3(
+            collider.radius * 2 * pixelsPerUnit / sr.sprite.rect.size.x,
+            collider.radius * 2 * pixelsPerUnit / sr.sprite.rect.size.y,
+            1);
+
+        // finalize initialization
+        _healingAuraGameObject.SetActive(true);
     }
 
     private void AuraHealEffectOnDeactivate()
     {
-        // WIP
+        _healingAuraGameObject?.SetActive(false);
     }
 
     private void AuraHealEffectOnTick()
     {
-        // WIP
+        if (!_healingAuraGameObject)
+            return;
+
+        var collider = _healingAuraGameObject.GetComponent<CircleCollider2D>();
+        List<Penitent> penitents = GetObjectsOfGivenTypeWithinCollider<Penitent>(collider);
+
+        // heal TPO if it's inside the aura
+        if (penitents.Count == 0)
+            return;
+
+        float originalFlaskHeal = Core.Logic.Penitent.Stats.FlaskHealth.Final;
+        float healPerTick = _config.AURA_TOTAL_HEAL_RATIO * originalFlaskHeal / (_config.AURA_HEAL_DURATION / _config.AURA_HEAL_TICK_INTERVAL);
+        Core.Logic.Penitent.Stats.Life.Current += healPerTick;
+    }
+
+    internal List<T> GetObjectsOfGivenTypeWithinCollider<T>(Collider2D collider)
+    {
+        Collider2D[] allCollidersInRange = Physics2D.OverlapAreaAll(collider.bounds.min, collider.bounds.max);
+        return GetParentsOfGivenTypeFromColliders<T>(allCollidersInRange);
+    }
+
+    internal List<T> GetParentsOfGivenTypeFromColliders<T>(Collider2D[] colliders)
+    {
+
+        GameObject[] parentGameObjects = new GameObject[colliders.Length];
+        List<T> parentsOfType = new();
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            GameObject gameObject = colliders[i].gameObject;
+            parentGameObjects.SetValue(gameObject, i);
+        }
+
+        if (parentGameObjects.Length < 0)
+        {
+            return parentsOfType;
+        }
+
+        for (int j = 0; j < parentGameObjects.Length; j++)
+        {
+            T ComponentOfType = parentGameObjects[j].GetComponentInParent<T>();
+
+            if (ComponentOfType != null && ComponentOfType is T) // can only damage enemies
+            {
+                parentsOfType.Add(ComponentOfType);
+            }
+        }
+
+        return parentsOfType;
     }
 }
 
@@ -424,6 +509,8 @@ public class RB514Config
     /// Each tick heals (AURA_TOTAL_HEAL_RATIO * base_heal / (AURA_HEAL_DURATION / AURA_HEAL_TICK_INTERVAL) )
     /// </summary>
     public float AURA_HEAL_TICK_INTERVAL = 0.5f;
+
+    public float AURA_RADIUS = 3f;
 
     public float FERVOUR_REGEN_TOTAL_AMOUNT = 75f;
 
