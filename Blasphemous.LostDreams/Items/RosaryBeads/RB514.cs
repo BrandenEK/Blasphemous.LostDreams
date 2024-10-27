@@ -28,10 +28,17 @@ internal class RB514 : EffectOnEquip
     /// Key: functions that return a bool indicating whether the flask heal is cancelled. 
     /// Value: probability of corresponding function to be chosen at random. 
     /// </summary>
-    private readonly Dictionary<RB514RandomEffect, float> _effectsToProbabilities;
+    private readonly Dictionary<RB514RandomEffect, float> _effectsToProbabilities = new();
+
+    /// <summary>
+    /// Storing the cumulative probability of effects
+    /// </summary>
+    private readonly List<float> _cumulativeProbabilities = new(); 
 
     private readonly float _movementSpeedBonus;
+    private float _movementSpeedBeforeBoost;
     private readonly float _fervourRegenMovementSpeedReduction;
+    private float _movementSpeedBeforeFervourMoveSpeedReduction;
     private readonly Sprite _healingAuraSprite;
     private GameObject _healingAuraGameObject;
     private readonly Sprite _toxicMistSprite;
@@ -95,9 +102,13 @@ internal class RB514 : EffectOnEquip
                 "Boost movement speed", 
                 false, 
                 _config.MOVEMENT_SPEED_INCREASE_DURATION, 
-                () => Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed += _movementSpeedBonus,
-                () => Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed -= _movementSpeedBonus, 
-                () => { }) ,
+                () => _movementSpeedBeforeBoost = Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed,
+                () => { }, 
+                () =>
+                    {
+                        if (!Core.Logic.Penitent.IsDashing)
+                            Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed = _movementSpeedBeforeBoost + _movementSpeedBonus;
+                    }) ,
               1f/7f },
             { new RB514RandomTickingEffect(
                 "Emit mist", 
@@ -126,9 +137,13 @@ internal class RB514 : EffectOnEquip
                 "Fervour regen", 
                 false, 
                 _config.FERVOUR_REGEN_DURATION, 
-                () => Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed += _fervourRegenMovementSpeedReduction, 
-                () => Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed -= _fervourRegenMovementSpeedReduction, 
-                () => { }, 
+                () => _movementSpeedBeforeFervourMoveSpeedReduction = Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed, 
+                () => { },
+                () =>
+                    {
+                        if (!Core.Logic.Penitent.IsDashing)
+                            Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed = _movementSpeedBeforeFervourMoveSpeedReduction + _movementSpeedBonus;
+                    }, 
                 _config.FERVOUR_REGEN_TICK_INTERVAL,
                 () =>
                     {
@@ -145,6 +160,13 @@ internal class RB514 : EffectOnEquip
                 () => { }), 
               1f/7f }
         };
+
+        float cumulProb = 0f;
+        foreach (float probability in _effectsToProbabilities.Values.ToList())
+        {
+            cumulProb += probability;
+            _cumulativeProbabilities.Add(cumulProb);
+        }
     }
 
     protected override void OnEquip()
@@ -176,13 +198,6 @@ internal class RB514 : EffectOnEquip
     private void OnUseFlask(ref bool cancel)
     {
         // choose an effect based on probability of each effect
-        List<float> cumulativeProbabilities = new();
-        float cumulProb = 0f;
-        foreach (float probability in _effectsToProbabilities.Values.ToList())
-        {
-            cumulProb += probability;
-            cumulativeProbabilities.Add(cumulProb);
-        }
 
         float randomValue = UnityEngine.Random.value;
         for (int i = 0; i < cumulativeProbabilities.Count; i++)
