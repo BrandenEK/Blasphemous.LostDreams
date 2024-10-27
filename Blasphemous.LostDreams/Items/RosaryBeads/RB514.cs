@@ -13,6 +13,9 @@ using UnityEngine;
 using HarmonyLib;
 using Gameplay.GameControllers.Penitent.Damage;
 using Gameplay.GameControllers.Penitent;
+using UnityEngine.Serialization;
+using System.Collections;
+using Gameplay.UI;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
@@ -31,10 +34,16 @@ internal class RB514 : EffectOnEquip
     private readonly float _fervourRegenMovementSpeedReduction;
     private readonly Sprite _healingAuraSprite;
     private GameObject _healingAuraGameObject;
+    private readonly Sprite _toxicMistSprite;
+    private GameObject[] _toxicMistGameObjects = new GameObject[MAX_MIST_OBJECT_COUNT + 1];
+    private GameObject _toxicMistPrefab;
+    private int _mistCounter = 0;
 
     private delegate void RB514OnUpdateEvent();
 
     private event RB514OnUpdateEvent OnUpdateRB514;
+
+    private const int MAX_MIST_OBJECT_COUNT = 20;
 
     private bool IsAnyEffectActive
     {
@@ -54,12 +63,14 @@ internal class RB514 : EffectOnEquip
     {
         _config = config;
 
+        // initialize buff values that are not in config
         float baseMovementSpeed = 5;
         _movementSpeedBonus = _config.MOVEMENT_SPEED_INCREASE_RATIO * baseMovementSpeed;
         _fervourRegenMovementSpeedReduction = _config.FERVOUR_REGEN_MOVEMENT_SPEED_REDUCTION_RATIO * baseMovementSpeed;
 
-        Main.LostDreams.FileHandler.LoadDataAsSprite("effects/RB514_healing_aura.png", out Sprite tempSprite);
-        _healingAuraSprite = tempSprite;
+        // import sprites
+        Main.LostDreams.FileHandler.LoadDataAsSprite("effects/RB514_healing_aura.png", out _healingAuraSprite);
+        Main.LostDreams.FileHandler.LoadDataAsSprite("effects/RB514_toxic_mist.png", out _toxicMistSprite);
 
         // initialize all random effects and their probability of being selected
         _effectsToProbabilities = new()
@@ -91,12 +102,15 @@ internal class RB514 : EffectOnEquip
             { new RB514RandomTickingEffect(
                 "Emit mist", 
                 false, 
-                _config.MIST_DURATION, 
-                () => { }, 
+                _config.MIST_EFFECT_TOTAL_DURATION, 
+                MistEffectOnActivate, 
                 () => { },
                 () => { }, 
-                _config.MIST_TICK_INTERVAL, 
-                MistEffectOnTick) ,
+                new List<RB514RandomTickingEffect.TickingEffect>()
+                    {
+                        new(_config.MIST_SPAWN_TICK_INTERVAL, SpawnMist), 
+                        new(_config.MIST_DAMAGE_TICK_INTERVAL, MistDealDamage)
+                    }) ,
               1f/7f },
             { new RB514RandomTickingEffect(
                 "Healing aura instead", 
@@ -157,13 +171,6 @@ internal class RB514 : EffectOnEquip
     protected override void OnUpdate()
     {
         OnUpdateRB514?.Invoke();
-#if DEBUG
-        /*
-        Main.LostDreams.Log($"Penitent current speed: {Core.Logic.Penitent.Stats.Speed.Final} \n" +
-            $"Penitent current velocity: {Core.Logic.Penitent.PlatformCharacterController.InstantVelocity}" +
-            $"Penitent current max speed: {Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed}");
-        */
-#endif
     }
 
     private void OnUseFlask(ref bool cancel)
@@ -178,10 +185,6 @@ internal class RB514 : EffectOnEquip
         }
 
         float randomValue = UnityEngine.Random.value;
-#if DEBUG
-        Main.LostDreams.Log($"Start rolling random effect for RB514");
-        Main.LostDreams.Log($"Current random value for rolling: {randomValue}");
-#endif
         for (int i = 0; i < cumulativeProbabilities.Count; i++)
         {
             if (randomValue <= cumulativeProbabilities[i])
@@ -205,7 +208,7 @@ internal class RB514 : EffectOnEquip
 
     private void LifestealEffectOnHit(ref Hit hit)
     {
-        if (hit.AttackingEntity == Core.Logic.Penitent)
+        if (hit.AttackingEntity == Core.Logic.Penitent.gameObject)
         {
             Core.Logic.Penitent.Stats.Life.Current += hit.DamageAmount * _config.LIFESTEAL_RATIO;
         }
@@ -224,15 +227,111 @@ internal class RB514 : EffectOnEquip
         Core.Logic.Penitent.Audio.PrayerInvincibility();
     }
 
-    private void MistEffectOnTick()
+    /// <summary>
+    /// Create a template object at index 0 of the GameObject array, and make it inactive. 
+    /// Each actual trigger of the crimson mist copies this object.
+    /// </summary>
+    private void MistEffectOnActivate()
     {
-        // WIP: spawn the mist object
+        _mistCounter = 0;
+        // construct toxic mist template GameObject and its children sprite GameObject
+        GameObject obj = new("RB514 toxic mist template");
+        obj.SetActive(false);
+        GameObject spriteObject = new("sprite");
+        spriteObject.transform.SetParent(obj.transform);
+        spriteObject.transform.position = obj.transform.position;
+        spriteObject.AddComponent<SpriteRenderer>();
+        var sr = obj.GetComponentInChildren<SpriteRenderer>();
+        obj.AddComponent<BoxCollider2D>();
+        var collider = obj.GetComponent<BoxCollider2D>();
+
+        // initialize collider
+        collider.size = new Vector2(2.5f, 1.5f);
+
+        // initialize sprite
+        sr.sprite = _toxicMistSprite;
+        sr.sortingOrder = 1000;
+        int pixelsPerUnit = 32;
+        spriteObject.transform.localScale = new Vector3(
+            collider.size.x * pixelsPerUnit / sr.sprite.rect.size.x,
+            collider.size.y * pixelsPerUnit / sr.sprite.rect.size.y,
+            1);
+
+        // finalize initialization
+        _toxicMistPrefab = obj;
     }
+
+    private void SpawnMist()
+    {
+        // instantiate the template object and make it active
+        if (_toxicMistGameObjects == null)
+            return;
+
+        if (_toxicMistGameObjects.Length == 0)
+            return;
+
+        _mistCounter++;
+        _toxicMistGameObjects[_mistCounter] = UnityEngine.GameObject.Instantiate(
+            _toxicMistPrefab,
+            Core.Logic.Penitent.GetPosition(),
+            default(Quaternion));
+        GameObject obj = _toxicMistGameObjects[_mistCounter];
+        obj.SetActive(true);
+
+        // start a coroutine that despawn the mist after its lifetime is due
+        UIController.instance.StartCoroutine(DespawnMist(obj));
+
+        IEnumerator DespawnMist(GameObject mist)
+        {
+            yield return new WaitForSeconds(_config.MIST_CLOUD_LIFETIME);
+            mist.SetActive(false);
+        }
+    }
+
+    private void MistDealDamage()
+    {
+        if (_toxicMistGameObjects == null)
+            return;
+
+        if (_toxicMistGameObjects.Length == 0)
+            return;
+
+        foreach (var mistObject in _toxicMistGameObjects.Where(
+            x =>
+            {
+                if (x == null) 
+                    return false;
+                return x.activeSelf == true;
+            }))
+        {
+            List<IDamageable> damageableEntities = GetObjectsOfGivenTypeWithinCollider<IDamageable>(mistObject.GetComponent<BoxCollider2D>());
+
+            if (damageableEntities.Count == 0)
+                continue;
+
+            foreach (var entity in damageableEntities)
+            {
+                if (entity is Penitent)
+                    continue;
+
+                Hit hit = new()
+                {
+                    AttackingEntity = Core.Logic.Penitent.gameObject, 
+                    DamageAmount = _config.MIST_DAMAGE,
+                    DamageElement = DamageArea.DamageElement.Toxic,
+                    DamageType = DamageArea.DamageType.Simple
+                };
+
+                entity.Damage(hit);
+            }
+        }
+    }
+
 
     private void AuraHealEffectOnActivate()
     {
-        // construct aura GameObject and the children sprite GameObject
-        _healingAuraGameObject = new("RB514_healing_aura");
+        // construct aura GameObject and its children sprite GameObject
+        _healingAuraGameObject = new("RB514 healing aura");
         _healingAuraGameObject.SetActive(false);
         GameObject spriteObject = new("sprite");
         spriteObject.transform.SetParent(_healingAuraGameObject.transform);
@@ -422,13 +521,24 @@ internal class RB514RandomInstantaneousEffect : RB514RandomEffect
 }
 
 /// <summary>
-/// Effect triggered by RB514 that has an effect on fixed intervals.
+/// Effect triggered by RB514 that has one or multiple effect(s) on fixed intervals.
 /// </summary>
 internal class RB514RandomTickingEffect : RB514RandomEffect
 {
-    private readonly float _tickInterval;
-    private readonly System.Action _effectOnTick;
-    private float _nextTick;
+    private List<TickingEffect> _tickingEffects;
+
+    internal class TickingEffect
+    {
+        internal readonly float tickInterval;
+        internal readonly System.Action effectOnTick;
+        internal float nextTick;
+
+        internal TickingEffect(float tickInterval, System.Action effectOnTick)
+        {
+            this.tickInterval = tickInterval;
+            this.effectOnTick = effectOnTick;
+        }
+    }
 
     internal RB514RandomTickingEffect(
         string name,
@@ -447,24 +557,51 @@ internal class RB514RandomTickingEffect : RB514RandomEffect
         effectOnDeactivate, 
         effectOnEachUpdate)
     {
-        this._tickInterval = tickInterval;
-        this._effectOnTick = effectOnTick;
+        _tickingEffects = [new(tickInterval, effectOnTick)];
     }
+
+    internal RB514RandomTickingEffect(
+        string name,
+        bool isFlaskHealCancelled,
+        float duration,
+        System.Action effectOnActivate,
+        System.Action effectOnDeactivate,
+        System.Action effectOnEachUpdate,
+        List<TickingEffect> effectsOnTick)
+    : base(
+        name,
+        isFlaskHealCancelled,
+        duration,
+        effectOnActivate,
+        effectOnDeactivate,
+        effectOnEachUpdate)
+    {
+        _tickingEffects = effectsOnTick;
+    }
+
 
     private protected override void OnActivateEffect()
     {
         base.OnActivateEffect();
-        _nextTick = 0f;
+        foreach (var effect in _tickingEffects)
+        {
+            effect.nextTick = effect.tickInterval;
+        }
     }
 
     internal override void OnUpdate()
     {
-        base.OnUpdate();
+        if (!isActive)
+            return;
 
-        if (timer >= _nextTick)
+        base.OnUpdate();
+        foreach (var effect in _tickingEffects)
         {
-            _effectOnTick();
-            _nextTick += _tickInterval;
+            if (timer >= effect.nextTick)
+            {
+                effect.effectOnTick();
+                effect.nextTick += effect.tickInterval;
+            }
         }
     }
 }
@@ -490,9 +627,19 @@ public class RB514Config
 
     public float MOVEMENT_SPEED_INCREASE_DURATION = 7.5f;
 
-    public float MIST_DURATION = 8f;
+    public float MIST_EFFECT_TOTAL_DURATION = 8f;
 
-    public float MIST_TICK_INTERVAL = 1f;
+    /// <summary>
+    /// The interval at which each mist spawn after the previous one
+    /// </summary>
+    public float MIST_SPAWN_TICK_INTERVAL = 1f;
+
+    /// <summary>
+    /// The interval at which mist clouds deal instances of damage to enemies within.
+    /// </summary>
+    public float MIST_DAMAGE_TICK_INTERVAL = 0.5f;
+
+    public float MIST_CLOUD_LIFETIME = 3f;
 
     public float MIST_DAMAGE = 20f;
 
@@ -538,7 +685,7 @@ public class RB514Config
 [HarmonyPatch(typeof(PenitentDamageArea), "SetDamageAnimation")]
 class RB514_TrueUnstoppableStance_Patch
 {
-    public static bool IsActive { get; set; }
+    public static bool IsActive { get; set; } = false;
 
     public static bool Prefix()
     {
