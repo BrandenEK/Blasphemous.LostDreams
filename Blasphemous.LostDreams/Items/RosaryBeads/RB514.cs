@@ -1,21 +1,14 @@
-﻿
-using Blasphemous.LostDreams.Levels;
-using Blasphemous.ModdingAPI;
-using Framework.FrameworkCore.Attributes.Logic;
-using Framework.Managers;
+﻿using Framework.Managers;
 using Gameplay.GameControllers.Effects.Player.Healing;
 using Gameplay.GameControllers.Entities;
-using Steamworks;
-using System.CodeDom;
+using Gameplay.GameControllers.Penitent;
+using Gameplay.GameControllers.Penitent.Damage;
+using Gameplay.UI;
+using HarmonyLib;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using HarmonyLib;
-using Gameplay.GameControllers.Penitent.Damage;
-using Gameplay.GameControllers.Penitent;
-using UnityEngine.Serialization;
-using System.Collections;
-using Gameplay.UI;
 
 namespace Blasphemous.LostDreams.Items.RosaryBeads;
 
@@ -25,7 +18,7 @@ internal class RB514 : EffectOnEquip
 
     /// <summary>
     /// Dictionary of all possible effects triggered by the bead. 
-    /// Key: functions that return a bool indicating whether the flask heal is cancelled. 
+    /// Key: effect objects.
     /// Value: probability of corresponding function to be chosen at random. 
     /// </summary>
     private readonly Dictionary<RB514RandomEffect, float> _effectsToProbabilities = new();
@@ -33,7 +26,7 @@ internal class RB514 : EffectOnEquip
     /// <summary>
     /// Storing the cumulative probability of effects
     /// </summary>
-    private readonly List<float> _cumulativeProbabilities = new(); 
+    private readonly List<float> _cumulativeProbabilities = new();
 
     private readonly float _movementSpeedBonus;
     private float _movementSpeedBeforeBoost;
@@ -52,17 +45,17 @@ internal class RB514 : EffectOnEquip
 
     private const int MAX_MIST_OBJECT_COUNT = 20;
 
-    private bool IsAnyEffectActive
+    private bool IsMistReadyToSpawn
     {
         get
         {
-            foreach (var effect in _effectsToProbabilities.Keys)
-            {
-                if (effect.isActive == true)
-                    return true;
-            }
+            if (_toxicMistGameObjects == null || _toxicMistPrefab == null)
+                return false;
 
-            return false;
+            if (_toxicMistGameObjects.Length == 0)
+                return false;
+
+            return true;
         }
     }
 
@@ -88,22 +81,22 @@ internal class RB514 : EffectOnEquip
                 _config.LIFESTEAL_DURATION,
                 () => Main.LostDreams.EventHandler.OnEnemyDamaged += LifestealEffectOnHit,
                 () => Main.LostDreams.EventHandler.OnEnemyDamaged -= LifestealEffectOnHit,
-                () => { }), 
+                () => { }),
               1f/7f },
             { new RB514RandomEffect(
-                "Nullify next hit", 
-                false, 
-                float.MaxValue, 
+                "Nullify next hit",
+                false,
+                float.MaxValue,
                 () => Main.LostDreams.EventHandler.OnPlayerDamaged += NullifyDamageOnBeingHit,
-                () => Main.LostDreams.EventHandler.OnPlayerDamaged -= NullifyDamageOnBeingHit, 
-                () => { }), 
+                () => Main.LostDreams.EventHandler.OnPlayerDamaged -= NullifyDamageOnBeingHit,
+                () => { }),
               1f/7f },
             { new RB514RandomEffect(
-                "Boost movement speed", 
-                false, 
-                _config.MOVEMENT_SPEED_INCREASE_DURATION, 
+                "Boost movement speed",
+                false,
+                _config.MOVEMENT_SPEED_INCREASE_DURATION,
                 () => _movementSpeedBeforeBoost = Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed,
-                () => { }, 
+                () => { },
                 () =>
                     {
                         if (!Core.Logic.Penitent.IsDashing)
@@ -111,53 +104,53 @@ internal class RB514 : EffectOnEquip
                     }) ,
               1f/7f },
             { new RB514RandomTickingEffect(
-                "Emit mist", 
-                false, 
-                _config.MIST_EFFECT_TOTAL_DURATION, 
-                MistEffectOnActivate, 
+                "Emit mist",
+                false,
+                _config.MIST_EFFECT_TOTAL_DURATION,
+                MistEffectOnActivate,
                 () => { },
-                () => { }, 
+                () => { },
                 new List<RB514RandomTickingEffect.TickingEffect>()
                     {
-                        new(_config.MIST_SPAWN_TICK_INTERVAL, SpawnMist), 
+                        new(_config.MIST_SPAWN_TICK_INTERVAL, SpawnMist),
                         new(_config.MIST_DAMAGE_TICK_INTERVAL, MistDealDamage)
                     }) ,
               1f/7f },
             { new RB514RandomTickingEffect(
-                "Healing aura instead", 
-                true, 
-                _config.AURA_HEAL_DURATION, 
+                "Healing aura instead",
+                true,
+                _config.AURA_HEAL_DURATION,
                 AuraHealEffectOnActivate,
-                AuraHealEffectOnDeactivate, 
-                () => { }, 
-                _config.AURA_HEAL_TICK_INTERVAL, 
-                AuraHealEffectOnTick), 
+                AuraHealEffectOnDeactivate,
+                () => { },
+                _config.AURA_HEAL_TICK_INTERVAL,
+                AuraHealEffectOnTick),
               1f/7f },
             { new RB514RandomTickingEffect(
-                "Fervour regen", 
-                false, 
-                _config.FERVOUR_REGEN_DURATION, 
-                () => _movementSpeedBeforeFervourMoveSpeedReduction = Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed, 
+                "Fervour regen",
+                false,
+                _config.FERVOUR_REGEN_DURATION,
+                () => _movementSpeedBeforeFervourMoveSpeedReduction = Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed,
                 () => { },
                 () =>
                     {
                         if (!Core.Logic.Penitent.IsDashing)
-                            Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed = _movementSpeedBeforeFervourMoveSpeedReduction + _movementSpeedBonus;
-                    }, 
+                            Core.Logic.Penitent.PlatformCharacterController.MaxWalkingSpeed = _movementSpeedBeforeFervourMoveSpeedReduction + _fervourRegenMovementSpeedReduction;
+                    },
                 _config.FERVOUR_REGEN_TICK_INTERVAL,
                 () =>
                     {
                         float fervourIncreaseEachTick = _config.FERVOUR_REGEN_TOTAL_AMOUNT / (_config.FERVOUR_REGEN_DURATION / _config.FERVOUR_REGEN_TICK_INTERVAL);
                         Core.Logic.Penitent.Stats.Fervour.Current += fervourIncreaseEachTick;
-                    }), 
+                    }),
               1f/7f },
             { new RB514RandomEffect(
-                "Unstoppable stance", 
-                false, 
-                _config.UNSTOPPABLE_STANCE_DURATION, 
+                "Unstoppable stance",
+                false,
+                _config.UNSTOPPABLE_STANCE_DURATION,
                 () => RB514_TrueUnstoppableStance_Patch.IsActive = true,
-                () => RB514_TrueUnstoppableStance_Patch.IsActive = false, 
-                () => { }), 
+                () => RB514_TrueUnstoppableStance_Patch.IsActive = false,
+                () => { }),
               1f/7f }
         };
 
@@ -198,11 +191,10 @@ internal class RB514 : EffectOnEquip
     private void OnUseFlask(ref bool cancel)
     {
         // choose an effect based on probability of each effect
-
         float randomValue = UnityEngine.Random.value;
-        for (int i = 0; i < cumulativeProbabilities.Count; i++)
+        for (int i = 0; i < _cumulativeProbabilities.Count; i++)
         {
-            if (randomValue <= cumulativeProbabilities[i])
+            if (randomValue <= _cumulativeProbabilities[i])
             {
 #if DEBUG
                 Main.LostDreams.Log($"Triggered RB514 effect: {_effectsToProbabilities.Keys.ToList()[i].name}!");
@@ -217,7 +209,6 @@ internal class RB514 : EffectOnEquip
                 break;
             }
         }
-
     }
 
 
@@ -279,10 +270,7 @@ internal class RB514 : EffectOnEquip
     private void SpawnMist()
     {
         // instantiate the template object and make it active
-        if (_toxicMistGameObjects == null)
-            return;
-
-        if (_toxicMistGameObjects.Length == 0)
+        if (!IsMistReadyToSpawn)
             return;
 
         _mistCounter++;
@@ -305,16 +293,13 @@ internal class RB514 : EffectOnEquip
 
     private void MistDealDamage()
     {
-        if (_toxicMistGameObjects == null)
-            return;
-
-        if (_toxicMistGameObjects.Length == 0)
+        if (!IsMistReadyToSpawn)
             return;
 
         foreach (var mistObject in _toxicMistGameObjects.Where(
             x =>
             {
-                if (x == null) 
+                if (x == null)
                     return false;
                 return x.activeSelf == true;
             }))
@@ -331,7 +316,7 @@ internal class RB514 : EffectOnEquip
 
                 Hit hit = new()
                 {
-                    AttackingEntity = Core.Logic.Penitent.gameObject, 
+                    AttackingEntity = Core.Logic.Penitent.gameObject,
                     DamageAmount = _config.MIST_DAMAGE,
                     DamageElement = DamageArea.DamageElement.Toxic,
                     DamageType = DamageArea.DamageType.Simple
@@ -380,7 +365,7 @@ internal class RB514 : EffectOnEquip
 
     private void AuraHealEffectOnTick()
     {
-        if (!_healingAuraGameObject)
+        if (_healingAuraGameObject == null)
             return;
 
         var collider = _healingAuraGameObject.GetComponent<CircleCollider2D>();
@@ -448,11 +433,11 @@ internal class RB514RandomEffect
     internal float timer = 0f;
 
     internal RB514RandomEffect(
-        string name, 
+        string name,
         bool isFlaskHealCancelled,
-        float duration, 
+        float duration,
         System.Action effectOnActivate,
-        System.Action effectOnDeactivate, 
+        System.Action effectOnDeactivate,
         System.Action effectOnEachUpdate)
     {
         this.name = name;
@@ -561,15 +546,15 @@ internal class RB514RandomTickingEffect : RB514RandomEffect
         float duration,
         System.Action effectOnActivate,
         System.Action effectOnDeactivate,
-        System.Action effectOnEachUpdate, 
-        float tickInterval, 
+        System.Action effectOnEachUpdate,
+        float tickInterval,
         System.Action effectOnTick)
     : base(
-        name, 
+        name,
         isFlaskHealCancelled,
-        duration, 
-        effectOnActivate, 
-        effectOnDeactivate, 
+        duration,
+        effectOnActivate,
+        effectOnDeactivate,
         effectOnEachUpdate)
     {
         _tickingEffects = [new(tickInterval, effectOnTick)];
