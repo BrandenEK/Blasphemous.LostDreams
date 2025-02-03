@@ -139,17 +139,17 @@ public class LostDreams : BlasMod
 
         provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
-            new ColliderModifier("Floor",
+            new BoxColliderModifier("Floor",
                                  new Vector2(2.9f, 0.9f),
                                  new Vector2(0, -0.3f))));
         provider.RegisterObjectCreator("wasteland-platform-rock", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Floor/churches-field-spritesheet-improved_0"),
-            new ColliderModifier("OneWayDown",
+            new BoxColliderModifier("OneWayDown",
                                  new Vector2(4f, 1.4f),
                                  new Vector2(0, -0.3f))));
         provider.RegisterObjectCreator("wasteland-wall", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73"),
-            new ColliderModifier("Floor",
+            new BoxColliderModifier("Floor",
                                  new Vector2(2f, 2f))));
     }
 }

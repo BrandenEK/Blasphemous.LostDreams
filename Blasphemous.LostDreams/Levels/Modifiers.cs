@@ -10,9 +10,9 @@ using UnityEngine;
 namespace Blasphemous.LostDreams.Levels;
 
 /// <summary>
-/// A modifier that adds a collider to an empty object
+/// A modifier that adds a box collider to an empty object
 /// </summary>
-public class ColliderModifier : IModifier
+public class BoxColliderModifier : IModifier
 {
     private readonly Vector2 _size;
     private readonly Vector2 _offset;
@@ -27,7 +27,7 @@ public class ColliderModifier : IModifier
     /// <summary>
     /// Specify the layer, size, and offset of of the collider
     /// </summary>
-    public ColliderModifier(string layer, Vector2 size, Vector2 offset)
+    public BoxColliderModifier(string layer, Vector2 size, Vector2 offset)
     {
         _layer = layer;
         _size = size;
@@ -38,7 +38,7 @@ public class ColliderModifier : IModifier
     /// Specify the layer and size of of the collider, 
     /// with its offset set to (0, 0)
     /// </summary>
-    public ColliderModifier(string layer, Vector2 size)
+    public BoxColliderModifier(string layer, Vector2 size)
         : this(layer, size, new Vector2(0, 0)) { }
 
     /// <summary>
@@ -109,3 +109,5 @@ public class DoorModifier : IModifier
         };
     }
 }
+
+public class 
