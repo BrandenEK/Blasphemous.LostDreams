@@ -1,0 +1,114 @@
+{
+    "additions": [
+        {
+            "Type": "wasteland-stone-diagonal",
+            "position": {
+                "x": -158.456,
+                "y": 15.45
+            }
+        },
+	{
+            "Type": "wasteland-stone-diagonal",
+            "position": {
+                "x": -154.94,
+                "y": 17.61
+            }
+        },
+	{
+            "Type": "wasteland-stone-diagonal",
+	    "scale": { "x": -1, "y": 1, "z": 1},
+            "position": {
+                "x": -146.92,
+                "y": 14.32
+            }
+        },
+	{
+            "Type": "wasteland-rock_1",
+            "position": {
+                "x": -156.56,
+                "y": 16.56
+            }
+        },
+	{
+            "Type": "wasteland-tree",
+            "position": {
+                "x": -155.24,
+                "y": 19.28
+            }
+        },
+	{
+            "Type": "wasteland-stone-vertical",
+	    "scale": { "x": -1, "y": 1, "z": 1},
+            "position": {
+                "x": -148.07,
+                "y": 17.93
+            }
+        },
+	{
+            "Type": "wasteland-stone-vertical",
+	    "scale": { "x": -1, "y": 1, "z": 1},
+            "position": {
+                "x": -147.81,
+                "y": 16.21
+            }
+        },
+	{
+            "Type": "wasteland-platform-rock",
+            "position": {
+                "x": -152.2,
+                "y": 18.66
+            }
+        },
+	{
+            "Type": "wasteland-platform-rock",
+            "position": {
+                "x": -149.83,
+                "y": 18.66
+            }
+        },
+	{
+            "Type": "wasteland-rock_2",
+            "position": {
+                "x": -153.02,
+                "y": 19.49
+            }
+        },
+	{
+            "Type": "wasteland-grass_3",
+            "position": {
+                "x": -152.93,
+                "y": 18.86
+            }
+        },
+	{
+            "Type": "wasteland-grass_1",
+            "position": {
+                "x": -151.69,
+                "y": 19.22
+            }
+        },
+	{
+            "Type": "wasteland-grass_2",
+            "position": {
+                "x": -151.55,
+                "y": 19.22
+            }
+        },
+	{
+            "Type": "wasteland-grass_2",
+            "position": {
+                "x": -148.4,
+                "y": 19.22
+            }
+        },
+	{
+            "Type": "item-shrine",
+	    "scale": { "x": -1, "y": 1, "z": 1},
+	    "Id": "HE501",
+            "position": {
+                "x": -150,
+                "y": 19.06
+            }
+        }
+    ]
+}
