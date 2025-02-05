@@ -1,4 +1,9 @@
-﻿using Blasphemous.LostDreams.Acquisition;
+﻿using Blasphemous.Framework.Items;
+using Blasphemous.Framework.Levels;
+using Blasphemous.Framework.Levels.Loaders;
+using Blasphemous.Framework.Levels.Modifiers;
+using Blasphemous.Framework.Penitence;
+using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Animation;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Events;
@@ -9,11 +14,6 @@ using Blasphemous.LostDreams.Items.SwordHearts;
 using Blasphemous.LostDreams.Levels;
 using Blasphemous.LostDreams.Npc;
 using Blasphemous.ModdingAPI;
-using Blasphemous.Framework.Items;
-using Blasphemous.Framework.Levels;
-using Blasphemous.Framework.Levels.Loaders;
-using Blasphemous.Framework.Levels.Modifiers;
-using Blasphemous.Framework.Penitence;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams;
@@ -151,5 +151,9 @@ public class LostDreams : BlasMod
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73"),
             new BoxColliderModifier("Floor",
                                  new Vector2(2f, 2f))));
+        provider.RegisterObjectCreator("rectangle-color-filler", new ObjectCreator(
+            new EmptyLoader("rectangle-color-filler"),
+            new BoxColliderModifier("ProjectileBarrier",
+                                 new Vector2(1f, 1f))));
     }
 }

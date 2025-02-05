@@ -52,8 +52,8 @@ public abstract class ColliderModifier : IModifier
     protected void GenerateColoredMesh(
         Color color,
         ref GameObject obj,
-        out Mesh mesh, 
-        out MeshFilter meshFilter, 
+        out Mesh mesh,
+        out MeshFilter meshFilter,
         out MeshRenderer meshRenderer)
     {
         // Create a mesh and set up the mesh filter and renderer
@@ -171,6 +171,11 @@ public class BoxColliderModifier : ColliderModifier
 
             mesh.vertices = vertices;
             mesh.triangles = triangles;
+
+            mr.allowOcclusionWhenDynamic = true;
+            mr.receiveShadows = true;
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            mr.sortingOrder = -20000000;
         }
     }
 }
@@ -185,7 +190,7 @@ public class PolygonColliderModifier : ColliderModifier
     /// <summary>
     /// Specify the points and offset of the PolygonCollider
     /// </summary>
-    public PolygonColliderModifier(string layer, Vector2[] points, Vector2 offset) 
+    public PolygonColliderModifier(string layer, Vector2[] points, Vector2 offset)
         : base(layer, offset)
     {
         _points = points;
