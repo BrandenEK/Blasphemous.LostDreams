@@ -128,13 +128,13 @@ public class LostDreams : BlasMod
             new SceneLoader("D01Z03S04_DECO", "MIDDLEGGROUND/AfterPlayer/Walls/wall (9)"),
             new NoModifier("Wasteland Shade Wall")));
         provider.RegisterObjectCreator("wasteland-interior-door_1", new ObjectCreator(
-            new SceneLoader("D01Z03S04_DECO", "MIDDLEGGROUND/SideDoors/tower-spritesheet_44 (1)"),
+            new SceneLoader("D01Z03S04_DECO", "MIDDLEGROUND/SideDoors/tower-spritesheet_44 (1)"),
             new NoModifier("Wasteland Interior Door 1")));
         provider.RegisterObjectCreator("wasteland-interior-door_2", new ObjectCreator(
-            new SceneLoader("D01Z03S04_DECO", "MIDDLEGGROUND/SideDoors/tower-spritesheet_45 (1)"),
+            new SceneLoader("D01Z03S04_DECO", "MIDDLEGROUND/SideDoors/tower-spritesheet_45 (1)"),
             new NoModifier("Wasteland Interior Door 2")));
         provider.RegisterObjectCreator("wasteland-door-lighting", new ObjectCreator(
-            new SceneLoader("D01Z03S04_DECO", "MIDDLEGGROUND/Lighting/cave-room-spritesheet_6 (3)"),
+            new SceneLoader("D01Z03S04_DECO", "MIDDLEGROUND/Lighting/cave-room-spritesheet_6 (3)"),
             new NoModifier("Wasteland Door Lighting")));
 
         provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
