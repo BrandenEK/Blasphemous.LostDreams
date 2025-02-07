@@ -1,4 +1,5 @@
-﻿using Framework.Managers;
+﻿using Blasphemous.ModdingAPI;
+using Framework.Managers;
 using Gameplay.GameControllers.Penitent.Effects;
 using HarmonyLib;
 
@@ -17,7 +18,7 @@ class QI502_GuiltDrop_GiveBonus_Patch
         if (!Main.LostDreams.QuestItemList.QI502.IsAcquired)
             return;
 
-        Main.LostDreams.Log("QI502: Increasing guilt drop bonus");
+        ModLog.Info("QI502: Increasing guilt drop bonus");
         Core.Logic.Penitent.Stats.Life.SetToCurrentMax();
         Core.Logic.Penitent.Stats.Fervour.SetToCurrentMax();
     }

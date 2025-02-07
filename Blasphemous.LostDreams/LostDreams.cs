@@ -71,18 +71,6 @@ public class LostDreams : BlasMod
     }
 
     /// <summary>
-    /// Update handlers every frame
-    /// </summary>
-    protected override void OnUpdate()
-    {
-        if (!LoadStatus.GameSceneLoaded)
-            return;
-
-        // Temporarily update penitences until handled by framework
-        PenitenceList.PE501.Update();
-    }
-
-    /// <summary>
     /// Register all custom things
     /// </summary>
     protected override void OnRegisterServices(ModServiceProvider provider)

@@ -68,7 +68,7 @@ internal class Penitence : ModPenitenceWithBead
         OnDeactivate();
     }
 
-    public void Update()
+    protected sealed override void Update()
     {
         if (IsActive)
             OnUpdate();

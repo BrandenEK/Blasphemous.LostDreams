@@ -7,112 +7,132 @@
                 "y": 15.45
             }
         },
-	{
+        {
             "Type": "wasteland-stone-diagonal",
             "position": {
                 "x": -154.94,
                 "y": 17.61
             }
         },
-	{
+        {
             "Type": "wasteland-stone-diagonal",
-	    "scale": { "x": -1, "y": 1, "z": 1},
+            "scale": {
+                "x": -1,
+                "y": 1,
+                "z": 1
+            },
             "position": {
                 "x": -146.92,
                 "y": 14.32
             }
         },
-	{
+        {
             "Type": "wasteland-rock_1",
             "position": {
                 "x": -156.56,
                 "y": 16.56
             }
         },
-	{
+        {
             "Type": "wasteland-tree",
             "position": {
                 "x": -155.24,
                 "y": 19.28
             }
         },
-	{
+        {
             "Type": "wasteland-stone-vertical",
-	    "scale": { "x": -1, "y": 1, "z": 1},
+            "scale": {
+                "x": -1,
+                "y": 1,
+                "z": 1
+            },
             "position": {
                 "x": -148.07,
                 "y": 17.93
             }
         },
-	{
+        {
             "Type": "wasteland-stone-vertical",
-	    "scale": { "x": -1, "y": 1, "z": 1},
+            "scale": {
+                "x": -1,
+                "y": 1,
+                "z": 1
+            },
             "position": {
                 "x": -147.81,
                 "y": 16.21
             }
         },
-	{
+        {
             "Type": "wasteland-platform-rock",
             "position": {
                 "x": -152.2,
                 "y": 18.66
             }
         },
-	{
+        {
             "Type": "wasteland-platform-rock",
             "position": {
                 "x": -149.83,
                 "y": 18.66
             }
         },
-	{
+        {
             "Type": "wasteland-rock_2",
             "position": {
                 "x": -153.02,
                 "y": 19.49
             }
         },
-	{
+        {
             "Type": "wasteland-grass_3",
             "position": {
                 "x": -152.93,
                 "y": 18.86
             }
         },
-	{
+        {
             "Type": "wasteland-grass_1",
             "position": {
                 "x": -151.69,
                 "y": 19.22
             }
         },
-	{
+        {
             "Type": "wasteland-grass_2",
             "position": {
                 "x": -151.55,
                 "y": 19.22
             }
         },
-	{
+        {
             "Type": "wasteland-grass_2",
             "position": {
                 "x": -148.4,
                 "y": 19.22
             }
         },
-	{
+        {
             "Type": "item-shrine",
-	    "scale": { "x": -1, "y": 1, "z": 1},
-	    "Id": "HE501",
+            "scale": {
+                "x": -1,
+                "y": 1,
+                "z": 1
+            },
+            "Id": "HE501",
             "position": {
                 "x": -150,
                 "y": 19.06
             }
         },
-	{
+        {
             "Type": "rectangle-color-filler",
-	    "scale": { "x": 8.9, "y": 2.5, "z": 1},
+            "scale": {
+                "x": 8.9,
+                "y": 2.5,
+                "z": 1
+            },
             "position": {
                 "x": -152.7,
                 "y": 15.45
@@ -121,9 +141,13 @@
                 "color: 0.070588, 0.078431, 0.050980, 1"
             ]
         },
-    {
+        {
             "Type": "rectangle-color-filler",
-	    "scale": { "x": 5.5, "y": 2, "z": 1},
+            "scale": {
+                "x": 5.5,
+                "y": 2,
+                "z": 1
+            },
             "position": {
                 "x": -151,
                 "y": 17.7
@@ -206,7 +230,10 @@
         {
             "type": "door",
             "id": "lost-dreams-door-1",
-            "position": {"x": -192, "y": 22},
+            "position": {
+                "x": -192,
+                "y": 22
+            },
             "properties": [
                 "D01Z03S04",
                 "lost-dreams-door-1",
@@ -217,27 +244,45 @@
         },
         {
             "type": "wasteland-platform-rock",
-            "position": {"x": -190, "y": 21.6}
+            "position": {
+                "x": -190,
+                "y": 21.6
+            }
         },
         {
             "type": "wasteland-side-wall",
-            "position": {"x": -189.03125, "y": 20.59375}
+            "position": {
+                "x": -189.03125,
+                "y": 20.59375
+            }
         },
         {
             "type": "wasteland-side-wall",
-            "position": {"x": -189.03125, "y": 26.59375}
+            "position": {
+                "x": -189.03125,
+                "y": 26.59375
+            }
         },
         {
             "type": "wasteland-side-wall",
-            "position": {"x": -189.03125, "y": 28.59375}
+            "position": {
+                "x": -189.03125,
+                "y": 28.59375
+            }
         },
         {
             "type": "wasteland-side-wall",
-            "position": {"x": -189.03125, "y": 30.59375}
+            "position": {
+                "x": -189.03125,
+                "y": 30.59375
+            }
         },
         {
             "type": "wasteland-side-wall",
-            "position": {"x": -189.03125, "y": 32.59375}
+            "position": {
+                "x": -189.03125,
+                "y": 32.59375
+            }
         }
     ]
 }
