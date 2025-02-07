@@ -1,4 +1,5 @@
-﻿using Blasphemous.ModdingAPI.Files;
+﻿using Blasphemous.ModdingAPI;
+using Blasphemous.ModdingAPI.Files;
 using System.Collections.Generic;
 
 namespace Blasphemous.LostDreams.Dialog;
@@ -19,7 +20,7 @@ public class DialogStorage
         string infoPath = "dialogs.json";
         if (!file.LoadDataAsJson(infoPath, out DialogInfo[] imports))
         {
-            Main.LostDreams.LogError("Failed to load dialog list");
+            ModLog.Error("Failed to load dialog list");
             return;
         }
 
@@ -28,6 +29,6 @@ public class DialogStorage
             _dialogs.Add(import.Id, import);
         }
 
-        Main.LostDreams.Log($"Loaded {_dialogs.Count} dialogs");
+        ModLog.Info($"Loaded {_dialogs.Count} dialogs");
     }
 }

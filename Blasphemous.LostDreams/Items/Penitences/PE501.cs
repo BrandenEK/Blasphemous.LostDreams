@@ -1,4 +1,5 @@
-﻿using Framework.FrameworkCore.Attributes;
+﻿using Blasphemous.ModdingAPI;
+using Framework.FrameworkCore.Attributes;
 using Framework.Managers;
 using Gameplay.GameControllers.Entities;
 using HarmonyLib;
@@ -48,7 +49,6 @@ internal class PE501 : Penitence
 
     protected override void OnUpdate()
     {
-        Main.LostDreams.LogError("Update penitence");
         if (Time.time >= _nextDrainTime)
         {
             PerformDrain();
@@ -69,7 +69,7 @@ internal class PE501 : Penitence
 
         float time = _config.FLASK_BASE + _config.FLASK_INCREASE * Core.Logic.Penitent.Stats.FlaskHealth.GetUpgrades();
         _timeToResumeDrain = Time.time + time;
-        Main.LostDreams.Log($"Reversing health drain for {time} seconds");
+        ModLog.Info($"Reversing health drain for {time} seconds");
     }
 
     private void PerformDrain()
@@ -82,7 +82,7 @@ internal class PE501 : Penitence
         if (ShouldReverseDrain)
             amount *= -1;
 
-        Main.LostDreams.Log("Draining player by " + amount);
+        ModLog.Info("Draining player by " + amount);
         life.Current -= amount;
         if (life.Current <= 0)
             Core.Logic.Penitent.KillInstanteneously();
@@ -100,7 +100,7 @@ internal class PE501 : Penitence
         if (enemy == null)
             return;
 
-        Main.LostDreams.Log("Applying thorns damage");
+        ModLog.Info("Applying thorns damage");
         enemy.Damage(new Hit()
         {
             DamageAmount = _config.THORNS_AMOUNT,
@@ -111,7 +111,7 @@ internal class PE501 : Penitence
 
         if (hit.DamageElement == DamageArea.DamageElement.Contact)
         {
-            Main.LostDreams.Log("Reducing contact damage");
+            ModLog.Info("Reducing contact damage");
             hit.DamageAmount = _config.CONTACT_AMOUNT;
         }
     }
@@ -136,7 +136,7 @@ internal class PE501 : Penitence
         if (!ShouldDrainHealth)
             return;
 
-        Main.LostDreams.Log("Healing player by " + amount);
+        ModLog.Info("Healing player by " + amount);
         Core.Logic.Penitent.Stats.Life.Current += amount;
     }
 

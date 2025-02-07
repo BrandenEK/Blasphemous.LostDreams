@@ -55,7 +55,10 @@ public class InteractableLoader : ILoader
         yield return loader.Apply();
 
         var obj = loader.Result;
-        obj.transform.GetChild(2).gameObject.AddComponent<ModInteractable>();
+        var interactable = obj.transform.GetChild(2).gameObject;
+
+        interactable.AddComponent<ModInteractable>();
+        RemoveItemNeeded(interactable.GetComponent<CustomInteraction>());
 
         Object.Destroy(obj.transform.GetChild(1).gameObject);
         Object.Destroy(obj.transform.GetChild(0).gameObject);
@@ -63,5 +66,10 @@ public class InteractableLoader : ILoader
 
         Result = obj;
         yield break;
+    }
+
+    private void RemoveItemNeeded(CustomInteraction interact)
+    {
+        interact.GetType().GetField("needObject", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(interact, false);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Blasphemous.ModdingAPI.Files;
+﻿using Blasphemous.ModdingAPI;
+using Blasphemous.ModdingAPI.Files;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class AnimationStorage
         string infoPath = "animations.json";
         if (!file.LoadDataAsJson(infoPath, out AnimationImportInfo[] imports))
         {
-            Main.LostDreams.LogError("Failed to load animation list");
+            ModLog.Error("Failed to load animation list");
             return;
         }
 
@@ -29,13 +30,13 @@ public class AnimationStorage
         {
             if (!file.LoadDataAsFixedSpritesheet(import.FilePath, new Vector2(import.Width, import.Height), out Sprite[] spritesheet, options))
             {
-                Main.LostDreams.LogError($"Failed to load {import.Name} from {import.FilePath}");
+                ModLog.Error($"Failed to load {import.Name} from {import.FilePath}");
                 continue;
             }
 
             _animations.Add(import.Name, new AnimationInfo(import.Name, spritesheet, import.SecondsPerFrame));
         }
 
-        Main.LostDreams.Log($"Loaded {_animations.Count} animations");
+        ModLog.Info($"Loaded {_animations.Count} animations");
     }
 }
