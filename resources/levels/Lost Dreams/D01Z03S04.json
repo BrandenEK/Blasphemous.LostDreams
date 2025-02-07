@@ -1,0 +1,94 @@
+{
+    "additions":[
+        {
+            "type": "door",
+            "id": "lost-dreams-door-1",
+            "position": {"x": -190.5, "y": 22},
+            "properties": [
+                "D01Z03S06",
+                "lost-dreams-door-1",
+                "right",
+                "-192",
+                "22.5"
+            ]
+        }
+    ],
+    "modifications":[
+        {
+            "scene": "layout",
+            "path": "NAVIGATION/NAV_Ladder (1)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-hitbox",
+            "position": {"x": -195.5, "y": 25}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_13 (1)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-1",
+            "position": {"x": -195, "y": 31.21875}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_23 (10)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-2",
+            "position": {"x": -195, "y": 30.0625}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_14 (3)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-3",
+            "position": {"x": -195, "y": 29.28125}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_23 (11)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-4",
+            "position": {"x": -195, "y": 28.53125}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_14 (4)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-5",
+            "position": {"x": -195, "y": 27.75}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_23 (12)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-6",
+            "position": {"x": -195, "y": 27}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_14 (5)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-7",
+            "position": {"x": -195, "y": 26.21875}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_23 (13)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-8",
+            "position": {"x": -195, "y": 25.46875}
+        },
+        {
+            "scene": "decoration",
+            "path": "MIDDLEGROUND/AfterPlayer/Ladders/tower-spritesheet_43 (1)",
+            "type": "empty-creator",
+            "id": "ladder-middle-right-sprite-segment-9",
+            "position": {"x": -195, "y": 24.5625}
+        }
+    ],
+    "deletions": [
+        {
+            "scene": "layout",
+            "path": "GEO/GEO_Block (64x128) (10)"
+        }
+    ]
+}

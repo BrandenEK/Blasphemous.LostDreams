@@ -18,7 +18,7 @@ public class EmptyLoader(string name) : ILoader
 
 public class NpcLoader : ILoader
 {
-    public GameObject Result {get; private set; }
+    public GameObject Result { get; private set; }
 
     public IEnumerator Apply()
     {
@@ -47,7 +47,7 @@ public class NpcLoader : ILoader
 
 public class InteractableLoader : ILoader
 {
-    public GameObject Result {get; private set; }
+    public GameObject Result { get; private set; }
 
     public IEnumerator Apply()
     {
