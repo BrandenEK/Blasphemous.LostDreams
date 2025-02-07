@@ -202,6 +202,42 @@
                 "true",
                 "BP02"
             ]
+        },
+        {
+            "type": "door",
+            "id": "lost-dreams-door-1",
+            "position": {"x": -192, "y": 22},
+            "properties": [
+                "D01Z03S04",
+                "lost-dreams-door-1",
+                "left",
+                "-188.75",
+                "22.5"
+            ]
+        },
+        {
+            "type": "wasteland-platform-rock",
+            "position": {"x": -190, "y": 21.6}
+        },
+        {
+            "type": "wasteland-side-wall",
+            "position": {"x": -189.03125, "y": 20.59375}
+        },
+        {
+            "type": "wasteland-side-wall",
+            "position": {"x": -189.03125, "y": 26.59375}
+        },
+        {
+            "type": "wasteland-side-wall",
+            "position": {"x": -189.03125, "y": 28.59375}
+        },
+        {
+            "type": "wasteland-side-wall",
+            "position": {"x": -189.03125, "y": 30.59375}
+        },
+        {
+            "type": "wasteland-side-wall",
+            "position": {"x": -189.03125, "y": 32.59375}
         }
     ]
 }

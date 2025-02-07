@@ -151,6 +151,10 @@ public class LostDreams : BlasMod
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73"),
             new BoxColliderModifier("Floor",
                                  new Vector2(2f, 2f))));
+        provider.RegisterObjectCreator("wasteland-side-wall", new ObjectCreator(
+            new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73"),
+            new BoxColliderModifier("Floor",
+                                    new Vector2(2f, 2f))));
         provider.RegisterObjectCreator("rectangle-color-filler", new ObjectCreator(
             new EmptyLoader("rectangle-color-filler"),
             new BoxColliderModifier("ProjectileBarrier",

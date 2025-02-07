@@ -1,4 +1,18 @@
 {
+    "additions":[
+        {
+            "type": "door",
+            "id": "lost-dreams-door-1",
+            "position": {"x": -190.5, "y": 22},
+            "properties": [
+                "D01Z03S06",
+                "lost-dreams-door-1",
+                "right",
+                "-192",
+                "22.5"
+            ]
+        }
+    ],
     "modifications":[
         {
             "scene": "layout",
@@ -69,6 +83,12 @@
             "type": "empty-creator",
             "id": "ladder-middle-right-sprite-segment-9",
             "position": {"x": -195, "y": 24.5625}
+        }
+    ],
+    "deletions": [
+        {
+            "scene": "layout",
+            "path": "GEO/GEO_Block (64x128) (10)"
         }
     ]
 }
