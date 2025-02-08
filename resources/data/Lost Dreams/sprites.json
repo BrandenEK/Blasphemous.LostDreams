@@ -1,10 +1,3 @@
 [
-    {
-        "name": "example",
-        "pixelsPerUnit": 32,
-        "pivot": {
-            "x": 0.5,
-            "y": 0.5
-        }
-    }
+
 ]
