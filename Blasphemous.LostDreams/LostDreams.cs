@@ -88,19 +88,26 @@ public class LostDreams : BlasMod
         foreach (var heart in SwordHeartList.Items)
             provider.RegisterItem(heart);
 
-        // Level edits
-        provider.RegisterObjectCreator("patio-column", new ObjectCreator(
-            new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Arcs/garden-spritesheet_31 (3)"),
-            new NoModifier("Column")));
-        provider.RegisterObjectCreator("patio-bricks", new ObjectCreator(
-            new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Arcs/garden-spritesheet_41 (6)"),
-            new NoModifier("Bricks")));
+        // Logic objects
         provider.RegisterObjectCreator("npc", new ObjectCreator(
             new NpcLoader(),
             new NpcModifier()));
         provider.RegisterObjectCreator("door", new ObjectCreator(
             new SceneLoader("D17Z01S10_LOGIC", "DOORS/{0}"),
             new DoorModifier()));
+
+        // Patio objects
+        provider.RegisterObjectCreator("patio-column", new ObjectCreator(
+            new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Arcs/garden-spritesheet_31 (3)"),
+            new NoModifier("Column")));
+        provider.RegisterObjectCreator("patio-bricks", new ObjectCreator(
+            new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Arcs/garden-spritesheet_41 (6)"),
+            new NoModifier("Bricks")));
+        provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
+            new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
+            new BoxColliderModifier("Floor", new Vector2(2.9f, 0.9f), new Vector2(0, -0.3f))));
+
+        // Wasteland objects
         provider.RegisterObjectCreator("wasteland-stone-diagonal", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Walls/churches-field-spritesheet-improved_20"),
             new NoModifier("Diagonal Stone")));
@@ -125,29 +132,20 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("wasteland-grass_3", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/AnimatedProps/MovingGrass_ChurchesField_2"),
             new NoModifier("Grass 3")));
-
-        provider.RegisterObjectCreator("patio-floor", new ObjectCreator(
-            new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Floor/garden-spritesheet_13 (2)"),
-            new BoxColliderModifier("Floor",
-                                 new Vector2(2.9f, 0.9f),
-                                 new Vector2(0, -0.3f))));
         provider.RegisterObjectCreator("wasteland-platform-rock", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/Floor/churches-field-spritesheet-improved_0"),
-            new BoxColliderModifier("OneWayDown",
-                                 new Vector2(4f, 1.4f),
-                                 new Vector2(0, -0.3f))));
+            new BoxColliderModifier("OneWayDown", new Vector2(4f, 1.4f), new Vector2(0, -0.3f))));
         provider.RegisterObjectCreator("wasteland-wall", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73"),
-            new BoxColliderModifier("Floor",
-                                 new Vector2(2f, 2f))));
+            new BoxColliderModifier("Floor", new Vector2(2f, 2f))));
         provider.RegisterObjectCreator("wasteland-side-wall", new ObjectCreator(
             new SceneLoader("D01Z03S06_DECO", "MIDDLEGROUND/AfterPlayer/SideDoor/churches-field-spritesheet-improved_73"),
-            new BoxColliderModifier("Floor",
-                                    new Vector2(2f, 2f))));
+            new BoxColliderModifier("Floor", new Vector2(2f, 2f))));
+
+        // Simple objects
         provider.RegisterObjectCreator("rectangle-color-filler", new ObjectCreator(
             new EmptyLoader("rectangle-color-filler"),
             new ColorRectangleModifier()));
-
         provider.RegisterObjectCreator("empty-creator", new ObjectCreator(
             new EmptyLoader("empty-creator"),
             new NoModifier("empty-creator")));
