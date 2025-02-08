@@ -127,7 +127,7 @@
             }
         },
         {
-            "Type": "rectangle-color-filler",
+            "Type": "spriterenderer",
             "scale": {
                 "x": 8.9,
                 "y": 2.5,
@@ -138,13 +138,14 @@
                 "y": 15.45
             },
             "properties": [
+                "__square",
                 "Navigable Wall",
                 "-1",
                 "#12140D"
             ]
         },
         {
-            "Type": "rectangle-color-filler",
+            "Type": "spriterenderer",
             "scale": {
                 "x": 5.5,
                 "y": 2,
@@ -155,6 +156,7 @@
                 "y": 17.7
             },
             "properties": [
+                "__square",
                 "Navigable Wall",
                 "-1",
                 "#12140D"

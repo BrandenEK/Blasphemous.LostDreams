@@ -7,6 +7,7 @@ using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Animation;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Events;
+using Blasphemous.LostDreams.Importing.Sprites;
 using Blasphemous.LostDreams.Items.Penitences;
 using Blasphemous.LostDreams.Items.QuestItems;
 using Blasphemous.LostDreams.Items.RosaryBeads;
@@ -40,6 +41,7 @@ public class LostDreams : BlasMod
     internal AnimationStorage AnimationStorage { get; private set; }
     internal DialogStorage DialogStorage { get; private set; }
     internal NpcStorage NpcStorage { get; private set; }
+    internal SpriteStorage SpriteStorage { get; private set; }
 
     /// <summary>
     /// Register handlers and create special effects
@@ -60,6 +62,7 @@ public class LostDreams : BlasMod
         AnimationStorage = new AnimationStorage(FileHandler);
         DialogStorage = new DialogStorage(FileHandler);
         NpcStorage = new NpcStorage(FileHandler);
+        SpriteStorage = new SpriteStorage(FileHandler);
     }
 
     /// <summary>
@@ -95,6 +98,11 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("door", new ObjectCreator(
             new SceneLoader("D17Z01S10_LOGIC", "DOORS/{0}"),
             new DoorModifier()));
+
+        // Component objects
+        provider.RegisterObjectCreator("spriterenderer", new ObjectCreator(
+            new EmptyLoader("Sprite"),
+            new SpriteRendererModifier()));
 
         // Patio objects
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
@@ -155,9 +163,6 @@ public class LostDreams : BlasMod
             new BoxColliderModifier("Floor", new Vector2(2f, 2f))));
 
         // Simple objects
-        provider.RegisterObjectCreator("rectangle-color-filler", new ObjectCreator(
-            new EmptyLoader("rectangle-color-filler"),
-            new ColorRectangleModifier()));
         provider.RegisterObjectCreator("empty-creator", new ObjectCreator(
             new EmptyLoader("empty-creator"),
             new NoModifier("empty-creator")));

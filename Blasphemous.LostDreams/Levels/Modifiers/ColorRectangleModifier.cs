@@ -7,6 +7,7 @@ namespace Blasphemous.LostDreams.Levels.Modifiers;
 /// <summary>
 /// Creates a SpriteRenderer with a solid color
 /// </summary>
+[System.Obsolete("Use the new 'spriterenderer' modifier instead")]
 internal class ColorRectangleModifier : IModifier
 {
     private static Sprite _square;
