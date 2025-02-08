@@ -99,6 +99,11 @@ public class LostDreams : BlasMod
             new SceneLoader("D17Z01S10_LOGIC", "DOORS/{0}"),
             new DoorModifier()));
 
+        // Component objects
+        provider.RegisterObjectCreator("spriterenderer", new ObjectCreator(
+            new EmptyLoader("Sprite"),
+            new SpriteRendererModifier()));
+
         // Patio objects
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(
             new SceneLoader("D04Z01S01_DECO", "MIDDLEGROUND/AfterPlayer/Arcs/garden-spritesheet_31 (3)"),
