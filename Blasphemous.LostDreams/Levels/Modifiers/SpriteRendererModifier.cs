@@ -32,7 +32,7 @@ internal class SpriteRendererModifier : IModifier
         if (_square == null)
         {
             Texture2D tex = Texture2D.whiteTexture;
-            _square = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero, 1);
+            _square = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.zero, tex.width);
         }
 
         return _square;
