@@ -11,7 +11,7 @@ namespace Blasphemous.LostDreams.Importing.Sprites;
 /// </summary>
 public class SpriteStorage
 {
-    private readonly Dictionary<string, Sprite> _sprites;
+    private readonly Dictionary<string, Sprite> _sprites = [];
 
     /// <summary>
     /// Gets a sprite, if it was loaded
@@ -32,8 +32,6 @@ public class SpriteStorage
 
         foreach (var info in infos)
         {
-            ModLog.Info("Importing sprite " + info.Name);
-
             var options = new SpriteImportOptions()
             {
                 Pivot = new Vector2(info.Pivot.X, info.Pivot.Y),
