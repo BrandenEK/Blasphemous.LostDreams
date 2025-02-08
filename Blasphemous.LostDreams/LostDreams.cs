@@ -146,8 +146,7 @@ public class LostDreams : BlasMod
                                     new Vector2(2f, 2f))));
         provider.RegisterObjectCreator("rectangle-color-filler", new ObjectCreator(
             new EmptyLoader("rectangle-color-filler"),
-            new BoxColliderModifier("ProjectileBarrier",
-                                 new Vector2(1f, 1f))));
+            new ColorRectangleModifier()));
 
         provider.RegisterObjectCreator("empty-creator", new ObjectCreator(
             new EmptyLoader("empty-creator"),
