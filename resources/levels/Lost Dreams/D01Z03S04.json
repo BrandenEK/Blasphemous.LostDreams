@@ -14,7 +14,50 @@
                 "-192",
                 "22.5"
             ]
-        }
+        },
+	{
+	    "type": "wasteland-interior-door_1",
+	    "scale": {
+                "x": -1,
+                "y": 1,
+                "z": 1
+            },
+	    "position": {
+		"x": -191.59,
+		"y": 24.094
+	    }
+	},
+        {
+	    "type": "wasteland-interior-door_2",
+	    "scale": {
+                "x": -1,
+                "y": 1,
+                "z": 1
+            },
+	    "position": {
+		"x": -192.62,
+		"y": 24.44
+	    }
+	},
+	{
+	    "type": "wasteland-door-lighting",
+	    "position": {
+		"x": -195.03,
+		"y": 24.06
+	    }
+	},
+{
+	    "type": "wasteland-shadow-wall",
+	    "scale": {
+                "x": -1,
+                "y": 1,
+                "z": 1
+            },
+	    "position": {
+		"x": -191.84,
+		"y": 20.34
+	    }
+	}
     ],
     "modifications": [
         {
