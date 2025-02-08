@@ -7,6 +7,7 @@ using Blasphemous.LostDreams.Acquisition;
 using Blasphemous.LostDreams.Animation;
 using Blasphemous.LostDreams.Dialog;
 using Blasphemous.LostDreams.Events;
+using Blasphemous.LostDreams.Importing.Sprites;
 using Blasphemous.LostDreams.Items.Penitences;
 using Blasphemous.LostDreams.Items.QuestItems;
 using Blasphemous.LostDreams.Items.RosaryBeads;
@@ -40,6 +41,7 @@ public class LostDreams : BlasMod
     internal AnimationStorage AnimationStorage { get; private set; }
     internal DialogStorage DialogStorage { get; private set; }
     internal NpcStorage NpcStorage { get; private set; }
+    internal SpriteStorage SpriteStorage { get; private set; }
 
     /// <summary>
     /// Register handlers and create special effects
@@ -60,6 +62,7 @@ public class LostDreams : BlasMod
         AnimationStorage = new AnimationStorage(FileHandler);
         DialogStorage = new DialogStorage(FileHandler);
         NpcStorage = new NpcStorage(FileHandler);
+        SpriteStorage = new SpriteStorage(FileHandler);
     }
 
     /// <summary>
