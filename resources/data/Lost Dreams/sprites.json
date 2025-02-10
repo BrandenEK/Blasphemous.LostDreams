@@ -1,3 +1,18 @@
 [
-
+    {
+        "name": "wasteland-exterior-door_1",
+        "pixelsPerUnit": 32,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        }
+    },
+    {
+        "name": "wasteland-exterior-door_2",
+        "pixelsPerUnit": 32,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        }
+    }
 ]
