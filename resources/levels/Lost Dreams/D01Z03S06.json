@@ -8,6 +8,32 @@
             }
         },
         {
+            "Type": "spriterenderer",
+            "position": {
+                "x": -188.95,
+                "y": 24.15
+            },
+            "properties": [
+                "wasteland-exterior-door_1",
+                "Before Player",
+                "0",
+                "#FFFFFFFF"
+            ]
+        },
+        {
+            "Type": "spriterenderer",
+            "position": {
+                "x": -187.7,
+                "y": 24.7
+            },
+            "properties": [
+                "wasteland-exterior-door_2",
+                "Default",
+                "0",
+                "#FFFFFFFF"
+            ]
+        },
+        {
             "Type": "wasteland-stone-diagonal",
             "position": {
                 "x": -154.94,
