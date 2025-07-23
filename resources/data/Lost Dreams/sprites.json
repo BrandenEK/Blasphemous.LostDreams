@@ -14,5 +14,13 @@
             "x": 0.5,
             "y": 0.5
         }
+    },
+    {
+        "name": "wasteland-exterior-platform_1",
+        "pixelsPerUnit": 32,
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        }
     }
 ]
