@@ -103,6 +103,9 @@ public class LostDreams : BlasMod
         provider.RegisterObjectCreator("spriterenderer", new ObjectCreator(
             new EmptyLoader("Sprite"),
             new SpriteRendererModifier()));
+        provider.RegisterObjectCreator("boxcollider", new ObjectCreator(
+            new EmptyLoader("BoxCollider2D"),
+            new BoxColliderModifier()));
 
         // Patio objects
         provider.RegisterObjectCreator("patio-column", new ObjectCreator(

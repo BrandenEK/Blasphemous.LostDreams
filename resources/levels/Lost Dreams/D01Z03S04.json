@@ -57,6 +57,24 @@
                 "x": -191.84,
                 "y": 20.34
             }
+        },
+        {
+            "type": "spriterenderer",
+            "scale": {
+                "x": 1.6,
+                "y": 5,
+                "z": 1
+            },
+            "position": {
+                "x": -190.8,
+                "y": 22
+            },
+            "properties": [
+                "__square",
+                "Before Player",
+                "1",
+                "#1E1A1C"
+            ]
         }
     ],
     "modifications": [

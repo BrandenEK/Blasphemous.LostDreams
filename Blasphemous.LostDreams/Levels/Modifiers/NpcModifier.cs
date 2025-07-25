@@ -1,5 +1,5 @@
-﻿using Blasphemous.Framework.Levels.Modifiers;
-using Blasphemous.Framework.Levels;
+﻿using Blasphemous.Framework.Levels;
+using Blasphemous.Framework.Levels.Modifiers;
 using Blasphemous.LostDreams.Components;
 using Blasphemous.LostDreams.Npc;
 using Gameplay.GameControllers.Entities;

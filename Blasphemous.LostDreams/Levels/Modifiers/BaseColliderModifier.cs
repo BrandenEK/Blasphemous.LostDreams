@@ -1,5 +1,5 @@
-﻿using Blasphemous.Framework.Levels.Modifiers;
-using Blasphemous.Framework.Levels;
+﻿using Blasphemous.Framework.Levels;
+using Blasphemous.Framework.Levels.Modifiers;
 using UnityEngine;
 
 namespace Blasphemous.LostDreams.Levels.Modifiers;
@@ -14,12 +14,25 @@ internal abstract class BaseColliderModifier : IModifier
     /// For solid collider, choose layer "Floor". 
     /// For droppable platforms, choose layer "OneWayDown"
     /// </summary>
-    protected readonly string _layer;
+    protected string _layer;
 
     /// <summary>
     /// The offset of the collider to the attached GameObject
     /// </summary>
-    protected readonly Vector2 _offset;
+    protected Vector2 _offset;
+
+    /// <summary>
+    /// Whether the collider uses properties instead of constructor to initialize itself
+    /// </summary>
+    protected readonly bool _useProperties = false;
+
+    /// <summary>
+    /// Reads properties instead of using constructor to initialize the parameters
+    /// </summary>
+    public BaseColliderModifier()
+    {
+        _useProperties = true;
+    }
 
     /// <summary>
     /// Abstract constructor, specifying the layer and offset of the collider
@@ -35,7 +48,14 @@ internal abstract class BaseColliderModifier : IModifier
     /// </summary>
     public virtual void Apply(GameObject obj, ObjectData data)
     {
+        if (_useProperties)
+        {
+            _layer = data.properties[0];
+        }
+
         obj.name = $"Collider[{data.id}]";
         obj.layer = LayerMask.NameToLayer(_layer);
     }
+
+
 }
