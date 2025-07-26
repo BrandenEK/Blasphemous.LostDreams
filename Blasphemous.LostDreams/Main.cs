@@ -1,5 +1,8 @@
 ﻿using BepInEx;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Blasphemous.LostDreams;
 
@@ -22,5 +25,40 @@ internal class Main : BaseUnityPlugin
         return validate(obj)
             ? obj
             : throw new Exception($"{obj} is an invalid import argument");
+    }
+
+    public static Vector3 StringToVector3(string sVector)
+    {
+        // Remove the parentheses
+        sVector = sVector.Trim().TrimStart('(').TrimEnd(')');
+
+        // split the items
+        List<string> stringList = sVector.Split(',').ToList();
+
+        // convert to Vector3
+        Vector3 result;
+        while (stringList.Count < 3)
+        {
+            stringList.Add("0.0");
+        }
+        result = new Vector3(
+            StringToFloatOrDefault(stringList[0]),
+            StringToFloatOrDefault(stringList[1]),
+            StringToFloatOrDefault(stringList[2]));
+        return result;
+
+        static float StringToFloatOrDefault(string input)
+        {
+            float result;
+            try
+            {
+                result = float.Parse(input);
+            }
+            catch
+            {
+                result = 0f;
+            }
+            return result;
+        }
     }
 }

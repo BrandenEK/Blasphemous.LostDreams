@@ -1,5 +1,5 @@
-﻿using Blasphemous.Framework.Levels.Modifiers;
-using Blasphemous.Framework.Levels;
+﻿using Blasphemous.Framework.Levels;
+using Blasphemous.Framework.Levels.Modifiers;
 using Framework.FrameworkCore;
 using Tools.Level.Interactables;
 using UnityEngine;

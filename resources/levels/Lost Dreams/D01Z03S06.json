@@ -47,6 +47,18 @@
       ]
     },
     {
+      "Type": "boxcollider-droppable",
+      "position": {
+        "x": -186.6,
+        "y": 21.7
+      },
+      "scale": {
+        "x": 3.1,
+        "y": 0.6,
+        "z": 1
+      }
+    },
+    {
       "Type": "wasteland-stone-diagonal",
       "position": {
         "x": -154.94,
@@ -173,8 +185,8 @@
         "z": 1
       },
       "position": {
-        "x": -152.7,
-        "y": 15.45
+        "x": -157.2,
+        "y": 14
       },
       "properties": [
         "__square",
@@ -191,8 +203,8 @@
         "z": 1
       },
       "position": {
-        "x": -151,
-        "y": 17.7
+        "x": -154,
+        "y": 16
       },
       "properties": [
         "__square",
@@ -256,20 +268,8 @@
         "y": 18
       },
       "properties": [
-        "false",
-        "BP04"
-      ]
-    },
-    {
-      "Type": "platform-blood",
-      "Id": "BP01",
-      "position": {
-        "x": -187,
-        "y": 22
-      },
-      "properties": [
         "true",
-        "BP02"
+        "BP04"
       ]
     },
     {
