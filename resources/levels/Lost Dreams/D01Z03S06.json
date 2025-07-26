@@ -47,16 +47,16 @@
       ]
     },
     {
-      "Type": "boxcollider",
+      "Type": "boxcollider-droppable",
       "position": {
-        "x": -186.7,
-        "y": 22
+        "x": -186.6,
+        "y": 21.7
       },
-      "properties": [
-        "OneWayDown",
-        "(2.9, 0.6)",
-        "(0, -0.3)"
-      ]
+      "scale": {
+        "x": 3.1,
+        "y": 0.6,
+        "z": 1
+      }
     },
     {
       "Type": "wasteland-stone-diagonal",
